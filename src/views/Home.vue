@@ -1,28 +1,16 @@
 <template>
-  <v-container>
+  <div class="ma-10 ">
     <v-layout justify-end>
       <AddImage @updatePost="updatePost" />
     </v-layout>
-    <v-layout wrap justify-center  >
-      <span v-for="(post,index) in postData" :key="index"> 
+    <v-layout wrap>
+      <span v-for="(post, index) in postData" :key="index">
         <v-flex>
-          <cardTable :post="post"/>
+          <cardTable :post="post"  @updatePost="updatePost" /> 
         </v-flex>
       </span>
     </v-layout>
-    <!-- <v-card color="#385F73" dark>
-      <v-card-title class="text-h5"> Unlimited music now </v-card-title>
-
-      <v-card-subtitle
-        >Listen to your favorite artists and albums whenever and wherever,
-        online and offline.</v-card-subtitle
-      >
-
-      <v-card-actions>
-        <v-btn text> Listen Now </v-btn>
-      </v-card-actions>
-    </v-card> -->
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -52,18 +40,29 @@ export default {
     async getPost() {
       let result = new Array();
       let data = await getDocs(postCollection);
-      // if (data.length) 
-        data.forEach((doc) => {
-          console.log(`${doc.id} => ${doc.data()}`);
-          console.log(doc.data());
-          result.push(doc.data());
-        });
+      // if (data.length)
+      data.forEach((doc) => {
+        // console.log(`${doc.id} => ${doc.data()}`);
+        // console.log(doc.data());
+        let postData=doc.data()
+        postData.id=doc.id
+        console.log(postData)
+        result.push(postData); 
+      });
       this.loop = result.length;
       this.postData = result;
     },
+  
   },
+  beforeCreate() {},
   created() {
+    let isAdmin = this.isAdmin();
+    if (!isAdmin) {
+      this.$router.push({ path: "/login" });
+      // this.$router.push({ path: "/error-404" });
+    }
     this.getPost();
+    // this.getImages();
   },
 };
 </script>

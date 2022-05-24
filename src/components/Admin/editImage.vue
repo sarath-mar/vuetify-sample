@@ -2,18 +2,30 @@
   <div>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <!-- <v-icon  color="red" class="ms-2">mdi-delete</v-icon> -->
-        <v-btn v-on="on">Add Image</v-btn>
+        <v-icon v-on="on" color="green" class="ms-2">mdi-pen</v-icon>
+        <!-- <v-btn v-on="on">Add Image</v-btn> -->
       </template>
       <v-card class="pt-3 pb-6" color="pop_bg">
         <v-layout justify-end>
           <v-icon @click="close" color="black" class="mr-5">mdi-close </v-icon>
         </v-layout>
         <v-card-text class="subtitle-1 text-center pa-0 ma-0"
-          ><span> Add Image</span>
+          ><span> Edit Image</span>
         </v-card-text>
-        <v-form ref="addPostForm" @submit="addPost()" v-model="valid">
+        <v-form ref="updatePostForm" @submit="updatePost()" v-model="valid">
           <div>
+            <!-- <v-layout>
+              <v-img height="150" width="100" :src="image" :lazy-src="image">
+                <v-row class="fill-height ma-0" align="center" justify="center">
+                  <template v-slot:placeholder>
+                    <v-progress-circular
+                      indeterminate
+                      color="black lighten-3"
+                    ></v-progress-circular>
+                  </template>
+                </v-row>
+              </v-img>
+            </v-layout> -->
             <v-layout justify-center>
               <v-flex md8 class="mr-2">
                 <v-file-input
@@ -45,7 +57,7 @@
             <v-layout justify-center>
               <v-btn
                 :loading="button_loading"
-                @click="addPost"
+                @click="updatePost"
                 :disabled="!valid"
               >
                 Add
@@ -67,14 +79,25 @@
 </template>
 <script>
 // uploadBytes
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+// 
+// import { getStorage, ref, } from "firebase/storage";
+import { getStorage, ref,
+ uploadBytes,
+ getDownloadURL, } from "firebase/storage";
 import { postCollection, addDoc } from "../../firebase";
 export default {
+  props: {
+    post: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       snackbar: false,
       text: "",
       snackbarColor: "",
+      image: "",
       //   valid: false ,
       valid: true,
       dialog: false,
@@ -93,28 +116,44 @@ export default {
     };
   },
   methods: {
+    async getImages(id) {
+      const storage = getStorage();
+      let data = await getDownloadURL(ref(storage, `albums/${id}.jpg`));
+      this.image = data;
+    },
     close() {
       this.error = null;
       this.dialog = false;
     },
-    async addPost() {
+    async updatePost() {
       this.button_loading = true;
       let data = await addDoc(postCollection, {
         postText: this.postText,
       });
-      if (data && this.postImage) {
-        this.dialog = false;
-        var storageRef = ref(getStorage(), `albums/${data.id}.jpg`);
-        console.log(storageRef);
-        uploadBytes(storageRef, this.postImage).then((snapshot) => {
-          console.log("Uploaded a blob or file!");
-          console.log(snapshot);
-        });
+    //   await setDoc(postCollection, {
+    //     name: "Los Angeles",
+    //     state: "CA",
+    //     country: "USA",
+    //   });
+      console.log(data)
+        if (data && this.postImage) {
+          this.dialog = false;
+          var storageRef = ref(getStorage(), `albums/${data.id}.jpg`);
+          console.log(storageRef);
+          uploadBytes(storageRef, this.postImage).then((snapshot) => {
+            console.log("Uploaded a blob or file!");
+            console.log(snapshot);
+          });
 
-        this.$emit("updatePost");
-      }
+          this.$emit("updatePost");
+        }
       this.button_loading = false;
     },
+  },
+
+  created() {
+    this.getImages(this.post.id);
+    this.postText = this.post.postText;
   },
 };
 </script>
