@@ -1,6 +1,14 @@
 <template>
-  <div class="about">
-    <h1>Gallery</h1>
+  <div>
+    <ImageGallery />
   </div>
-</template> 
- 
+</template>
+
+<script>
+import ImageGallery from "../components/Users/imageGallery.vue";
+export default {
+  components: { ImageGallery },
+};
+</script>
+
+<style sco ImageGalleryped></style>

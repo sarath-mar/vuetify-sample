@@ -47,7 +47,7 @@ export default {
   data: () => ({
     drawer: false,
     items: [
-      { title: "Home", icon: "mdi-home", route: "/" },
+      { title: "Admin", icon: "mdi-home", route: "/admin" },
       { title: "About", icon: "mdi-account", route: "/about" },
       { title: "Gallery", icon: "mdi-image", route: "/gallery" },
     ],

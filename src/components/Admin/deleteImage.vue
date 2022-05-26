@@ -67,7 +67,6 @@ export default {
   },
   methods: {
     deleteMethod(id) {
-      console.log(id);
       const docRef = doc(postCollection, id);
       deleteDoc(docRef)
         .then(() => {

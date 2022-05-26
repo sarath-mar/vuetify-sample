@@ -2,8 +2,9 @@
   <div>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <!-- <v-icon  color="red" class="ms-2">mdi-delete</v-icon> -->
-        <v-btn v-on="on">Add Image</v-btn>
+        <v-btn small color="primary" class="black--text" v-on="on"
+          >Add Image</v-btn
+        >
       </template>
       <v-card class="pt-3 pb-6" color="pop_bg">
         <v-layout justify-end>
@@ -24,6 +25,32 @@
                   label="Image"
                   v-model="postImage"
                 ></v-file-input>
+              </v-flex>
+            </v-layout>
+            <v-layout justify-center>
+              <v-flex md8>
+                <v-text-field
+                  :rules="postTextRule"
+                  label="Caption"
+                  placeholder="Write any caption"
+                  outlined
+                  dense
+                  v-model="postCaption"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+            <v-layout justify-center>
+              <v-flex md8>
+                <v-autocomplete
+                  v-model="postType"
+                  :rules="[() => !!postType || 'This field is required']"
+                  :items="imageType"
+                  label="Image Type"
+                  placeholder="Select..."
+                  required
+                  outlined
+                  dense
+                ></v-autocomplete>
               </v-flex>
             </v-layout>
             <v-layout justify-center>
@@ -67,8 +94,9 @@
 </template>
 <script>
 // uploadBytes
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { postCollection, addDoc } from "../../firebase";
+import { updateDoc, doc } from "@firebase/firestore";
 export default {
   data() {
     return {
@@ -89,6 +117,8 @@ export default {
       ],
       postText: "",
       postImage: "",
+      postType: "",
+      postCaption: "",
       postTextRule: [(value) => !!value || "Text field is not be empty"],
     };
   },
@@ -100,18 +130,28 @@ export default {
     async addPost() {
       this.button_loading = true;
       let data = await addDoc(postCollection, {
+        postCaption: this.postCaption,
         postText: this.postText,
+        postType: this.postType,
       });
       if (data && this.postImage) {
         this.dialog = false;
+        let postUrl = "";
         var storageRef = ref(getStorage(), `albums/${data.id}.jpg`);
-        console.log(storageRef);
-        uploadBytes(storageRef, this.postImage).then((snapshot) => {
+        uploadBytes(storageRef, this.postImage).then(async (snapshot) => {
           console.log("Uploaded a blob or file!");
           console.log(snapshot);
+          postUrl = await getDownloadURL(storageRef);
+          if (postUrl) {
+            let docRef = doc(postCollection, data.id);
+            await updateDoc(docRef, {
+              postUrl,
+            }).then(() => {
+              console.log("added finally");
+              this.$emit("updatePost");
+            });
+          }
         });
-
-        this.$emit("updatePost");
       }
       this.button_loading = false;
     },

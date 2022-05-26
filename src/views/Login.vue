@@ -12,7 +12,7 @@ export default {
   created() {
     let data = this.isAdmin();
     if (data) {
-      this.$router.push({ path: "/" });
+      this.$router.push({ path: "/admin" }); 
     }
   },
 };

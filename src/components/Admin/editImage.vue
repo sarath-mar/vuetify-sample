@@ -26,7 +26,7 @@
                 </v-row>
               </v-img>
             </v-layout> -->
-            <v-layout justify-center>
+            <!-- <v-layout justify-center>
               <v-flex md8 class="mr-2">
                 <v-file-input
                   :rules="rules"
@@ -36,6 +36,32 @@
                   label="Image"
                   v-model="postImage"
                 ></v-file-input>
+              </v-flex>
+            </v-layout> -->
+            <v-layout class="mt-5" justify-center>
+              <v-flex md8>
+                <v-text-field
+                  :rules="postTextRule"
+                  label="Caption"
+                  placeholder="Write any caption"
+                  outlined
+                  dense
+                  v-model="postCaption"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+              <v-layout justify-center>
+              <v-flex md8>
+                <v-autocomplete
+                  v-model="postType"
+                  :rules="[() => !!postType || 'This field is required']"
+                  :items="imageType"
+                  label="Image Type"
+                  placeholder="Select..."
+                  required
+                  outlined
+                  dense
+                ></v-autocomplete>
               </v-flex>
             </v-layout>
             <v-layout justify-center>
@@ -60,7 +86,7 @@
                 @click="updatePost"
                 :disabled="!valid"
               >
-                Add
+                Update
               </v-btn>
             </v-layout>
           </v-card-actions>
@@ -79,12 +105,11 @@
 </template>
 <script>
 // uploadBytes
-// 
+//
 // import { getStorage, ref, } from "firebase/storage";
-import { getStorage, ref,
- uploadBytes,
- getDownloadURL, } from "firebase/storage";
-import { postCollection, addDoc } from "../../firebase";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { postCollection } from "../../firebase";
+import { updateDoc, doc } from "@firebase/firestore";
 export default {
   props: {
     post: {
@@ -112,6 +137,8 @@ export default {
       ],
       postText: "",
       postImage: "",
+      postType:"", 
+      postCaption: "",
       postTextRule: [(value) => !!value || "Text field is not be empty"],
     };
   },
@@ -126,34 +153,47 @@ export default {
       this.dialog = false;
     },
     async updatePost() {
-      this.button_loading = true;
-      let data = await addDoc(postCollection, {
-        postText: this.postText,
-      });
-    //   await setDoc(postCollection, {
-    //     name: "Los Angeles",
-    //     state: "CA",
-    //     country: "USA",
-    //   });
-      console.log(data)
-        if (data && this.postImage) {
-          this.dialog = false;
-          var storageRef = ref(getStorage(), `albums/${data.id}.jpg`);
-          console.log(storageRef);
-          uploadBytes(storageRef, this.postImage).then((snapshot) => {
-            console.log("Uploaded a blob or file!");
-            console.log(snapshot);
-          });
 
-          this.$emit("updatePost");
-        }
-      this.button_loading = false;
+      this.button_loading = true;
+      let docRef = doc(postCollection, this.post.id);
+      updateDoc(docRef, {
+        postText: this.postText,
+        postCaption: this.postCaption,
+        postType: this.postType,  
+      })
+        .then((data) => {
+          console.log(data);
+          console.log("updated");
+          this.$emit("updatePost"); 
+          this.button_loading = false;
+          this.dialog=false
+        })
+        .catch((error) => {
+          this.button_loading = false;
+          this.dialog=false 
+          console.log(error);
+        });
+
+      // console.log(data);
+      // if (data && this.postImage) {
+      //   this.dialog = false;
+      //   var storageRef = ref(getStorage(), `albums/${data.id}.jpg`);
+      //   console.log(storageRef);
+      //   uploadBytes(storageRef, this.postImage).then((snapshot) => {
+      //     console.log("Uploaded a blob or file!");
+      //     console.log(snapshot);
+      //   });
+
+      // }
+       
     },
   },
 
   created() {
     this.getImages(this.post.id);
     this.postText = this.post.postText;
+    this.postCaption = this.post.postCaption;
+    this.postType = this.post.postType;  
   },
 };
 </script>

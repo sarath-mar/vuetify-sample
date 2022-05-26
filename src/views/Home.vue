@@ -1,68 +1,31 @@
 <template>
-  <div class="ma-10 ">
-    <v-layout justify-end>
-      <AddImage @updatePost="updatePost" />
-    </v-layout>
-    <v-layout wrap>
-      <span v-for="(post, index) in postData" :key="index">
-        <v-flex>
-          <cardTable :post="post"  @updatePost="updatePost" /> 
-        </v-flex>
-      </span>
-    </v-layout>
+  <div>
+    <!-- <app-bar-on-top>
+    </app-bar-on-top> -->
+    <Banner />
+    <Footer/>
+    <div>
+     
+  </div>
   </div>
 </template>
 
 <script>
-// import { doc, getDoc } from '@firebase/firestore';[0]
-// import { getDocs } from '@firebase/firestore';
-import AddImage from "../components/Admin/addImage.vue";
-import CardTable from "../components/Admin/cardTable.vue";
-import { postCollection, getDocs } from "../firebase";
+// import AppBarOnTop from '../components/AppBarOnTop.vue';
+import Banner from "../components/Users/banner.vue";
+import Footer from '../components/Users/footer.vue';
 export default {
-  name: "Home",
-
-  components: {
-    AddImage,
-    CardTable,
-  },
-  data: () => {
+  components: { Banner,
+    Footer, 
+  // AppBarOnTop
+   },
+  data() {
     return {
-      loop: 8,
-      postData: new Array(),
+      // postData: [],
+      // urlArray: [],
     };
   },
-  methods: {
-    updatePost() {
-      console.log("updated");
-      this.getPost();
-    },
-    async getPost() {
-      let result = new Array();
-      let data = await getDocs(postCollection);
-      // if (data.length)
-      data.forEach((doc) => {
-        // console.log(`${doc.id} => ${doc.data()}`);
-        // console.log(doc.data());
-        let postData=doc.data()
-        postData.id=doc.id
-        console.log(postData)
-        result.push(postData); 
-      });
-      this.loop = result.length;
-      this.postData = result;
-    },
-  
-  },
-  beforeCreate() {},
-  created() {
-    let isAdmin = this.isAdmin();
-    if (!isAdmin) {
-      this.$router.push({ path: "/login" });
-      // this.$router.push({ path: "/error-404" });
-    }
-    this.getPost();
-    // this.getImages();
-  },
-};
+}
 </script>
+
+<style scoped></style>

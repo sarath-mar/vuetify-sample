@@ -101,7 +101,7 @@ export default {
           this.btn_loading = false;
           localStorage.setItem("ROLE_OF_USER", "ADMIN");
           // this.$session.start();
-          this.$router.replace({ path: "/" });
+          this.$router.replace({ path: "/admin" }); 
           // ...
         })
         .catch((error) => {
