@@ -3,7 +3,7 @@
     <v-layout justify-end>
       <AddImage @updatePost="updatePost" />
     </v-layout>
-    <v-card elevation="0" class="mt-3">
+    <v-card elevation="0" class="mt-3 background"> 
       <!-- <v-card-title class="text-center justify-center py-6">
         <h1 class="font-weight-bold text-h2 basil--text">Heading</h1>
       </v-card-title> -->
@@ -20,7 +20,7 @@
       </v-tabs>
 
       <v-tabs-items v-model="tab">
-        <v-tab-item v-for="item in imageType" :key="item.value">
+        <v-tab-item class="background " v-for="item in imageType" :key="item.value">
           <!-- <v-card color="basil" flat>
             <v-card-text>{{ text }}</v-card-text>
           </v-card> -->

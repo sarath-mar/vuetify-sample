@@ -2,7 +2,9 @@
   <div>
     <!-- <app-bar-on-top>
     </app-bar-on-top> -->
+    <v-card  class="pa-10  ">  
     <Banner />
+    </v-card>
     <Footer/>
     <div>
      

@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="pt-10" >
     <v-carousel
       cycle
       hide-delimiter-background
       show-arrows-on-hover
-      height="100vh"
+      height="80vh"  
+      class="rounded-xl mt-5 "
     >
       <v-carousel-item
         v-for="(item, i) in imageArray"
