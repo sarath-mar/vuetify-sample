@@ -20,8 +20,7 @@
       </v-flex>
     </v-layout>
     <v-card height="200vh" color="blue "></v-card> --> 
-    <!-- </v-card> -->
-    <Footer />
+    <!-- </v-card> --> 
   </div>
 </template>
 
@@ -30,13 +29,11 @@
 import Banner from "../components/Users/banner.vue";
 import Stories from "../components/Users/home/stories.vue";
 import Parallex from "../components/Users/home/parallex.vue";
-import Footer from "../components/Users/footer.vue";
 export default {
   components: {
     Banner,
     Stories,
     Parallex,
-    Footer,
     // AppBarOnTop
   },
   data() {

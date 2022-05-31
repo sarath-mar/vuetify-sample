@@ -6,7 +6,7 @@
     <transition appear name="fade">
       <about-admin class="mt-5" />
     </transition> 
-    <Test />
+    <!-- <Test /> -->
     <!-- </v-menu> -->
     <!-- </Transition> -->
 
@@ -15,9 +15,11 @@
 </template>
 <script>
 import aboutAdmin from "../components/Users/about/aboutAdmin.vue";
-import Test from "../components/Users/components/test.vue";
+// import Test from "../components/Users/components/test.vue";
 export default {
-  components: { aboutAdmin, Test },
+  components: { aboutAdmin, 
+  // Test 
+  },
   methods: {},
   beforeCreate() {
     console.log("beforeCreate");

@@ -5,22 +5,25 @@
     <AppBarOnTop v-if="showAppBar" />
     <!-- <v-main> -->
     <router-view v-slot="{ Component }">
-      <transition appear  name="router" mode="out-in">
+      <transition appear name="router" mode="out-in">
         <component :is="Component"></component>
       </transition>
     </router-view>
-    <!-- </v-main> --> 
+    <Footer />
+    <!-- </v-main> -->
   </v-app>
 </template>
 
 <script>
 import AppBarOnTop from "./components/AppBarOnTop.vue";
 import NavigationBar from "./components/NavigationBar.vue";
+import Footer from "./components/Users/footer.vue";
 export default {
   name: "App",
   components: {
     NavigationBar,
     AppBarOnTop,
+    Footer,
   },
   data: () => ({}),
   computed: {
@@ -67,17 +70,18 @@ export default {
 .font {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   background: #f5f4f0 !important;
-
 }
 .heading {
   font: 5em "Allison";
 }
 .stories {
-  font: 1.5em "julee";
+  /* font: 1.5em "julee"; */
+   /* font: 1.5em "charm";    */
+   font: 1.4em "overlock";    
 }
 .sub-title {
   font: 2em "julee";
-} 
+}
 .fade-leave-active,
 .fade-enter-active {
   transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
@@ -98,7 +102,7 @@ export default {
 .router-enter-to {
   opacity: 0;
   transform: translateX(-100px);
-} 
+}
 /* .router-leave-active,.router-enter-active {
   transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
 } 

@@ -1,5 +1,8 @@
 <template>
-  <div class="pt-10">
+  <div class="pt-10"> 
+    <span class="bannerHeading"> <h1>
+      Photography is the Beauty of Life Captured 
+      </h1></span>
     <v-carousel
       elevation="12"
       cycle
@@ -8,7 +11,6 @@
       height="80vh"
       class="rounded-xl mt-5"
     >
-    
       <v-carousel-item
         v-for="(item, i) in imageArray"
         :key="i"
@@ -16,11 +18,12 @@
         reverse-transition="fade-transition"
         transition="fade-transition"
         elevation="12"
-      >  </v-carousel-item>
+      >
+      </v-carousel-item>
     </v-carousel>
   </div>
-</template> 
- 
+</template>
+
 <script>
 export default {
   data() {
@@ -46,13 +49,22 @@ export default {
 </script>
 
 <style scoped>
-.mainHead{
-  position: fixed ;
-  margin-top: 38vh    ;
-  font: 3em "julee";  
-  color: wheat ;
-;
-margin-left: 60px;   
-margin-right: 60px; 
+.bannerHeading {
+  /* height: 100vh ; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+   font: 2em "Allison";  
+   color: white ;
+}
+.mainHead {
+  position: fixed;
+  margin-top: 38vh;
+  font: 3em "julee";
+  color: wheat;
+  margin-left: 60px;
+  margin-right: 60px;
 }
 </style>

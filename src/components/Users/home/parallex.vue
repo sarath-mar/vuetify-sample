@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="my-5">
+    <div class="ma-5">
       <v-carousel
-        cycle 
+        cycle
         height="300"
         hide-delimiter-background
         hide-delimiters
@@ -40,9 +40,10 @@
     </div>
     <v-parallax
       height="300"
-      src="https://images3.alphacoders.com/823/82317.jpg"
+      src="https://wallup.net/wp-content/uploads/2016/03/10/316011-photography-nature-people.jpg"
     >
     </v-parallax>
+    <!-- src="https://images3.alphacoders.com/823/82317.jpg" -->
   </div>
 </template>
 <script>
