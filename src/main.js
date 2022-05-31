@@ -11,12 +11,18 @@ Vue.mixin({
     return {
       imageType: [
         { text: "Banner", value: "BANNER" },
+        { text: "Stories", value: "STORY" },
+        { text: "Singles", value: "SINGLE" },
+        { text: "Travel", value: "TRAVEL" },
+        { text: "Projects", value: "PROJECT" },
         { text: "Fashion Photography", value: "FASHION" },
         { text: "Portrait", value: "PORTRAIT" },
 
       ],
       postData: [],
-      urlBannerArray: []
+      urlBannerArray: [],
+      storyArray: [],
+      urlWithOutBannerArray: []
     }
 
   },
@@ -31,11 +37,20 @@ Vue.mixin({
       });
       this.postData = result;
       let urlArray = new Array();
+      let storyArray = new Array();
+
       for (let x of this.postData) {
-        if (x.postType == "BANNER")
+        if (x.postType == "BANNER") {
           urlArray.push({ src: x.postUrl, postType: x.postType })
+        }
+        else { this.urlWithOutBannerArray.push(x) } 
+        if (x.postType == "STORY") {
+          storyArray.push(x)
+        }
       }
       this.urlBannerArray = urlArray;
+      this.storyArray = storyArray;
+      // this.urlBannerArray = this.postData.filter(x => x.postType == "BANNER");
     },
 
     isAdmin() {

@@ -1,23 +1,26 @@
 <template>
-  <div class="pt-10" >
+  <div class="pt-10">
     <v-carousel
+      elevation="12"
       cycle
       hide-delimiter-background
       show-arrows-on-hover
-      height="80vh"  
-      class="rounded-xl mt-5 "
+      height="80vh"
+      class="rounded-xl mt-5"
     >
+    
       <v-carousel-item
         v-for="(item, i) in imageArray"
         :key="i"
         :src="item.src"
         reverse-transition="fade-transition"
         transition="fade-transition"
-      ></v-carousel-item>
+        elevation="12"
+      >  </v-carousel-item>
     </v-carousel>
   </div>
-</template>
-
+</template> 
+ 
 <script>
 export default {
   data() {
@@ -36,10 +39,20 @@ export default {
   },
   methods: {
     getImage() {
-      this.imageArray = this.urlBannerArray;  
+      this.imageArray = this.urlBannerArray;
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.mainHead{
+  position: fixed ;
+  margin-top: 38vh    ;
+  font: 3em "julee";  
+  color: wheat ;
+;
+margin-left: 60px;   
+margin-right: 60px; 
+}
+</style>

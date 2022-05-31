@@ -1,20 +1,16 @@
 <template>
-  <div class="pt-5 mt-10 ma-5">
-  
+  <div class="pt-5 mt-10 ma-5 mb-5 ">
+    <span class="heading my-5">All Photos</span>
     <image-view :imageView="imageView" :imageData="imageData" />
     <!-- <v-layout class="mt-10" wrap justify-center>
       <span v-for="( post,index ) in postData" :key="index">  
         <v-flex sm12 md12 class="ma-5"> -->
-          <v-container fluid>
-            <v-row>
-              <v-col
-                v-for="( post,index ) in postData" :key="index" 
-                cols="12"
-                md="4"
-              >
+    <v-container fluid>
+      <v-row>
+        <v-col v-for="(post, index) in postData" :key="index" cols="12" md="4">
           <v-img
             @click="clickedForImage(post)"
-           height="300px"   
+            height="300px"
             :src="post.postUrl"
             :lazy-src="post.postUrl"
             aspect-ratio="1"
@@ -29,14 +25,13 @@
               </v-row>
             </template>
           </v-img>
-              </v-col>
-            </v-row>
-          </v-container>
-        
-        <!-- </v-flex>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!-- </v-flex>
       </span>
     </v-layout> -->
-       
   </div>
 </template>
 
@@ -53,7 +48,7 @@ export default {
   methods: {
     clickedForImage(data) {
       console.log("clicked");
-      this.imageView = !this.imageView; 
+      this.imageView = !this.imageView;
       console.log(data);
       this.imageData = data;
     },

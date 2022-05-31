@@ -1,43 +1,37 @@
 <template>
-  <v-card class="overflow-hidden mb-5 ">
+<div>
+   <!-- <nav> -->
+   
+  <v-card  elevation="24" class=" mb-5 ">
+   
     <v-app-bar
-      fixed
-      color="black " 
+      fixed 
+      rounded 
+      color="white" 
+      class=" deep-purple--text rounded-b-xl"       
       dark 
-      elevate-on-scroll
       scroll-target="#scrolling-techniques-7"
       height="90px"
     >
-      <!--  :color="
-        scrollValue <= 468 && $route.name == 'Home' ? 'transparent' : 'white'
-      " -->
-      <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
       <v-layout wrap class="mt-5">
         <v-flex xs12 sm6>
           <v-toolbar-title class="mx-10">
-            <span class="font-weight-light h1 green--text">Madhuraj </span>
+            <span class="font-weight-light h1 black--text">Madhuraj </span>  
             <span>Snaps</span>
           </v-toolbar-title>
         </v-flex>
         <v-spacer></v-spacer>
         <v-flex xs12 sm6>
           <v-layout class="mx-10" justify-end>
-            <div v-for="item in items" :key="item.title">
+            <div v-for="item in items" :key="item.title"> 
               <router-link style="text-decoration: none" :to="item.route">
-                <v-btn class="green--text mx-5" icon>
-                  <!-- <v-icon>mdi-magnify</v-icon> -->
+                <v-btn class="mx-5 deep-purple--text " :class="{
+                    'green--text': $route.path === item.route 
+                  }"  icon> 
                   {{ item.title }}
                 </v-btn>
               </router-link>
             </div>
-
-            <!-- <v-btn class="green--text mx-5" icon>
-          About
-        </v-btn>
-
-        <v-btn class="green--text mx-5" icon>
-          Gallery
-        </v-btn> -->
           </v-layout>
         </v-flex>
       </v-layout>
@@ -49,6 +43,12 @@
     >
     </v-sheet>
   </v-card>
+   <!-- </nav>   -->
+      <!--  :color="
+        scrollValue <= 468 && $route.name == 'Home' ? 'transparent' : 'white'
+      " -->
+      <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
+</div>
 </template>
 <script>
 export default {
@@ -85,5 +85,9 @@ export default {
 <style>
 .hiddenNavBar {
   color: green;
+}
+.activeClass{
+  color: red ;
+  background: green ;
 }
 </style>

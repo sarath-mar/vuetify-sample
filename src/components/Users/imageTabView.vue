@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-10 background" flat>
-    <v-card-title>Gallery </v-card-title>
+    <v-card-title><span class="heading">Gallery</span></v-card-title> 
     <v-tabs class="background " v-model="tab" color="deep-purple accent-4" center> 
       <v-tab class="background " v-for="itemImage in imageData" :key="itemImage.value"
         ><span class="text-capitalize "> {{ itemImage.text }}</span></v-tab
@@ -27,10 +27,10 @@
                       <v-expand-transition>
                         <div
                           v-if="hover"
-                          class="d-flex transition-fast-in-fast-out orange lighten-2 v-card--reveal white--text"
+                          class="d-flex  transition-fast-in-fast-out orange lighten-2 v-card--reveal white--text"
                           style="height: 100%"
                         >
-                        <v-layout justify-center > <span>{{ item.postText }}</span></v-layout>
+                        <v-layout justify-center > <span class="pa-4">{{ item.postText }}</span></v-layout> 
                        
                           
                         </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-10 mt-10">
+  <div class="pt-10 mt-5 ">
     <ImageTabViews />
     <v-layout justify-center >
         <router-link :to="'/all-gallery'"> 
