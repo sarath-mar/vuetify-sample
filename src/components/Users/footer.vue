@@ -10,21 +10,15 @@
           <h2>Contact Us</h2>
         </v-layout>
         <v-form>
-          <v-layout justify-center class="mt-8">
-            <v-flex xs5 class="mr-10">
+          <v-layout justify-center class="mt-8" wrap>
+            <v-flex xs11 >  
               <v-text-field
-                label="First Name"
-                placeholder="First Name"
+                label="Full Name"
+                placeholder="Full Name" 
                 solo
               ></v-text-field>
             </v-flex>
-            <v-flex xs5 class="ml-12">
-              <v-text-field
-                label="Last Name"
-                placeholder="Last Name"
-                solo
-              ></v-text-field>
-            </v-flex>
+          
           </v-layout>
           <v-layout justify-center>
             <v-flex xs11>

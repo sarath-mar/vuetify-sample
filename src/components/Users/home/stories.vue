@@ -11,15 +11,16 @@
         <v-card-text>
           <div v-for="(story, index) in limitedStory" :key="index">
             <v-layout v-if="isOdd(index + 1)" class="mb-6" wrap justify-center>
-              <v-flex x12s sm7 align-self-center>
+              <v-flex x12 sm7 align-self-center>
                 <span>
                   <v-img
                     @click="clickedForImage(post)"
-                    height="600px"
+                    height="400px"
                     :src="story.postUrl"
                     :lazy-src="story.postUrl"
-                    aspect-ratio=".5 "
-                    class="grey lighten-2 rounded-xl mx-10"
+                    aspect-ratio=".7 "
+                    class="grey lighten-2 rounded-xl"
+                    :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-10'"
                   >
                     <template v-slot:placeholder>
                       <v-row
@@ -55,15 +56,16 @@
                   <span class="stories mx-3"> {{ story.postText }}</span>
                 </span>
               </v-flex>
-              <v-flex align-self-center x12s sm7>
+              <v-flex align-self-center x12 sm7>
                 <span class="">
                   <v-img
                     @click="clickedForImage(post)"
-                    height="600px"
+                    height="400px"
                     :src="story.postUrl"
                     :lazy-src="story.postUrl"
-                    aspect-ratio=".5 "
-                    class="grey lighten-2 rounded-xl mx-10"
+                    aspect-ratio=".7"
+                    class="grey lighten-2 rounded-xl"
+                    :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-10'"
                   >
                     <template v-slot:placeholder>
                       <v-row

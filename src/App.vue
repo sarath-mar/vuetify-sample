@@ -9,7 +9,7 @@
         <component :is="Component"></component>
       </transition>
     </router-view>
-    <Footer />
+    <Footer v-if="showAppBar" />
     <!-- </v-main> -->
   </v-app>
 </template>
@@ -67,6 +67,12 @@ export default {
 };
 </script>
 <style>
+.login {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+} 
 .font {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   background: #f5f4f0 !important;

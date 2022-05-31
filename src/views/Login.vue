@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="login">
     <loginPage />
   </div>
 </template>
@@ -12,10 +12,12 @@ export default {
   created() {
     let data = this.isAdmin();
     if (data) {
-      this.$router.push({ path: "/admin" }); 
+      this.$router.push({ path: "/admin" });
     }
   },
 };
 </script>
 
-<style scoped></style>
+<style>
+
+</style>
