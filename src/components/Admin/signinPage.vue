@@ -60,7 +60,7 @@
         <v-layout justify-center class="ms-n3">
           <v-btn
             depressed
-            color="primary"
+            color="ashColor"
             class="white--text ml-3 font-weight-light"
             :min-width="$vuetify.breakpoint.xs ? 150 : 385"
             @click="onSubmit"

@@ -1,11 +1,8 @@
 <template>
   <div class="pt-10 mt-5 ">
+     
     <ImageTabViews />
-    <v-layout justify-center >
-        <router-link :to="'/all-gallery'"> 
-          <v-btn small>See More..</v-btn>
-        </router-link>
-    </v-layout>
+   
   </div>
 </template>
 

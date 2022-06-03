@@ -4,9 +4,9 @@
       <template v-slot:activator="{ on }">
         <v-icon v-on="on" color="red" class="ms-2">mdi-delete</v-icon>
       </template>
-      <v-card class="pt-1 pb-5" color="ashColor">
+      <v-card class="pt-1 pb-5" color="ashColor ">
         <v-card-text class="subtitle-1 mb-0 mt-6 text-center red--text"
-          >Delete this post :
+          >Delete this video :
           <span font-weight-bold> {{ post.postText }} </span> ?</v-card-text
         >
 
@@ -44,9 +44,8 @@
 </template>
 
 <script>
-import { getStorage, ref, deleteObject } from "firebase/storage";
 import { deleteDoc, doc } from "@firebase/firestore";
-import { postCollection } from "../../firebase";
+import { videoCollection } from "../../../firebase";
 export default {
   props: {
     post: {
@@ -67,25 +66,17 @@ export default {
   },
   methods: {
     deleteMethod(id) {
-      const docRef = doc(postCollection, id);
+      const docRef = doc(videoCollection, id);
       deleteDoc(docRef)
         .then(() => {
           console.log("deleted post");
-          const storage = getStorage();
-          const desertRef = ref(storage, `albums/${id}.jpg`);
-          deleteObject(desertRef)
-            .then(() => {
-              (this.snackbar = true),
-                (this.snackbarColor = "green"),
-                (this.text = "Deleted Sucessfully"),
-                console.log("deleted image");
-              this.dialog = false;
+          (this.snackbar = true),
+            (this.snackbarColor = "green"),
+            (this.text = "Deleted Sucessfully"),
+            console.log("deleted image");
+           this.dialog = false;
 
-              this.$emit("updatePost");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+           this.$emit("updatePost");
         })
         .catch((e) => {
           console.log(e);

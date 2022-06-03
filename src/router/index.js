@@ -17,6 +17,38 @@ const routes = [
     component: Admin
   },
   {
+    path: '/admin-video',
+    name: 'Admin-Video',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/adminSide/adminVideo.vue')
+  },
+  {
+    path: '/admin-document',
+    name: 'Admin-Document',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/adminSide/adminDocument.vue')
+  },
+  {
+    path: '/published-works',
+    name: 'Published-Works',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/adminSide/adminDocument.vue')
+  },
+  {
+    path: '/video-gallery',
+    name: 'Video-Gallery',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/adminSide/adminVideo.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
@@ -26,7 +58,7 @@ const routes = [
   },
   {
     path: '/all-gallery',
-    name: 'All-Gallery', 
+    name: 'All-Gallery',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -34,11 +66,19 @@ const routes = [
   },
   {
     path: '/gallery',
-    name: 'Gallery', 
+    name: 'Gallery',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/Gallery.vue')
+  },
+  {
+    path: '/category-details',
+    name: 'Category-Details',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/Gallery/categoryDetails.vue')
   },
   {
     path: '/login',

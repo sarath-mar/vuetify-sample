@@ -2,44 +2,30 @@
   <v-card class="mx-auto mt-10" outlined color="background">
     <!-- <v-container> -->
     <v-row dense>
-      <!-- <v-col v-for="(item, i) in items" :key="i" cols="12"> -->
-      <!-- <v-card :color="item.color" dark> -->
-      <!-- <div class="d-flex flex-no-wrap justify-space-between"> -->
       <div>
-        <v-card-title> <span class="heading">Madhuraj</span></v-card-title>
+        <v-card-title> <span class="heading-one">Madhuraj</span></v-card-title> 
 
-        <v-card-subtitle class="mt-5 ml-10">
+        <v-card-subtitle class="mt-2">
       
           <v-layout justify-center align-center  wrap> 
-            <v-flex xs12 sm6 class="pa-5">  
+            <v-flex xs12 sm10 md4 class="px-2">  
               <!-- <v-avatar  size="500"> -->
                 <v-img
                 aspect-ratio="1"
                 class="about-image"
               
-                  src="https://wallup.net/wp-content/uploads/2016/03/10/316011-photography-nature-people.jpg"
+                  src="@/assets/madhuraj.jpg"   
                 ></v-img>
+                <!-- src="https://wallup.net/wp-content/uploads/2016/03/10/316011-photography-nature-people.jpg" -->
               <!-- </v-avatar> -->
             </v-flex>
-            <v-flex xs12 sm6 class="pa-5 "> 
-              <span class="stories"> {{ items.content }}</span> 
+            <v-flex xs12 sm10 md8  class="px-2 text-justify " :class="$vuetify.breakpoint.xs ? 'mt-5' : 'mt-2'">   
+              <span class="stories"> {{ items.content }}</span>  
             </v-flex>
           </v-layout>
         </v-card-subtitle>
-        <!-- <v-card-actions>
-          <v-btn @click="show = !show" class="ml-2 mt-5" outlined rounded small>
-            START PROJECT
-          </v-btn>
-        </v-card-actions>
-        <transition name="fade">
-          <div v-if="show">
-            <h1>Its Me Saraath</h1>
-          </div>
-        </transition> -->
       </div>
-
-      <!-- </v-col> -->
-    </v-row>>
+    </v-row>
   </v-card>
 </template>
 <script>
@@ -95,7 +81,7 @@ export default {
   opacity: 0;
 }
 .about-image{
-border-radius: 50%  ; 
+border-radius: 50%  ;
 
 }
 </style>

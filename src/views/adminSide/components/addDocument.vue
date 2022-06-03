@@ -2,8 +2,8 @@
   <div>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn small color="ashColor" class="black--text" v-on="on"
-          >Add Image</v-btn
+        <v-btn small color="ashColor" class="black--text" v-on="on" 
+          >Add Document</v-btn
         >
       </template>
       <v-card class="pt-3 pb-6" color="pop_bg">
@@ -11,7 +11,7 @@
           <v-icon @click="close" color="black" class="mr-5">mdi-close </v-icon>
         </v-layout>
         <v-card-text class="subtitle-1 text-center pa-0 ma-0"
-          ><span> Add Image</span>
+          ><span> Add Document</span>
         </v-card-text>
         <v-form ref="addPostForm" @submit="addPost()" v-model="valid">
           <div>
@@ -19,11 +19,12 @@
               <v-flex md8 class="mr-2">
                 <v-file-input
                   :rules="rules"
-                  accept="image/png, image/jpeg, image/bmp"
-                  placeholder="Pick an avatar"
-                  prepend-icon="mdi-camera"
-                  label="Image"
-                  v-model="postImage"
+                  show-size
+                  counter
+                  accept="application/pdf"
+                  placeholder="Drop an pdf"
+                  label="Document"
+                  v-model="postDocument"
                 ></v-file-input>
               </v-flex>
             </v-layout>
@@ -39,7 +40,7 @@
                 ></v-text-field>
               </v-flex>
             </v-layout>
-            <v-layout justify-center>
+            <!-- <v-layout justify-center>
               <v-flex md8>
                 <v-autocomplete
                   v-model="postType"
@@ -52,12 +53,12 @@
                   dense
                 ></v-autocomplete>
               </v-flex>
-            </v-layout>
+            </v-layout> -->
             <v-layout justify-center>
               <v-flex md8>
                 <v-textarea
                   :rules="postTextRule"
-                  label="Write any discription about this photo "
+                  label="Write any discription about this document"
                   auto-grow
                   outlined
                   rows="3"
@@ -95,8 +96,8 @@
 <script>
 // uploadBytes
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { postCollection, addDoc } from "../../firebase";
 import { updateDoc, doc } from "@firebase/firestore";
+import { documentCollection, addDoc } from "../../../firebase";
 export default {
   data() {
     return {
@@ -111,12 +112,12 @@ export default {
       error: null,
       rules: [
         (value) =>
-          !value ||
-          value.size < 200000000 ||
-          "Avatar size should be less than 200 MB!",
+          !!value ||
+          value.size < 5000000 ||
+          "Document size should be less than 5 MB!",
       ],
       postText: "",
-      postImage: "",
+      postDocument: "",
       postType: "",
       postCaption: "",
       postTextRule: [(value) => !!value || "Text field is not be empty"],
@@ -129,27 +130,29 @@ export default {
     },
     async addPost() {
       this.button_loading = true;
-      let data = await addDoc(postCollection, {
+      let data = await addDoc(documentCollection, {
         postCaption: this.postCaption,
         postText: this.postText,
-        postType: this.postType,
       });
-      if (data && this.postImage) {
+      if (data && this.postDocument) {
         let postUrl = "";
-        var storageRef = ref(getStorage(), `albums/${data.id}.jpg`);
-        uploadBytes(storageRef, this.postImage)
+        var storageRef = ref(getStorage(), `documents/${data.id}.pdf`);
+        // const metadata = {
+        //   contentType: "application/pdf",
+        // }; 
+        uploadBytes(storageRef, this.postDocument)
           .then(async (snapshot) => {
-            console.log("Uploaded a blob or file!");
+            console.log("Uploaded a pdf document or file!");
             console.log(snapshot);
             postUrl = await getDownloadURL(storageRef);
             if (postUrl) {
-              let docRef = doc(postCollection, data.id);
+              let docRef = doc(documentCollection, data.id);
               await updateDoc(docRef, {
                 postUrl,
               })
                 .then(() => {
-                  this.button_loading = false;
                   this.dialog = false;
+                  this.button_loading = false;
                   console.log("added finally");
                   this.$emit("updatePost");
                 })

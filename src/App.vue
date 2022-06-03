@@ -31,7 +31,8 @@ export default {
       let routePath = this.$route.path;
       let routeName = this.$route.name;
       let routeOptions = this.$router.options.routes;
-      let routeNames = ["Admin"];
+      console.log(routeOptions) 
+      let routeNames = ["Admin","Admin-Video","Admin-Document"];  
       if (routeNames.includes(routeName)) {
         return true;
       }
@@ -44,12 +45,12 @@ export default {
     showAppBar() {
       let routePath = this.$route.path;
       let routeName = this.$route.name;
-      let routeOptions = this.$router.options.routes;
-      let routeNames = ["Error-404", "Home", "About", "Gallery", "All-Gallery"];
+      let routeOptions = this.$router.options.routes; 
+      let routeNames = ["Error-404", "Home", "About", "Gallery", "All-Gallery","Category-Details","Video-Gallery","Published-Works"];    
       if (routeNames.includes(routeName)) {
         return true;
       }
-      let data = routeOptions.find((x) => x.path == routePath);
+      let data = routeOptions.find((x) => x.path == routePath); 
       if (!data) {
         this.$router.replace({ path: "/" });
       }
@@ -80,13 +81,17 @@ export default {
 .heading {
   font: 5em "Allison";
 }
+.heading-one {
+  font: 3em "Allison";
+}
 .stories {
-  /* font: 1.5em "julee"; */
-   /* font: 1.5em "charm";    */
-   font: 1.4em "overlock";    
+   font-size: 1.4em;   
+   /* font: 1.4em "overlock";     */
 }
 .sub-title {
-  font: 2em "julee";
+  font-size: 1.7em;
+  /* font: 2em ; */
+  /* font: 2em "julee"; */
 }
 .fade-leave-active,
 .fade-enter-active {

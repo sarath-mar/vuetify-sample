@@ -5,6 +5,7 @@
     <v-card flat class="background pa-10">
       <Banner />
     </v-card>
+    <singles/>
     <Stories />
     <Parallex  class="mb-10" />
 
@@ -29,11 +30,13 @@
 import Banner from "../components/Users/banner.vue";
 import Stories from "../components/Users/home/stories.vue";
 import Parallex from "../components/Users/home/parallex.vue";
+import Singles from '../components/Users/home/singles.vue';
 export default {
   components: {
     Banner,
     Stories,
     Parallex,
+    Singles,
     // AppBarOnTop
   },
   data() {

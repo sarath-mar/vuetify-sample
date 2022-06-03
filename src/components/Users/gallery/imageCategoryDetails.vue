@@ -1,13 +1,15 @@
 <template>
-  <div>
+  <div class="mt-10 ">
     <transition appear name="fade">
       <v-card
-        v-if="storyArray.length"
+        v-if="categoryDetails.length"
         flat
         elevation="0 "
         class="background mx-10"
       >
-        <v-card-title><span class="heading">Stories</span></v-card-title>
+        <v-card-title
+          ><span class="heading text-lowercase mt-5">{{ type }}</span></v-card-title
+        >
         <v-card-text>
           <div v-for="(story, index) in limitedStory" :key="index">
             <v-layout v-if="isOdd(index + 1)" class="mb-6" wrap justify-center>
@@ -19,7 +21,7 @@
                     :src="story.postUrl"
                     :lazy-src="story.postUrl"
                     aspect-ratio=".7 "
-                    class="grey lighten-2 rounded-xl text-center "
+                    class="grey lighten-2 rounded-xl text-center"
                     :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-10'"
                   >
                     <template v-slot:placeholder>
@@ -100,31 +102,34 @@
     </transition>
   </div>
 </template>
-
 <script>
+import { getDocs } from "@firebase/firestore";
+import { postCollection } from "../../../firebase";
 export default {
   data() {
     return {
-      // stories: [{ text: "one" }, { text: "two" }],
       limitedStory: [],
-      btnTitle: "See Moore..",
+      categoryDetails: [],
+      type: "",
       btnMode: true,
+      btnTitle: "See More",
     };
   },
-  watch: {
-    storyArray: {
-      handler(newValue) {
-        if (newValue) {
-          if (newValue.length > 1) {
-            this.limitedStory = newValue.filter((x, i) => {
-              if (i < 2) return x;
-            });
-          } else {
-            this.limitedStory = newValue;
-          }
-        }
-      },
-    },
+  async created() {
+    this.type = this.$route.query.imageCategory;
+    let data = await getDocs(postCollection);
+    data.forEach((doc) => {
+      let postData = doc.data();
+      postData.id = doc.id;
+      if (postData.postType == this.type) this.categoryDetails.push(postData);
+    });
+    if (this.categoryDetails.length ) {
+      this.limitedStory = this.categoryDetails.filter((x, i) => {
+        if (i < 2) return x;
+      });
+    } else {
+      this.limitedStory = this.categoryDetails;
+    }
   },
   methods: {
     isOdd(index) {
@@ -138,11 +143,11 @@ export default {
     },
     seeMore() {
       if (this.btnMode) {
-        this.limitedStory = this.storyArray;
+        this.limitedStory = this.categoryDetails;
         this.btnMode = false;
         this.btnTitle = "See Less..";
       } else {
-        this.limitedStory = this.storyArray.filter((x, i) => {
+        this.limitedStory = this.categoryDetails.filter((x, i) => {
           if (i < 2) return x;
         });
         this.btnMode = true;
@@ -150,37 +155,5 @@ export default {
       }
     },
   },
-  created() {
-    // console.log("created ")
-    // console.log(this.postData)
-    // this.stories=this.postData.filter(x=>x.postType=="STORY")
-    // console.log(this.stories)
-  },
 };
 </script>
-
-<style>
-.postBackground {
-  padding: 10px;
-  background: red;
-  color: green;
-}
-.list-enter-from {
-  opacity: 0;
-  transform: scale(0.6);
-}
-.list-enter-active {
-  transition: all 0.4s ease;
-}
-.list-leave-to {
-  opacity: 0;
-  transform: scale(0.6);
-}
-.list-leave-active {
-  transition: all 0.4s ease;
-  position: absolute; /* for move transition after item leaves */
-}
-.list-move {
-  transition: all 0.3s ease;
-}
-</style>

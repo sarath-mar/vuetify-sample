@@ -5,7 +5,7 @@
       :elevation="hover ? 25 : 2"
       :class="{ 'on-hover': hover }"
       :loading="loading"
-      class="my-4 mx-4 primary cardClass"
+      class="my-4 mx-4 ashColor cardClass"
     >
       <v-img height="250" :src="post.postUrl" :lazy-src="post.postUrl">
         <template v-slot:placeholder>
@@ -17,9 +17,9 @@
           </v-row>
         </template>
       </v-img>
-      <v-card-title>{{ post.postCaption }}</v-card-title>
+      <v-card-title>{{ post.postCaption }}</v-card-title>   
 
-      <v-card-text style="overflow-y: auto; height: 130px">
+      <v-card-text style="overflow-y: auto; height: 50px"> 
         <div>
           {{ post.postText }}
         </div>

@@ -3,8 +3,8 @@
     <v-toolbar>
       <v-toolbar-title class="text-uppercase grey--text">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <span class="font-weight-light">Sample</span>
-        <span> Project</span>
+        <span class="font-weight-light">Madhuraj</span>
+        <span> Snaps</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
@@ -20,7 +20,7 @@
       <v-layout justify-end>
         <v-icon @click="close" class="black--text">mdi-close</v-icon>
       </v-layout>
-      <v-list dense rounded>
+      <v-list dense rounded class="mt-10">
         <v-list-item
           v-for="item in items"
           :key="item.title"
@@ -48,8 +48,8 @@ export default {
     drawer: false,
     items: [
       { title: "Admin", icon: "mdi-home", route: "/admin" },
-      { title: "About", icon: "mdi-account", route: "/about" },
-      { title: "Gallery", icon: "mdi-image", route: "/gallery" },
+      { title: "Videos", icon: "mdi-video", route: "/admin-video" },
+      { title: "Documentation", icon: "mdi-file", route: "/admin-document" },
     ],
   }),
   methods: {

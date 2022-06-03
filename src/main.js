@@ -22,7 +22,9 @@ Vue.mixin({
       postData: [],
       urlBannerArray: [],
       storyArray: [],
-      urlWithOutBannerArray: []
+      urlWithOutBannerArray: [],
+      singlesArray:[]
+     
     }
 
   },
@@ -35,9 +37,10 @@ Vue.mixin({
         postData.id = doc.id;
         result.push(postData);
       });
-      this.postData = result;
+      this.postData = result; 
       let urlArray = new Array();
       let storyArray = new Array();
+      let singlesArray = new Array();
 
       for (let x of this.postData) {
         if (x.postType == "BANNER") {
@@ -47,9 +50,13 @@ Vue.mixin({
         if (x.postType == "STORY") {
           storyArray.push(x)
         }
+        if (x.postType == "SINGLE") {
+          singlesArray.push(x)
+        }
       }
       this.urlBannerArray = urlArray;
       this.storyArray = storyArray;
+      this.singlesArray=singlesArray 
       // this.urlBannerArray = this.postData.filter(x => x.postType == "BANNER");
     },
 

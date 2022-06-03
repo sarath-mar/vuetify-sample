@@ -1,14 +1,23 @@
 <template>
-  <div>
-   
+  <div class="background">
     <!-- min-height="64vh " -->
-    <v-card  class="mx-10 background" flat>
-      <v-card-title><span class="heading">Gallery</span></v-card-title>
+    <v-card class="mx-10 background" flat>
+      <v-card-title>
+        <v-layout wrap >
+          <span class="heading">Gallery</span>
+          <v-spacer> 
+          </v-spacer>  
+          <router-link :to="'/all-gallery'">
+            <v-btn class="mt-10 " small >View All Photo Gallery</v-btn>
+          </router-link>
+        </v-layout>
+      </v-card-title>
       <v-tabs
         class="background"
         v-model="tab"
         color="deep-purple accent-4"
         center
+        background-color="background"
       >
         <v-tab
           class="background"
@@ -32,7 +41,7 @@
                   md="4"
                 >
                   <v-hover v-slot="{ hover }">
-                    <v-card class="rounded-xl">
+                    <v-card class="rounded-xl ">
                       <v-img
                         height="250px "
                         :src="item.postUrl"
@@ -42,10 +51,10 @@
                         <v-expand-transition>
                           <div
                             v-if="hover"
-                            class="d-flex transition-fast-in-fast-out green  lighten-2 v-card--reveal white--text"
+                            class="d-flex transition-fast-in-fast-out green lighten-2 v-card--reveal white--text"
                             style="height: 100%"
                           >
-                            <v-layout justify-center>
+                            <v-layout justify-center class="ashColor"> 
                               <span class="pa-4">{{
                                 item.postText
                               }}</span></v-layout
@@ -55,7 +64,7 @@
                       </v-img>
 
                       <v-card-title class="text-h6 text-center"
-                        ><v-layout justify-center>
+                        ><v-layout justify-center >
                           {{ item.postCaption }}</v-layout
                         >
                       </v-card-title>
@@ -69,6 +78,20 @@
                 </v-col>
               </v-row>
             </v-container>
+            <v-layout v-if="tabData.length" justify-center class="my-5">
+              <router-link
+                :to="{
+                  path: '/category-details',
+                  params: { imageCategory: categoryPostType },
+                  query: { imageCategory: categoryPostType },
+                }"
+              >
+                <v-btn small>See More..</v-btn>
+              </router-link>
+            </v-layout>
+            <v-layout justify-center v-else>
+              <p>No Post is uploaded....</p>
+            </v-layout>
           </v-tab-item>
         </v-tabs-items>
       </v-tabs>
@@ -82,6 +105,7 @@ export default {
       tabData: [],
       tab: null,
       imageData: [],
+      categoryPostType: "",
     };
   },
   watch: {
@@ -89,7 +113,9 @@ export default {
       handler(newValue) {
         console.log("hey");
         let value = this.imageData[newValue].value;
+
         if (value) {
+          this.categoryPostType = value;
           this.tabData = new Array();
           this.tabData = this.postData.filter((x) => x.postType == value);
         }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout justify-center>
-      <v-card width="70%" color="green " class="red topCard mt-10 ">
+      <v-card width="70%" color="#d5cfb8" class="topCard mt-10">   
         <!-- <v-card-title> -->
         <v-layout justify-center class="mt-5">
           <span>GET IN TOUCH</span>
@@ -101,5 +101,9 @@ export default {
 .topCard {
   z-index: 1;
   margin-top: 10px;
+ 
 }
+/* .colorForCard{
+  color: red;
+} */
 </style>
