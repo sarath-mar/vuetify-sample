@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn small color="ashColor" class="black--text" v-on="on"
+        <v-btn small color="ashColor" class="black--text text-capitalize" v-on="on"
           >Add Video Url</v-btn
         >
       </template>

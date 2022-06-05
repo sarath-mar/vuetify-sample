@@ -1,6 +1,6 @@
 <template>
   <div class="pt-10"> 
-    <span class="bannerHeading"> <h1 class="text-center ">
+    <span class="bannerHeading"> <h1 class="text-center grey--text ">
       Photography is the Beauty of Life Captured 
       </h1></span>
     <v-carousel

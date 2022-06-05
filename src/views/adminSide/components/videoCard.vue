@@ -15,10 +15,10 @@
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
       ></iframe>
-      <v-card-title>{{ post.postCaption }}</v-card-title>
+      <v-card-title > <span >{{ post.postCaption }}</span></v-card-title>  
 
       <v-card-text style="overflow-y: auto; height: 40px">  
-        <div>
+        <div class="grey--text "> 
           {{ post.postText }}
         </div>
       </v-card-text>

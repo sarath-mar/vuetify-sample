@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn small color="ashColor" class="black--text" v-on="on"
+        <v-btn small color="ashColor" class="black--text text-capitalize" v-on="on"
           >Add Image</v-btn
         >
       </template>
@@ -16,7 +16,7 @@
         <v-form ref="addPostForm" @submit="addPost()" v-model="valid">
           <div>
             <v-layout justify-center>
-              <v-flex md8 class="mr-2">
+              <v-flex xs8 class="mr-2">
                 <v-file-input
                   :rules="rules"
                   accept="image/png, image/jpeg, image/bmp"
@@ -28,7 +28,7 @@
               </v-flex>
             </v-layout>
             <v-layout justify-center>
-              <v-flex md8>
+              <v-flex xs8>
                 <v-text-field
                   :rules="postTextRule"
                   label="Caption"
@@ -40,7 +40,7 @@
               </v-flex>
             </v-layout>
             <v-layout justify-center>
-              <v-flex md8>
+              <v-flex xs8>
                 <v-autocomplete
                   v-model="postType"
                   :rules="[() => !!postType || 'This field is required']"
@@ -54,7 +54,7 @@
               </v-flex>
             </v-layout>
             <v-layout justify-center>
-              <v-flex md8>
+              <v-flex xs8> 
                 <v-textarea
                   :rules="postTextRule"
                   label="Write any discription about this photo "

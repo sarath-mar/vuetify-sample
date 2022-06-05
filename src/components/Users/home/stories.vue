@@ -42,7 +42,7 @@
                   <div class="sub-title font-weight-bold text-center mb-3">
                     {{ story.postCaption }}
                   </div>
-                  <span class="stories"> {{ story.postText }}</span>
+                  <p class="stories text-justify"> {{ story.postText }}</p>  
                 </span>
               </v-flex>
             </v-layout>
@@ -53,7 +53,7 @@
                   <div class="sub-title font-weight-bold text-center mx-3 mb-3">
                     {{ story.postCaption }}
                   </div>
-                  <span class="stories mx-3"> {{ story.postText }}</span>
+                  <p class="stories mx-3 text-justify"> {{ story.postText }}</p>
                 </span>
               </v-flex>
               <v-flex align-self-center x12 sm7>
@@ -87,7 +87,7 @@
                   <div class="sub-title font-weight-bold text-center my-3">
                     {{ story.postCaption }}
                   </div>
-                  <span class="stories"> {{ story.postText }}</span>
+                  <p class="stories text-justify"> {{ story.postText }}</p> 
                 </span>
               </v-flex>
             </v-layout>

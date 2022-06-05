@@ -3,24 +3,30 @@
     <!-- <v-container> -->
     <v-row dense>
       <div>
-        <v-card-title> <span class="heading-one">Madhuraj</span></v-card-title> 
+        <v-card-title> <span class="heading-one">Madhuraj</span></v-card-title>
 
         <v-card-subtitle class="mt-2">
-      
-          <v-layout justify-center align-center  wrap> 
-            <v-flex xs12 sm10 md4 class="px-2">  
+          <v-layout justify-center align-center wrap>
+            <v-flex xs12 sm10 md4 class="px-2">
               <!-- <v-avatar  size="500"> -->
-                <v-img
+              <v-img
                 aspect-ratio="1"
                 class="about-image"
-              
-                  src="@/assets/madhuraj.jpg"   
-                ></v-img>
-                <!-- src="https://wallup.net/wp-content/uploads/2016/03/10/316011-photography-nature-people.jpg" -->
+                :src="aboutData.postUrl"
+              ></v-img>
+              <!-- src="@/assets/madhuraj.jpg" -->
+              <!-- src="https://wallup.net/wp-content/uploads/2016/03/10/316011-photography-nature-people.jpg" -->
               <!-- </v-avatar> -->
             </v-flex>
-            <v-flex xs12 sm10 md8  class="px-2 text-justify " :class="$vuetify.breakpoint.xs ? 'mt-5' : 'mt-2'">   
-              <span class="stories"> {{ items.content }}</span>  
+            <v-flex
+              xs12
+              sm10
+              md8
+              class="px-2 text-justify"
+              :class="$vuetify.breakpoint.xs ? 'mt-5' : 'mt-2'"
+            >
+              <span class="stories"> {{ aboutData.postText }}</span>
+              <!-- <span class="stories"> {{ items.content }}</span> -->
             </v-flex>
           </v-layout>
         </v-card-subtitle>
@@ -29,7 +35,17 @@
   </v-card>
 </template>
 <script>
+import { getDocs } from "@firebase/firestore";
+import { aboutCollection } from "../../../firebase";
 export default {
+  props: {
+    updated: {},
+  },
+  watch: {
+    updated() {
+      this.getAboutData(); 
+    },
+  },
   data: () => ({
     show: false,
     items: {
@@ -39,6 +55,7 @@ export default {
         "Photography is the art, application, and practice of creating durable images by recording light, either electronically by means of an image sensor, or chemically by means of a light-sensitive material such as photographic film. It is employed in many fields of science, manufacturing (e.g., photolithography), and business, as well as its more direct uses for art, film and video production, recreational purposes, hobby, and mass communication. Typically, a lens is used to focus the light reflected or emitted from objects into a real image on the light-sensitive surface inside a camera during a timed exposure. With an electronic image sensor, this produces an electrical charge at each pixel, which is electronically processed and stored in a digital image file for subsequent display or processing. The result with photographic emulsion is an invisible latent image, which is later chemically developed into a visible image, either negative or positive, depending on the purpose of the photographic material and the method of processing. A negative image on film is traditionally used to photographically create a positive image on a paper base, known as a print, either by using an enlarger or by contact printing.",
       artist: "Madhuraj",
     },
+    aboutData: {},
   }),
   methods: {
     onBeforeEnter() {
@@ -50,6 +67,28 @@ export default {
     onAfterEnter() {
       console.log("a ente");
     },
+    async getAboutData() {
+      let result = new Array();
+      let data = await getDocs(aboutCollection);
+      data.forEach((doc) => {
+        let aboutData = doc.data();
+        aboutData.id = doc.id;
+        result.push(aboutData);
+      });
+      console.log("result");
+      console.log(result);
+      if (result.length) {
+        this.aboutData = result[0];
+        this.$emit("aboutId", this.aboutData.id);
+      }
+    },
+    // methods: {
+
+    // },
+  },
+  created() {
+    console.log("created ");
+    this.getAboutData();
   },
 };
 </script>
@@ -76,12 +115,11 @@ export default {
 .fade-enter,
 .fade-leave-to {
   height: 200px;
-  width: 200px ; 
+  width: 200px;
   transform: translateX(20px);
   opacity: 0;
 }
-.about-image{
-border-radius: 50%  ;
-
+.about-image {
+  border-radius: 50%;
 }
 </style>

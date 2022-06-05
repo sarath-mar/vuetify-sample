@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Admin from '../views/Admin.vue'
+import Admin_About from '../views/adminSide/adminAbout.vue'
 
 Vue.use(VueRouter)
 
@@ -14,6 +15,11 @@ const routes = [
   {
     path: '/admin',
     name: 'Admin',
+    component: Admin_About 
+  },
+  {
+    path: '/admin-post',
+    name: 'Admin-Post',
     component: Admin
   },
   {

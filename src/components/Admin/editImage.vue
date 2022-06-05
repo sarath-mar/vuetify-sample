@@ -39,7 +39,7 @@
               </v-flex>
             </v-layout> -->
             <v-layout class="mt-5" justify-center>
-              <v-flex md8>
+              <v-flex xs8>
                 <v-text-field
                   :rules="postTextRule"
                   label="Caption"
@@ -51,7 +51,7 @@
               </v-flex>
             </v-layout>
               <v-layout justify-center>
-              <v-flex md8>
+              <v-flex xs8>
                 <v-autocomplete
                   v-model="postType"
                   :rules="[() => !!postType || 'This field is required']"
@@ -65,7 +65,7 @@
               </v-flex>
             </v-layout>
             <v-layout justify-center>
-              <v-flex md8>
+              <v-flex xs8>
                 <v-textarea
                   :rules="postTextRule"
                   label="Write any discription about this photo "

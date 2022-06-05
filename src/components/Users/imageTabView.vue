@@ -7,9 +7,9 @@
           <span class="heading">Gallery</span>
           <v-spacer> 
           </v-spacer>  
-          <router-link :to="'/all-gallery'">
-            <v-btn class="mt-10 " small >View All Photo Gallery</v-btn>
-          </router-link>
+          <!-- <router-link :to="'/all-gallery'">
+            <v-btn class="mt-10 " small >View All Photo Gallery</v-btn> 
+          </router-link> -->
         </v-layout>
       </v-card-title>
       <v-tabs
@@ -63,9 +63,9 @@
                         </v-expand-transition>
                       </v-img>
 
-                      <v-card-title class="text-h6 text-center"
+                      <v-card-title class=" text-center"
                         ><v-layout justify-center >
-                          {{ item.postCaption }}</v-layout
+                         <span class="grey--text ">{{ item.postCaption }}</span> </v-layout
                         >
                       </v-card-title>
                       <!-- <v-card-text>
@@ -86,7 +86,7 @@
                   query: { imageCategory: categoryPostType },
                 }"
               >
-                <v-btn small>See More..</v-btn>
+                <v-btn small><span class="text-capitalize ">Detailed View </span> </v-btn>
               </router-link>
             </v-layout>
             <v-layout justify-center v-else>

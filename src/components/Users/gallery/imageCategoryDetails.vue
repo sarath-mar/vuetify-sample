@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-10 ">
+  <div class="mt-10">
     <transition appear name="fade">
       <v-card
         v-if="categoryDetails.length"
@@ -8,7 +8,9 @@
         class="background mx-10"
       >
         <v-card-title
-          ><span class="heading text-lowercase mt-5">{{ type }}</span></v-card-title
+          ><span class="heading text-lowercase mt-5">{{
+            type
+          }}</span></v-card-title
         >
         <v-card-text>
           <div v-for="(story, index) in limitedStory" :key="index">
@@ -44,7 +46,7 @@
                   <div class="sub-title font-weight-bold text-center mb-3">
                     {{ story.postCaption }}
                   </div>
-                  <span class="stories"> {{ story.postText }}</span>
+                  <p class="stories text-justify">{{ story.postText }}</p>
                 </span>
               </v-flex>
             </v-layout>
@@ -55,7 +57,7 @@
                   <div class="sub-title font-weight-bold text-center mx-3 mb-3">
                     {{ story.postCaption }}
                   </div>
-                  <span class="stories mx-3"> {{ story.postText }}</span>
+                  <p class="stories mx-3 text-justify">{{ story.postText }}</p>
                 </span>
               </v-flex>
               <v-flex align-self-center x12 sm7>
@@ -89,14 +91,16 @@
                   <div class="sub-title font-weight-bold text-center my-3">
                     {{ story.postCaption }}
                   </div>
-                  <span class="stories"> {{ story.postText }}</span>
+                  <p class="stories text-justify">{{ story.postText }}</p>
                 </span>
               </v-flex>
             </v-layout>
           </div>
         </v-card-text>
         <div v-if="storyArray.length > 1" class="text-center">
-          <v-btn @click="seeMore" small>{{ btnTitle }}</v-btn>
+          <v-btn @click="seeMore" class="text-capitalize" small>{{
+            btnTitle
+          }}</v-btn>
         </div>
       </v-card>
     </transition>
@@ -112,7 +116,7 @@ export default {
       categoryDetails: [],
       type: "",
       btnMode: true,
-      btnTitle: "See More",
+      btnTitle: "See More..",
     };
   },
   async created() {
@@ -123,7 +127,7 @@ export default {
       postData.id = doc.id;
       if (postData.postType == this.type) this.categoryDetails.push(postData);
     });
-    if (this.categoryDetails.length ) {
+    if (this.categoryDetails.length) {
       this.limitedStory = this.categoryDetails.filter((x, i) => {
         if (i < 2) return x;
       });
@@ -151,7 +155,7 @@ export default {
           if (i < 2) return x;
         });
         this.btnMode = true;
-        this.btnTitle = "See Moore..";
+        this.btnTitle = "See More..";
       }
     },
   },

@@ -1,22 +1,25 @@
 <template>
   <div>
     <!-- <nav> -->
-
+    <!-- grey--text -->
+    <!-- deep-purple--text -->
     <v-card elevation="24" class="mb-5">
       <v-app-bar
         fixed
         rounded
         color="white"
-        class="deep-purple--text"
+        class="grey--text"
         dark
         scroll-target="#scrolling-techniques-7"
         height="90px"
       >
-        <v-layout wrap class="mt-5">
+        <v-layout wrap class="mt-4">
           <v-flex xs12 sm6>
             <v-toolbar-title>
-              <span class="font-weight-light h1 black--text">Madhuraj </span>
-              <span>Snaps</span>
+              <!-- <span class="font-weight-light h1 black--text">Madhuraj </span>
+              <span>Snaps</span> -->
+              <span class="font-weight-light text-h5">Madhuraj</span>
+              <span> Snaps</span>
             </v-toolbar-title>
           </v-flex>
           <v-spacer></v-spacer>
@@ -25,11 +28,16 @@
               <div v-for="item in items" :key="item.title">
                 <span v-if="item.title == 'Gallery'">
                   <div class="text-center">
-                    <v-menu open-on-hover offset-y > 
+                    <v-menu open-on-hover offset-y>
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn
                           icon
-                          class="mx-5 deep-purple--text"
+                          class="mx-5 grey--text font-weight-light"
+                          :class="{
+                            'font-weight-bold': galleryPath.includes(
+                              $route.path
+                            ),
+                          }"
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -37,7 +45,7 @@
                         </v-btn>
                       </template>
 
-                      <v-list > 
+                      <v-list>
                         <v-list-item
                           v-for="(item, index) in item.data"
                           :key="index"
@@ -47,9 +55,9 @@
                             :to="item.route"
                           >
                             <v-list-item-title
-                              class="mx-5 deep-purple--text"
+                              class="mx-5 grey--text font-weight-light"
                               :class="{
-                                'green--text': $route.path === item.route,
+                                'font-weight-bold': $route.path === item.route,
                               }"
                               >{{ item.title }}</v-list-item-title
                             >
@@ -59,12 +67,13 @@
                     </v-menu>
                   </div>
                 </span>
+
                 <span v-else>
                   <router-link style="text-decoration: none" :to="item.route">
                     <v-btn
-                      class="mx-5 deep-purple--text"
+                      class="mx-5 grey--text font-weight-light"
                       :class="{
-                        'green--text': $route.path === item.route,
+                        'font-weight-bold': $route.path == item.route,
                       }"
                       icon
                     >
@@ -97,6 +106,12 @@ export default {
     return {
       scrollValue: 0,
       routeName: "",
+      galleryPath: [
+        "/gallery",
+        "/video-gallery",
+        "/all-gallery",
+        "/published-works",
+      ],
       items: [
         { title: "Home", icon: "mdi-home", route: "/" },
         { title: "About", icon: "mdi-account", route: "/about" },
@@ -114,12 +129,12 @@ export default {
             {
               title: "Image Gallery",
               icon: "mdi-image",
-              route: "/all-gallery", 
+              route: "/all-gallery",
             },
             {
               title: "Published Works",
               icon: "mdi-image",
-              route: "/published-works",  
+              route: "/published-works",
             },
           ],
         },

@@ -32,7 +32,7 @@ export default {
       let routeName = this.$route.name;
       let routeOptions = this.$router.options.routes;
       console.log(routeOptions) 
-      let routeNames = ["Admin","Admin-Video","Admin-Document"];  
+      let routeNames = ["Admin","Admin-Video","Admin-Document","Admin-Post"];  
       if (routeNames.includes(routeName)) {
         return true;
       }
@@ -80,12 +80,15 @@ export default {
 }
 .heading {
   font: 5em "Allison";
+  color: grey; 
 }
 .heading-one {
   font: 3em "Allison";
+   color: grey;  
 }
 .stories {
-   font-size: 1.4em;   
+   font-size: 1.4em;  
+   color: grey ; 
    /* font: 1.4em "overlock";     */
 }
 .sub-title {

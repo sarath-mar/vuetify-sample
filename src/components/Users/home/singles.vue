@@ -31,13 +31,13 @@
     </v-slide-group>
 
     <v-expand-transition >
-      <v-sheet v-if="model != null" height="200" tile class="background">
+      <v-sheet v-if="model != null" min-height="60" tile class="background">  
         <!-- <v-row class="fill-height" align="center" justify="center"> -->
-        <v-layout justify-center class="mt-10 mx-5">
-          <h3 class="text-h6">{{ displayContent(model).postCaption }}</h3>
+        <v-layout justify-center class="mt-6 mx-5">
+          <h3 class="text-h6 font-weight-light">{{ displayContent(model).postCaption }}</h3>
         </v-layout>
-        <v-layout justify-center class="mt-4 mx-5 " >
-          <p>{{ displayContent(model).postText }}</p> 
+        <v-layout justify-center class="mt-2 mx-5 " > 
+          <p class="font-weight-light grey--text  text-justify">{{ displayContent(model).postText }}</p>   
         </v-layout>
 
         <!-- </v-row> -->

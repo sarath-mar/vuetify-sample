@@ -22,8 +22,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app)
 const postCollection = collection(db, "posts")
 const videoCollection = collection(db, "videos")
-const documentCollection = collection(db, "documents") 
-export { addDoc, getDocs, postCollection, videoCollection, documentCollection }
+const documentCollection = collection(db, "documents")
+const aboutCollection = collection(db, "about")
+export { addDoc, getDocs, postCollection, videoCollection, documentCollection, aboutCollection }
 // module.exports = {
 //     postCollection
 // }

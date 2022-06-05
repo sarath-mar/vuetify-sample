@@ -2,8 +2,12 @@
   <div>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn small color="ashColor" class="black--text text-capitalize " v-on="on" 
-          >Add Document</v-btn
+        <v-btn
+          small
+          color="ashColor"
+          class="black--text text-capitalize"
+          v-on="on"
+          >Update About</v-btn
         >
       </template>
       <v-card class="pt-3 pb-6" color="pop_bg">
@@ -11,7 +15,7 @@
           <v-icon @click="close" color="black" class="mr-5">mdi-close </v-icon>
         </v-layout>
         <v-card-text class="subtitle-1 text-center pa-0 ma-0"
-          ><span> Add Document</span>
+          ><span> Update About</span>
         </v-card-text>
         <v-form ref="addPostForm" @submit="addPost()" v-model="valid">
           <div>
@@ -19,17 +23,16 @@
               <v-flex xs8 class="mr-2">
                 <v-file-input
                   :rules="rules"
-                  show-size
-                  counter
-                  accept="application/pdf"
-                  placeholder="Drop an pdf"
-                  label="Document"
-                  v-model="postDocument"
+                  accept="image/png, image/jpeg, image/bmp"
+                  placeholder="Pick an avatar"
+                  prepend-icon="mdi-camera"
+                  label="Image"
+                  v-model="postImage"
                 ></v-file-input>
               </v-flex>
             </v-layout>
-            <v-layout justify-center>
-              <v-flex xs8>
+            <!-- <v-layout justify-center>
+              <v-flex xs8 >
                 <v-text-field
                   :rules="postTextRule"
                   label="Caption"
@@ -39,9 +42,9 @@
                   v-model="postCaption"
                 ></v-text-field>
               </v-flex>
-            </v-layout>
+            </v-layout> -->
             <!-- <v-layout justify-center>
-              <v-flex xs8>
+              <v-flex xs8 >
                 <v-autocomplete
                   v-model="postType"
                   :rules="[() => !!postType || 'This field is required']"
@@ -55,7 +58,7 @@
               </v-flex>
             </v-layout> -->
             <v-layout justify-center>
-              <v-flex xs8> 
+              <v-flex xs8>
                 <v-textarea
                   :rules="postTextRule"
                   label="Write any discription about this document"
@@ -95,10 +98,21 @@
 </template>
 <script>
 // uploadBytes
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { updateDoc, doc } from "@firebase/firestore";
-import { documentCollection, addDoc } from "../../../firebase";
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import { updateDoc, doc, deleteDoc } from "@firebase/firestore";
+import { aboutCollection, addDoc } from "../../../firebase";
 export default {
+  props: {
+    id: {
+      required: true,
+    },
+  },
   data() {
     return {
       snackbar: false,
@@ -113,40 +127,67 @@ export default {
       rules: [
         (value) =>
           !!value ||
-          value.size < 5000000 ||
-          "Document size should be less than 5 MB!",
+          value.size < 50000000 ||
+          "Document size should be less than 50 MB!",
       ],
       postText: "",
-      postDocument: "",
+      postImage: "",
       postType: "",
       postCaption: "",
       postTextRule: [(value) => !!value || "Text field is not be empty"],
     };
   },
   methods: {
+    deleteMethod(id) {
+      const docRef = doc(aboutCollection, id);
+      deleteDoc(docRef)
+        .then(() => {
+          console.log("deleted post");
+          const storage = getStorage();
+          const desertRef = ref(storage, `about/${id}.jpg`);
+          deleteObject(desertRef)
+            .then(() => {
+              (this.snackbar = true),
+                (this.snackbarColor = "green"),
+                (this.text = "Deleted Sucessfully"),
+                console.log("deleted image");
+              this.dialog = false;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
     close() {
       this.error = null;
       this.dialog = false;
     },
     async addPost() {
       this.button_loading = true;
-      let data = await addDoc(documentCollection, {
-        postCaption: this.postCaption,
+      if (this.id) {
+        this.deleteMethod(this.id);
+      }
+    //   await aboutCollection.delete(); 
+      let data = await addDoc(aboutCollection, {
+        // postCaption: this.postCaption,
         postText: this.postText,
       });
-      if (data && this.postDocument) {
+      if (data && this.postImage) {
         let postUrl = "";
-        var storageRef = ref(getStorage(), `documents/${data.id}.pdf`);
+        var storageRef = ref(getStorage(), `about/${data.id}.jpg`);
         // const metadata = {
         //   contentType: "application/pdf",
-        // }; 
-        uploadBytes(storageRef, this.postDocument)
+        // };
+        uploadBytes(storageRef, this.postImage)
           .then(async (snapshot) => {
-            console.log("Uploaded a pdf document or file!");
+            console.log("Uploaded a jpg document or file!");
             console.log(snapshot);
             postUrl = await getDownloadURL(storageRef);
             if (postUrl) {
-              let docRef = doc(documentCollection, data.id);
+              let docRef = doc(aboutCollection, data.id);
               await updateDoc(docRef, {
                 postUrl,
               })
