@@ -2,10 +2,10 @@
   <div>
     <v-layout justify-center>
       <!--  -->
-      <v-card width="70%" color="#d5cfb8" class="topCard mt-10">  
+      <v-card width="70%" color="#d5cfb8" class="topCard mt-10">
         <!-- <v-card-title> -->
         <v-layout justify-center class="mt-5">
-          <span class="">GET IN TOUCH</span> 
+          <span class="">GET IN TOUCH</span>
         </v-layout>
         <v-layout justify-center>
           <h2 class="">Contact</h2>
@@ -51,14 +51,19 @@
         <!-- </v-card-title> -->
       </v-card>
     </v-layout>
-    <v-footer dark padless >
+    <v-footer dark padless>
       <v-card width="100%" flat tile class="white--text text-center footer">
         <v-card-text class="footerCard">
-          <v-btn v-for="media in socialMedia" :key="media.icon" class="mx-4 white--text" icon
-            ><a :href="media.link"> 
+          <v-btn
+            v-for="media in socialMedia"
+            :key="media.icon"
+            class="mx-4 white--text"
+            style="text-decoration: none"
+            icon
+            ><a :href="media.link">
               <v-icon size="24px">
                 {{ media.icon }}
-              </v-icon> 
+              </v-icon>
             </a>
           </v-btn>
         </v-card-text>
@@ -80,10 +85,13 @@
 <script>
 export default {
   data: () => ({
-    socialMedia:[
-      {icon:"mdi-facebook",link:"https://www.facebook.com/mahurajsnaps"},
-      {icon:"mdi-instagram",link:"https://www.instagram.com/madhurajphotos/"},
-      {icon:"mdi-gmail",link:"mailto: madhurajmbi@gmail.com"},   
+    socialMedia: [
+      { icon: "mdi-facebook", link: "https://www.facebook.com/mahurajsnaps" },
+      {
+        icon: "mdi-instagram",
+        link: "https://www.instagram.com/madhurajphotos/",
+      },
+      { icon: "mdi-gmail", link: "mailto: madhurajmbi@gmail.com" },
       // {icon:"mdi-twitter",link:""},
       // {icon:"mdi-linkedin",link:"https://www.instagram.com/madhurajphotos/"},
     ],

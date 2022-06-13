@@ -1,17 +1,19 @@
 <template>
   <v-container fluid>
-      <v-layout justify-end class="mt-5" wrap>
-        <span :class="{'mt-10': $route.name=='Video-Gallery'}"   class="heading">Videos</span>  
-        <v-spacer> </v-spacer> 
-        <add-video-url v-if="$route.name!=='Video-Gallery'"/>    
-      </v-layout>
-      <v-layout wrap>
-        <span v-for="(post, index) in videoData" :key="index">
-          <v-flex>
-            <video-card :post="post" @updatePost="updatePost" />
-          </v-flex>
-        </span>
-      </v-layout>
+    <v-layout justify-end class="mt-5" wrap>
+      <span :class="{ 'mt-10': $route.name == 'Video-Gallery' }" class="heading"
+        >Videos</span
+      >
+      <v-spacer> </v-spacer>
+      <add-video-url v-if="$route.name !== 'Video-Gallery'" />
+    </v-layout>
+    <v-layout wrap>
+      <span v-for="(post, index) in videoData" :key="index">
+        <v-flex>
+          <video-card :post="post" @updatePost="updatePost" />
+        </v-flex>
+      </span>
+    </v-layout>
   </v-container>
 </template>
 
@@ -44,6 +46,10 @@ export default {
   },
   created() {
     this.getvideoData();
+    let isAdmin = this.isAdmin();
+    if (!isAdmin) {
+      this.$router.push({ path: "/login" });
+    }
   },
 };
 </script>

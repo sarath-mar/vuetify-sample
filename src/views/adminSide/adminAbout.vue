@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-layout justify-end>
-      <add-about v-if="id" :id="id" @updatePost="updatePost"/> 
+      <add-about v-if="id" :id="id" @updatePost="updatePost" />
     </v-layout>
     <!-- {{id}}  -->
     <v-layout>
@@ -19,15 +19,21 @@ export default {
   data() {
     return {
       id: "",
-      updated:0
+      updated: 0,
     };
   },
   methods: {
     aboutId(id) {
       this.id = id;
     },
-    updatePost(){
-      this.updated++
+    updatePost() {
+      this.updated++;
+    },
+  },
+  created() {
+    let isAdmin = this.isAdmin();
+    if (!isAdmin) {
+      this.$router.push({ path: "/login" });
     }
   },
 };

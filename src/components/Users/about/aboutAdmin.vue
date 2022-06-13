@@ -45,7 +45,8 @@ export default {
     updated() {
       this.getAboutData(); 
     },
-  },
+  },  
+  // google-site-verification=mJDqc_rnghJhfo34t_dLxot-tG1iuqRo28DZdO8gv98
   data: () => ({
     show: false,
     items: {

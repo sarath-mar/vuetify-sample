@@ -102,7 +102,6 @@ export default {
     let isAdmin = this.isAdmin();
     if (!isAdmin) {
       this.$router.push({ path: "/login" });
-      // this.$router.push({ path: "/error-404" });
     }
     this.getPost();
   },
