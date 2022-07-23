@@ -1,5 +1,5 @@
 {
-  "name": "sample",
+  "name": "madhuraj_snaps",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "firebase": "^9.8.1",
+    "gsap": "^3.10.4",
+    "mdi-icons": "^1.0.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuetify": "^2.4.0",
