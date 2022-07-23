@@ -1,0 +1,46 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: ["madhurajsnaps_final_firebase"]
+  # pull_request:
+  #  branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build
+        uses: actions/checkout@madhurajsnaps_final_firebase
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build dependencies
+        run: npm run build
+
+      - name: Archive production artifact
+        uses: actions/upload-artifact@madhurajsnaps_final_firebase
+
+        with:
+          name: dist
+          path: dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@madhurajsnaps_final_firebase
+      - name: Download artifact
+        uses: actions/download@madhurajsnaps_final_firebase
+        with: name:dist
+          path:dist
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-acion@madhurajsnaps_final_firebase
+        with: args:deploy --only hosting
+        env: FIREBASE_TOKEN:{{$secrets.FIREBASE_TOKEN}}
