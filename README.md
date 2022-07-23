@@ -1,4 +1,4 @@
-# sample
+# madhuraj_snaps 
 
 ## Project setup
 ```
