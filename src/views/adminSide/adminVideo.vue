@@ -46,10 +46,10 @@ export default {
   },
   created() {
     this.getvideoData();
-    let isAdmin = this.isAdmin();
-    if (!isAdmin) {
-      this.$router.push({ path: "/login" });
-    }
+    // let isAdmin = this.isAdmin();
+    // if (!isAdmin) {
+    //   this.$router.push({ path: "/login" });
+    // }
   },
 };
 </script>

@@ -49,10 +49,10 @@ export default {
   },
   created() {
     this.getDocumentData();
-    let isAdmin = this.isAdmin();
-    if (!isAdmin) {
-      this.$router.push({ path: "/login" });
-    }
+    // let isAdmin = this.isAdmin();
+    // if (!isAdmin) {
+    //   this.$router.push({ path: "/login" });
+    // }
   },
 };
 </script>
