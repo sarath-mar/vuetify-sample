@@ -19,7 +19,7 @@
               <!-- <span class="font-weight-light h1 black--text">Madhuraj </span>
               <span>Snaps</span> -->
               <span class="font-weight-light text-h5">Madhuraj</span>
-              <span> Snaps..</span>
+              <span> Snaps</span>
             </v-toolbar-title>
           </v-flex>
           <v-spacer></v-spacer>
