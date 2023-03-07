@@ -98,15 +98,12 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.user-view {
-  /* display: flex; */
-}
+
 .user-view-router {
   width: 80vw;
   margin-left: 20vw;
 }
-.user-view-app {
-}
+
 /* .font {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   background: #f5f4f0 !important;

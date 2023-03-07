@@ -91,15 +91,11 @@ export default {
   font-size: 14px;
   letter-spacing: 1.5px;
 }
-.about-main {
-  /* background-color: red; */
-}
+
 .admin-content{
 flex: 1;
 }
-.admin-img {
-  /* width: 30vw;  */
-}
+
 .about-image {
   height: 100%;
   background-size: cover;
