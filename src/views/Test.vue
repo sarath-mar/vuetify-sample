@@ -7,7 +7,7 @@
     <v-container
       v-scroll.self="onScrollTop"
       id="scroll-target"
-      style="height: 360px"
+      style="height: 360px" 
       class="overflow-y-auto"
     >
       <v-row v-for="(item, index) in items" :key="index" style="height: 60px">
