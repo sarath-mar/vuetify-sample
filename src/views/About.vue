@@ -4,7 +4,7 @@
     <!-- -->
     <!-- <v-menu transition="slide-x-transition">  -->
     <!-- <transition appear name="fade"> -->
-    <about-admin /> 
+    <about-admin />
     <!-- </transition>  -->
     <!-- <Test /> -->
     <!-- </v-menu> -->
