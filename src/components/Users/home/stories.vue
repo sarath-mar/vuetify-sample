@@ -5,9 +5,10 @@
         v-if="storyArray.length"
         flat
         elevation="0 "
-        class="background mx-10"
+        class=""
       >
         <v-card-title><span class="heading">Stories</span></v-card-title>
+        <div></div>
         <v-card-text>
           <div v-for="(story, index) in limitedStory" :key="index">
             <v-layout v-if="isOdd(index + 1)" class="mb-6" wrap justify-center>
@@ -19,7 +20,7 @@
                     :src="story.postUrl"
                     :lazy-src="story.postUrl"
                     aspect-ratio=".7 "
-                    class="grey lighten-2 rounded-xl text-center "
+                    class="grey lighten-2 rounded-sm text-center "
                     :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-10'"
                   >
                     <template v-slot:placeholder>
@@ -64,7 +65,7 @@
                     :src="story.postUrl"
                     :lazy-src="story.postUrl"
                     aspect-ratio=".7"
-                    class="grey lighten-2 rounded-xl"
+                    class="grey lighten-2 rounded-sm"
                     :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-10'"
                   >
                     <template v-slot:placeholder>

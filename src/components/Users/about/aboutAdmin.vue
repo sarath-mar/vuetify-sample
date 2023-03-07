@@ -1,38 +1,22 @@
 <template>
-  <v-card class="mx-auto mt-10" outlined color="background">
-    <!-- <v-container> -->
-    <v-row dense>
-      <div>
-        <v-card-title> <span class="heading-one">Madhuraj</span></v-card-title>
-
-        <v-card-subtitle class="mt-2">
-          <v-layout justify-center align-center wrap>
-            <v-flex xs12 sm10 md4 class="px-2">
-              <!-- <v-avatar  size="500"> -->
-              <v-img
-                aspect-ratio="1"
-                class="about-image"
-                :src="aboutData.postUrl"
-              ></v-img>
-              <!-- src="@/assets/madhuraj.jpg" -->
-              <!-- src="https://wallup.net/wp-content/uploads/2016/03/10/316011-photography-nature-people.jpg" -->
-              <!-- </v-avatar> -->
-            </v-flex>
-            <v-flex
-              xs12
-              sm10
-              md8
-              class="px-2 text-justify"
-              :class="$vuetify.breakpoint.xs ? 'mt-5' : 'mt-2'"
-            >
-              <span class="stories"> {{ aboutData.postText }}</span>
-              <!-- <span class="stories"> {{ items.content }}</span> -->
-            </v-flex>
-          </v-layout>
-        </v-card-subtitle>
+  <div class="about-main">
+    <!-- <div class="name">Madhuraj</div> -->
+    <div class="about-details mt-5">
+      <div class="admin-img">
+        <v-img
+          aspect-ratio="1"
+          class="about-image"
+          :src="aboutData.postUrl"
+        ></v-img>
       </div>
-    </v-row>
-  </v-card>
+      <div v-if="aboutData.postText" class="admin-content">
+        <h3 class="text-center ">Biography</h3>
+        <p class="content"> {{ aboutData.postText }} </p>
+        <h4  class="name text-right mt-10">Madhuraj</h4>
+      </div>
+    </div>
+
+  </div>
 </template>
 <script>
 import { getDocs } from "@firebase/firestore";
@@ -43,9 +27,9 @@ export default {
   },
   watch: {
     updated() {
-      this.getAboutData(); 
+      this.getAboutData();
     },
-  },  
+  },
   // google-site-verification=mJDqc_rnghJhfo34t_dLxot-tG1iuqRo28DZdO8gv98
   data: () => ({
     show: false,
@@ -59,15 +43,15 @@ export default {
     aboutData: {},
   }),
   methods: {
-    onBeforeEnter() {
-      console.log("b ente");
-    },
-    onEnter() {
-      console.log("ente");
-    },
-    onAfterEnter() {
-      console.log("a ente");
-    },
+    // onBeforeEnter() {
+    //   console.log("b ente");
+    // },
+    // onEnter() {
+    //   console.log("ente");
+    // },
+    // onAfterEnter() {
+    //   console.log("a ente");
+    // },
     async getAboutData() {
       let result = new Array();
       let data = await getDocs(aboutCollection);
@@ -95,32 +79,47 @@ export default {
 </script>
 
 <style scoped>
-.font {
-  font-size: 120px;
+.name {
+  font-size: 20px;
+  opacity: .7;
 }
-/* .fade-enter-active, .fade-leave-active{ 
-  transition: opacity 2.5s ease-out; 
+.content{
+  font-weight: 400;
+  opacity: .6;
+  /* line-height: 20px; */
+  margin-top: 20px;
+  font-size: 14px;
+  letter-spacing: 1.5px;
 }
-.fade-enter , .fade-leave-to{  
-  opacity:0 ;  
-} */
-/* .fade-enter-active {
-  transition: all 0.3s ease-out;
-} */
-
-.fade-leave-active,
-.fade-enter-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+.about-main {
+  /* background-color: red; */
 }
-
-.fade-enter,
-.fade-leave-to {
-  height: 200px;
-  width: 200px;
-  transform: translateX(20px);
-  opacity: 0;
+.admin-content{
+flex: 1;
+}
+.admin-img {
+  /* width: 30vw;  */
 }
 .about-image {
-  border-radius: 50%;
+  height: 100%;
+  background-size: cover;
+  border-radius: 5px;
+  width: 30vw; 
+  min-height: 70vh;
+}
+.about-details {
+  /* background-color: red; */
+  display: flex;
+  align-items: flex-end;
+   /* flex-wrap: wrap; */
+  gap: 20px;
+}
+@media screen and (max-width: 960px) {
+  .about-details {
+  flex-direction: column;
+}
+.about-image{
+  width: 100vw;
+}
 }
 </style>

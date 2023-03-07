@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav >
     <v-toolbar>
       <v-toolbar-title class="text-uppercase grey--text">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>

@@ -1,11 +1,11 @@
 <template>
-  <div class="about pa-10">
+  <div class="main-about-page ">
     <!-- <transition name="about"> -->
     <!-- -->
     <!-- <v-menu transition="slide-x-transition">  -->
-    <transition appear name="fade">
-      <about-admin class="mt-5" />
-    </transition> 
+    <!-- <transition appear name="fade"> -->
+    <about-admin />
+    <!-- </transition>  -->
     <!-- <Test /> -->
     <!-- </v-menu> -->
     <!-- </Transition> -->
@@ -17,8 +17,9 @@
 import aboutAdmin from "../components/Users/about/aboutAdmin.vue";
 // import Test from "../components/Users/components/test.vue";
 export default {
-  components: { aboutAdmin, 
-  // Test 
+  components: {
+    aboutAdmin,
+    // Test
   },
   methods: {},
   beforeCreate() {
@@ -30,4 +31,14 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+.main-about-page {
+  padding: 30px 15px !important;
+}
+@media screen and (max-width: 960px) {
+  .main-about-page {
+    padding: 15px !important;
+    padding-top: 65px !important; 
+  }
+}
+</style>

@@ -1,15 +1,11 @@
 <template>
-  <div class="pt-10"> 
-    <span class="bannerHeading"> <h1 class="text-center grey--text ">
-      Photography is the Beauty of Life Captured 
-      </h1></span>
+  <div class="banner">
     <v-carousel
-      elevation="12"
       cycle
+      class="mt-1 rounded-sm"
+      height="80vh"
       hide-delimiter-background
       show-arrows-on-hover
-      height="80vh"
-      class="rounded-xl mt-5"
     >
       <v-carousel-item
         v-for="(item, i) in imageArray"
@@ -29,6 +25,20 @@ export default {
   data() {
     return {
       imageArray: [],
+      items: [
+        {
+          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
+        },
+        {
+          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
+        },
+        {
+          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
+        },
+        {
+          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
+        },
+      ],
     };
   },
   watch: {
@@ -49,22 +59,13 @@ export default {
 </script>
 
 <style scoped>
-.bannerHeading {
-  /* height: 100vh ; */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-   font: 2em "Allison";  
-   color: white ;
+.banner {
+  padding: 60px 300px 5px 5px;
 }
-.mainHead {
-  position: fixed;
-  margin-top: 38vh;
-  font: 3em "julee";
-  color: wheat;
-  margin-left: 60px;
-  margin-right: 60px;
+@media screen and (max-width: 960px) {
+  .banner {
+  padding: 10px;
+  padding-top: 65px;
+}
 }
 </style>

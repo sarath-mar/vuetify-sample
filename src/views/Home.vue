@@ -1,13 +1,11 @@
 <template>
   <div>
-    <!-- <app-bar-on-top>
-    </app-bar-on-top> -->
-    <v-card flat class="background pa-10">
+    <!-- <v-card flat class="background"> -->
       <Banner />
-    </v-card>
-    <singles/>
-    <Stories />
-    <Parallex  class="mb-10" />
+    <!-- </v-card> -->
+    <!-- <singles/>
+    <Stories /> -->
+    <!-- <Parallex  class="mb-10" /> -->
 
     <!-- <v-card class="ma-10 pa-10 topFooter">  -->
     <!-- <v-layout>
@@ -28,15 +26,15 @@
 <script>
 // import AppBarOnTop from '../components/AppBarOnTop.vue';
 import Banner from "../components/Users/banner.vue";
-import Stories from "../components/Users/home/stories.vue";
-import Parallex from "../components/Users/home/parallex.vue";
-import Singles from '../components/Users/home/singles.vue';
+// import Stories from "../components/Users/home/stories.vue";
+// import Parallex from "../components/Users/home/parallex.vue";
+// import Singles from '../components/Users/home/singles.vue';
 export default {
   components: {
     Banner,
-    Stories,
-    Parallex,
-    Singles,
+    // Stories,
+    // Parallex,
+    // Singles,
     // AppBarOnTop
   },
   data() {
@@ -49,7 +47,7 @@ export default {
 </script>
 
 <style>
-.topFooter {
+/* .topFooter {
   margin-bottom: -240px;
-}
+} */
 </style>

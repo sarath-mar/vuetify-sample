@@ -15,8 +15,8 @@ Vue.mixin({
         { text: "Singles", value: "SINGLE" },
         { text: "Travel", value: "TRAVEL" },
         { text: "Projects", value: "PROJECT" },
-        { text: "Fashion Photography", value: "FASHION" },
-        { text: "Portrait", value: "PORTRAIT" },
+        { text: "Work", value: "WORK" },
+        // { text: "Portrait", value: "PORTRAIT" },
 
       ],
       postData: [],
@@ -38,6 +38,7 @@ Vue.mixin({
         result.push(postData);
       });
       this.postData = result; 
+      // console.log("first data",this.postData);
       let urlArray = new Array();
       let storyArray = new Array();
       let singlesArray = new Array();
