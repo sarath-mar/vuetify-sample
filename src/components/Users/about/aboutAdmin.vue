@@ -89,7 +89,7 @@ export default {
   /* line-height: 20px; */
   margin-top: 20px;
   font-size: 14px;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.5px; 
 }
 
 .admin-content{
