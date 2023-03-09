@@ -23,6 +23,13 @@
 
       <!--  -->
     </div>
+    <div v-if="!(showAppBar || showNavBar )">
+      <router-view v-slot="{ Component }">
+        <transition appear name="router" mode="out-in">
+          <component :is="Component"></component>
+        </transition>
+      </router-view>
+    </div>
 
     <!-- </v-main> -->
   </v-app>
@@ -46,7 +53,7 @@ export default {
       let routeName = this.$route.name;
       let routeOptions = this.$router.options.routes;
       console.log(routeOptions);
-      let routeNames = ["Admin", "Admin-Video", "Admin-Document", "Admin-Post"];
+      let routeNames = ["Admin", "Admin-Video", "Admin-Work", "Admin-Post"];
       if (routeNames.includes(routeName)) {
         return true;
       }
@@ -69,7 +76,9 @@ export default {
         "Category-Details",
         "Video-Gallery",
         "Published-Works",
-        "Story"
+        "Story",
+        "Singles",
+        "Project"
       ];
       if (routeNames.includes(routeName)) {
         return true;
@@ -86,6 +95,7 @@ export default {
     let noBar = ["Login", "Signin"];
     if (noBar.includes(routeName)) {
       // this.showAppBar=false
+      console.log("loging page")
       this.showAppBar = false;
     }
   },

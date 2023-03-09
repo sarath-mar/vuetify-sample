@@ -33,12 +33,15 @@ export default {
 </script>
 <style>
 .main-about-page {
-  padding: 30px 15px !important;
+  padding: 30px !important;
+    /* padding-right: 30px !important; */
+
 }
 @media screen and (max-width: 960px) {
   .main-about-page {
     padding: 15px !important;
     padding-top: 65px !important; 
+    /* padding-right: 300px !important; */
   }
 }
 </style>

@@ -3,14 +3,20 @@
     <v-carousel
       cycle
       class="mt-1 rounded-sm"
-      height="80vh"
+      :height="
+        $vuetify.breakpoint.mdAndUp
+          ? '80vh'
+          : $vuetify.breakpoint.xs
+          ? 300
+          : 500
+      "
       hide-delimiter-background
       show-arrows-on-hover
     >
       <v-carousel-item
         v-for="(item, i) in imageArray"
         :key="i"
-        :src="item.src"
+        :src="item.postUrl"
         reverse-transition="fade-transition"
         transition="fade-transition"
         elevation="12"
@@ -21,6 +27,8 @@
 </template>
 
 <script>
+import { getDocs } from "firebase/firestore";
+import { bannerCollection } from "../../firebase";
 export default {
   data() {
     return {
@@ -50,9 +58,19 @@ export default {
       deep: true,
     },
   },
+  created() {
+    this.getBannerData();
+  },
   methods: {
-    getImage() {
-      this.imageArray = this.urlBannerArray;
+    async getBannerData() {
+      let result = new Array();
+      let data = await getDocs(bannerCollection);
+      data.forEach((doc) => {
+        let documentData = doc.data();
+        documentData.id = doc.id;
+        result.push(documentData);
+      });
+      this.imageArray = result;
     },
   },
 };
@@ -60,12 +78,19 @@ export default {
 
 <style scoped>
 .banner {
-  padding: 60px 300px 5px 5px;
+  padding: 80px 300px 5px 5px;
+  /* padding: 60px 300px 5px 5px; */
 }
 @media screen and (max-width: 960px) {
   .banner {
-  padding: 10px;
-  padding-top: 65px;
+    padding: 10px;
+    padding-top: 12vh;
+  }
 }
+@media screen and (max-width: 600px) {
+  .banner {
+    padding: 10px;
+    padding-top: 25vh;
+  }
 }
 </style>

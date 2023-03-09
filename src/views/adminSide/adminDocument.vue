@@ -4,18 +4,58 @@
       <span
         :class="{ 'mt-10': $route.name == 'Published-Works' }"
         class="heading"
-        >Documents</span
+        >Categories</span
       >
+
       <v-spacer> </v-spacer>
-      <span class="mt-3">
-        <add-document
-          @updatePost="updatePost"
-          v-if="$route.name !== 'Published-Works'"
-        />
-      </span>
     </v-layout>
+    <div>
+      <v-tabs
+        :color="tab == 0 ? 'yellow' : tab == 1 ? 'green' : 'red'"
+        v-model="tab"
+        background-color="transparent"
+        grow
+      >
+        <v-tab v-for="item in categoryType" :key="item.value">
+          {{ item.text }}
+        </v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="tab">
+        <v-tab-item class="" v-for="item in categoryType" :key="item.value">
+          <!-- <v-layout wrap> -->
+            <div v-if="item.value === 0">
+              <div class="my-3 ml-auto">
+                <add-document @updatePost="updatePost" />
+              </div>
+              <div class="pa-2">
+                <document-table
+                  class="mt-5"
+                  :documentData="documentData"
+                  @updatePost="updatePost"
+                />
+              </div>
+            </div>
+            <div v-if="item.value === 1">
+              <div class="my-3 ml-auto">
+                <!-- <add-project-category
+                  @updateProjectCategory="updateProjectCategory"
+                /> -->
+                <add-project-category  @updateProjectCategory="updateProjectCategory"/>
+              </div>
+              <div class="pa-2">
+                <project-category-table
+                  @updateProjectCategory="updateProjectCategory"
+                  :documentData="projectDocumentData"
+                />
+              </div>
+            </div>
+          <!-- </v-layout> -->
+        </v-tab-item>
+      </v-tabs-items>
+    </div>
     <!-- <v-layout> -->
-    <document-table :documentData="documentData" @updatePost="updatePost" />
+
     <!-- </v-layout> -->
   </v-container>
 </template>
@@ -24,18 +64,26 @@
 import { getDocs } from "@firebase/firestore";
 import addDocument from "./components/addDocument.vue";
 import DocumentTable from "./components/documentTable.vue";
-import { documentCollection } from "../../firebase";
+import { projectCategory, storyCategory } from "../../firebase";
+import ProjectCategoryTable from "./components/projectCategoryTable.vue";
+import AddProjectCategory from './components/addProjectCategory.vue';
 export default {
-  components: { addDocument, DocumentTable },
+  components: { addDocument, DocumentTable, ProjectCategoryTable, AddProjectCategory },
   data() {
     return {
       documentData: [],
+      projectDocumentData: [],
+      tab: "",
+      categoryType: [
+        { text: "Story Category", value: 0 },
+        { text: "Project Category", value: 1 },
+      ],
     };
   },
   methods: {
     async getDocumentData() {
       let result = new Array();
-      let data = await getDocs(documentCollection);
+      let data = await getDocs(storyCategory);
       data.forEach((doc) => {
         let documentData = doc.data();
         documentData.id = doc.id;
@@ -43,16 +91,26 @@ export default {
       });
       this.documentData = result;
     },
+    async getProjectDocumentData() {
+      let result = new Array();
+      let data = await getDocs(projectCategory);
+      data.forEach((doc) => {
+        let documentData = doc.data();
+        documentData.id = doc.id;
+        result.push(documentData);
+      });
+      this.projectDocumentData = result;
+    },
     updatePost() {
       this.getDocumentData();
+    },
+    updateProjectCategory() {
+      this.getProjectDocumentData();
     },
   },
   created() {
     this.getDocumentData();
-    // let isAdmin = this.isAdmin();
-    // if (!isAdmin) {
-    //   this.$router.push({ path: "/login" });
-    // }
+    this.getProjectDocumentData();
   },
 };
 </script>

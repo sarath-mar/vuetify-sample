@@ -1,20 +1,24 @@
 <template>
   <div class="main-story-page mr-5 ">
-    <h3>Stories</h3>
-    <stories/>
+    <!-- <stories/> -->
+    <h3>Projects</h3>
+    <Projects />
   </div>
 </template>
 <script>
-import Stories from '../components/Users/home/stories.vue';
+//   import Stories from '../components/Users/home/stories.vue';
+
+import Projects from "../components/Users/home/projects.vue";
+
 // import Test from "../components/Users/components/test.vue";
 export default {
-  components: {Stories},
+  components: { Projects },
   methods: {},
 };
 </script>
 <style>
 .main-story-page {
-  padding: 30px 15px !important; 
+  padding: 30px 15px !important;
 }
 @media screen and (max-width: 960px) {
   .main-story-page {

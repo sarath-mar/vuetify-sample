@@ -23,8 +23,15 @@ const db = getFirestore(app)
 const postCollection = collection(db, "posts")
 const videoCollection = collection(db, "videos")
 const documentCollection = collection(db, "documents")
+const workCategory = collection(db, "work-category")
+const projectCategory = collection(db, "project-category")
+const storyCategory = collection(db, "story-category")
+const storyCollection = collection(db, "story")
+const projectCollection = collection(db, "project")
+const singlesCollection = collection(db, "singles")
 const aboutCollection = collection(db, "about")
-export { addDoc, getDocs, postCollection, videoCollection, documentCollection, aboutCollection }
+const bannerCollection = collection(db, "banner")
+export { addDoc, getDocs,storyCategory,bannerCollection, postCollection,storyCollection, videoCollection,projectCollection,singlesCollection, documentCollection, aboutCollection ,workCategory, db,projectCategory}
 // module.exports = {
 //     postCollection
 // }

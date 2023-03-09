@@ -1,9 +1,9 @@
 <template>
-  <div class="mx-10 mt-5">
+  <div class="mx-1 mt-5">
     <v-layout justify-end>
       <AddImage @updatePost="updatePost" />
     </v-layout>
-    <v-card elevation="0" class="mt-3 background"> 
+    <v-card elevation="0" class="mt-3">
       <!-- <v-card-title class="text-center justify-center py-6">
         <h1 class="font-weight-bold text-h2 basil--text">Heading</h1>
       </v-card-title> -->
@@ -20,37 +20,31 @@
       </v-tabs>
 
       <v-tabs-items v-model="tab">
-        <v-tab-item class="background " v-for="item in imageType" :key="item.value">
-          <!-- <v-card color="basil" flat>
-            <v-card-text>{{ text }}</v-card-text>
-          </v-card> -->
-          <v-layout wrap>
-            <span v-for="(post, index) in postTabData" :key="index">
+        <v-tab-item class="" v-for="item in imageType" :key="item.value">
+          <v-layout wrap justify-center justify-sm-start>
+            <div v-for="(post, index) in postTabData" class="admin-table-card" :key="index">
               <v-flex>
-                <cardTable :post="post" @updatePost="updatePost" />
-              </v-flex>
-            </span>
+                <cardTable :post="post" />
+                <!-- @updatePost="updatePost" -->
+              </v-flex> 
+            </div>
           </v-layout>
         </v-tab-item>
       </v-tabs-items>
     </v-card>
-
-    <!-- <v-layout wrap>
-      <span v-for="(post, index) in postTabData" :key="index">
-        <v-flex>
-          <cardTable :post="post" @updatePost="updatePost" />
-        </v-flex>
-      </span>
-    </v-layout> -->
   </div>
 </template>
 
 <script>
-// import { doc, getDoc } from '@firebase/firestore';[0]
-// import { getDocs } from '@firebase/firestore';
 import AddImage from "../components/Admin/addImage.vue";
 import CardTable from "../components/Admin/cardTable.vue";
-// import { postCollection, getDocs } from "../firebase";
+import {
+  bannerCollection,
+  getDocs,
+  projectCollection,
+  singlesCollection,
+  storyCollection,
+} from "../firebase";
 export default {
   name: "Admin",
 
@@ -70,31 +64,66 @@ export default {
     tab: {
       handler(newValue) {
         let value = this.imageType[newValue].value;
+        console.log(value);
         if (value) {
-          this.postTabData = new Array();
-          this.postTabData = this.postData.filter((x) => x.postType == value);
+          this.getCollectionData(value);
+          // this.postTabData = new Array();
+          // this.postTabData = this.postData.filter((x) => x.postType == value);
         }
       },
       immediate: true,
       deep: true,
     },
-    postData: {
-      handler() {
-        this.getPost();
-      },
-      immediate: true,
-      deep: true,
-    },
+    // postData: {
+    //   handler() {
+    //     this.getPost();
+    //   },
+    //   immediate: true,
+    //   deep: true,
+    // },
   },
   methods: {
     updatePost() {
       console.log("updated");
-      this.getPost();
-    },
-    async getPost() {
       this.tab = 0;
       let value = this.imageType[0].value;
-      this.postTabData = this.postData.filter((x) => x.postType == value);
+      if (value) {
+        this.getCollectionData(value);
+      }
+    },
+    async getPost() {},
+    async getCollectionData(type) {
+      this.postTabData = [];
+      let collection;
+      let typeMsg;
+      if (type === "STORY") {
+        collection = storyCollection;
+        typeMsg = "story";
+      }
+      if (type === "SINGLE") {
+        collection = singlesCollection;
+        typeMsg = "single";
+      }
+      if (type === "PROJECT") {
+        collection = projectCollection;
+        typeMsg = "project";
+      }
+      if (type === "BANNER") {
+        collection = bannerCollection;
+        typeMsg = "banner";
+      }
+
+      if (type) {
+        let result = new Array();
+        let data = await getDocs(collection);
+        data.forEach((doc) => {
+          let documentData = doc.data();
+          documentData.id = doc.id;
+          result.push(documentData);
+        });
+        this.postTabData = result;
+      }
+      console.log(typeMsg);
     },
   },
   beforeCreate() {},
@@ -107,3 +136,7 @@ export default {
   },
 };
 </script>
+<style>
+.admin-table-card{
+}
+</style>

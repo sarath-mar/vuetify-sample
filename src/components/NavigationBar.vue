@@ -26,6 +26,7 @@
           :key="item.title"
           link
           :to="item.route"
+          
         >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -49,8 +50,8 @@ export default {
     items: [
       { title: "About", icon: "mdi-home", route: "/admin" },  
       { title: "Post", icon: "mdi-home", route: "/admin-post" },
-      { title: "Videos", icon: "mdi-video", route: "/admin-video" },
-      { title: "Documentation", icon: "mdi-file", route: "/admin-document" },
+      // { title: "Videos", icon: "mdi-video", route: "/admin-video" },
+      { title: "Categories", icon: "mdi-file", route: "/admin-work" },
     ],
   }),
   methods: {

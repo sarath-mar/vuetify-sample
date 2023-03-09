@@ -7,7 +7,7 @@
           color="ashColor"
           class="black--text text-capitalize"
           v-on="on"
-          >Add Story Category</v-btn
+          >Add Project Category</v-btn
         >
       </template>
       <v-card class="pt-3 pb-6" color="pop_bg">
@@ -23,7 +23,7 @@
               <v-flex xs8>
                 <v-text-field
                   :rules="postTextRule"
-                  label="Story Category"
+                  label="Project Category"
                   placeholder="Write any caption"
                   outlined
                   dense
@@ -35,7 +35,7 @@
               <v-flex xs8>
                 <v-textarea
                   :rules="postTextRule"
-                  label="Write any discription about this story category"
+                  label="Write any discription about this project category"
                   auto-grow
                   outlined
                   rows="3"
@@ -71,7 +71,7 @@
   </div>
 </template>
 <script>
-import { addDoc, storyCategory } from "../../../firebase";
+import { addDoc, projectCategory } from "../../../firebase";
 export default {
   data() {
     return {
@@ -104,17 +104,18 @@ export default {
     },
     async addPost() {
       this.button_loading = true;
-      await addDoc(storyCategory, {
+      await addDoc(projectCategory, {
         category: this.postCaption,
         categoryText: this.postText,
       })
         .then(() => {
           this.dialog = false;
           this.button_loading = false;
-          this.postCaption=''
-          this.postText=''
           console.log("added finally");
-          this.$emit("updatePost");
+          this.postCaption=''
+          this.postText='' 
+        // this.$refs.addPostForm.clear() 
+          this.$emit("updateProjectCategory");
         })
         .catch(() => {
           this.button_loading = false;

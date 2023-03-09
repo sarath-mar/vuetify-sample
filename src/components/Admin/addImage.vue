@@ -2,7 +2,11 @@
   <div>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn small color="ashColor" class="black--text text-capitalize" v-on="on"
+        <v-btn
+          small
+          color="ashColor"
+          class="black--text text-capitalize"
+          v-on="on"
           >Add Image</v-btn
         >
       </template>
@@ -53,8 +57,44 @@
                 ></v-autocomplete>
               </v-flex>
             </v-layout>
+            <v-layout v-if="postType === 'STORY'" justify-center>
+              <v-flex xs8>
+                <v-autocomplete
+                  v-model="postWorkCategory"
+                  :rules="[
+                    () => !!postWorkCategory || 'This field is required',
+                  ]"
+                  :items="storyCategoryList"
+                  item-text="category"
+                  item-value="id"
+                  label="Story Category Type"
+                  placeholder="Select..."
+                  required
+                  outlined
+                  dense
+                ></v-autocomplete>
+              </v-flex>
+            </v-layout>
+            <v-layout v-if="postType === 'PROJECT'" justify-center>
+              <v-flex xs8>
+                <v-autocomplete
+                  v-model="postWorkCategory"
+                  :rules="[
+                    () => !!postWorkCategory || 'This field is required',
+                  ]"
+                  :items="projectCategoryList"
+                  item-text="category"
+                  item-value="id"
+                  label="Project Category Type"
+                  placeholder="Select..."
+                  required
+                  outlined
+                  dense
+                ></v-autocomplete>
+              </v-flex>
+            </v-layout>
             <v-layout justify-center>
-              <v-flex xs8> 
+              <v-flex xs8>
                 <v-textarea
                   :rules="postTextRule"
                   label="Write any discription about this photo "
@@ -95,7 +135,17 @@
 <script>
 // uploadBytes
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { postCollection, addDoc } from "../../firebase";
+import {
+  // postCollection,
+  addDoc,
+  getDocs,
+  bannerCollection,
+  singlesCollection,
+  storyCategory,
+  projectCategory,
+  projectCollection,
+  storyCollection,
+} from "../../firebase";
 import { updateDoc, doc } from "@firebase/firestore";
 export default {
   data() {
@@ -120,20 +170,51 @@ export default {
       postType: "",
       postCaption: "",
       postTextRule: [(value) => !!value || "Text field is not be empty"],
+      storyCategoryList: [],
+      projectCategoryList: [],
+      postWorkCategory: "",
     };
+  },
+  watch: {
+    postType(newVal) {
+      if (newVal === "STORY") {
+        this.storyCategoryData();
+      }
+      if (newVal === "PROJECT") {
+        this.projectCategoryData();
+      }
+    },
   },
   methods: {
     close() {
       this.error = null;
       this.dialog = false;
     },
-    async addPost() {
-      this.button_loading = true;
-      let data = await addDoc(postCollection, {
-        postCaption: this.postCaption,
-        postText: this.postText,
-        postType: this.postType,
+    async storyCategoryData() {
+      let result = new Array();
+      let data = await getDocs(storyCategory);
+      data.forEach((doc) => {
+        let documentData = doc.data();
+        documentData.id = doc.id;
+        result.push(documentData);
       });
+      this.storyCategoryList = result;
+    },
+    async projectCategoryData() {
+      let result = new Array();
+      let data = await getDocs(projectCategory);
+      data.forEach((doc) => {
+        let documentData = doc.data();
+        documentData.id = doc.id;
+        result.push(documentData);
+      });
+      this.projectCategoryList = result;
+    },
+    async addPostTypes(postObject, collection, typeMsg, cb) {
+      // let collection;
+      // let typeMsg;
+
+      let data = await addDoc(collection, postObject);
       if (data && this.postImage) {
         let postUrl = "";
         var storageRef = ref(getStorage(), `albums/${data.id}.jpg`);
@@ -143,25 +224,117 @@ export default {
             console.log(snapshot);
             postUrl = await getDownloadURL(storageRef);
             if (postUrl) {
-              let docRef = doc(postCollection, data.id);
+              let docRef = doc(collection, data.id);
               await updateDoc(docRef, {
                 postUrl,
               })
                 .then(() => {
-                  this.button_loading = false;
-                  this.dialog = false;
-                  console.log("added finally");
-                  this.$emit("updatePost");
+                  cb(true, typeMsg);
                 })
                 .catch(() => {
-                  this.button_loading = false;
+                  cb(false, typeMsg);
                 });
             }
           })
           .catch(() => {
-            this.button_loading = false;
+            cb(false, typeMsg);
           });
       }
+    },
+    async addPost() {
+      this.button_loading = true;
+      let postObject = {
+        postCaption: this.postCaption,
+        postText: this.postText,
+        postType: this.postType,
+      };
+      let collection;
+      let typeMsg;
+      if (this.postType === "STORY") {
+        postObject.categoryId = this.postWorkCategory;
+        collection = storyCollection;
+        typeMsg = "story";
+      }
+      if (this.postType === "SINGLE") {
+        collection = singlesCollection;
+        typeMsg = "single";
+      }
+      if (this.postType === "PROJECT") {
+        postObject.categoryId = this.postWorkCategory;
+        collection = projectCollection;
+        typeMsg = "project";
+      }
+      if (this.postType === "BANNER") {
+        collection = bannerCollection;
+        typeMsg = "banner";
+      }
+
+      if (this.postType) {
+        await this.addPostTypes(
+          postObject,
+          collection,
+          typeMsg,
+          (succes, typeMsg) => {
+            if (succes) {
+              this.button_loading = false;
+              this.dialog = false;
+              console.log(`added ${typeMsg} finally`);
+              this.postCaption = "";
+              this.postText = "";
+              this.postType = "";
+              this.postWorkCategory = "";
+              this.postImage = "";
+              this.$emit("updatePost");
+            } else {
+              this.button_loading = false;
+              this.dialog = false;
+              console.log(`error in ${typeMsg} `);
+            }
+          }
+        );
+      }
+
+      // if (data) {
+      //   this.button_loading = false;
+      //   this.dialog = false;
+      //   console.log("added finally");
+      //   this.$emit("updatePost");
+      // } else {
+      //   this.button_loading = false;
+      //   this.dialog = false;
+      // }
+      // let data = await addDoc(
+      //   postCollection,
+      //   postObject
+      // );
+      // if (data && this.postImage) {
+      //   let postUrl = "";
+      //   var storageRef = ref(getStorage(), `albums/${data.id}.jpg`);
+      //   uploadBytes(storageRef, this.postImage)
+      //     .then(async (snapshot) => {
+      //       console.log("Uploaded a blob or file!");
+      //       console.log(snapshot);
+      //       postUrl = await getDownloadURL(storageRef);
+      //       if (postUrl) {
+      //         let docRef = doc(postCollection, data.id);
+      //         await updateDoc(docRef, {
+      //           postUrl,
+      //         })
+      //           .then(() => {
+      //             this.button_loading = false;
+      //             this.dialog = false;
+      //             console.log("added finally");
+      //             this.$emit("updatePost");
+      //           })
+      //           .catch(() => {
+      //             this.button_loading = false;
+      //           });
+      //       }
+      //     })
+      //     .catch(() => {
+      //       this.button_loading = false;
+      //     });
+      // }
     },
   },
 };

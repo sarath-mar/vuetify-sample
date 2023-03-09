@@ -51,11 +51,10 @@
     </div>
   </div>
 </template>
-
 <script>
 // , getDocs
 import { deleteDoc, doc } from "@firebase/firestore";
-import { storyCategory } from "../../../firebase";
+import { projectCategory } from "../../../firebase";
 export default {
   props: {
     documentData: {
@@ -71,6 +70,7 @@ export default {
       text: "",
       snackbarColor: "",
       snackbar: "",
+      deleteId: "",
       headers: [
         {
           text: "Category",
@@ -80,10 +80,10 @@ export default {
         },
         { text: "Category Description", value: "categoryText" },
         { text: "Action", value: "action", width: "150px" },
+        { text: "Action", value: "test", width: "150px" },
         // { text: "Download Pdf", value: "postUrl", width: "150px" },
         // { text: "Action", value: "action" },
       ],
-      deleteId: "",
       //   documentData: [],
     };
   },
@@ -93,7 +93,7 @@ export default {
       this.dialog = true;
     },
     deleteMethod() {
-      const docRef = doc(storyCategory, this.deleteId);
+      const docRef = doc(projectCategory, this.deleteId);
       deleteDoc(docRef)
         .then(() => {
           console.log("deleted post");
@@ -103,7 +103,7 @@ export default {
             console.log("deleted image");
           this.dialog = false;
           this.button_loading = false;
-          this.$emit("updatePost");
+          this.$emit("updateProjectCategory");
         })
         .catch((e) => {
           this.dialog = false;
@@ -118,11 +118,16 @@ export default {
       this.dialog = false;
     },
   },
-  // created() {
-  //   if (this.$route.name !== "Published-Works") {
-  //     this.headers.push({ text: "Action", value: "action", width: "150px" });
-  //   }
-  //   // this.getDocumentData();
-  // },
 };
 </script>
+
+<style>
+.card-class {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.div-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+</style>

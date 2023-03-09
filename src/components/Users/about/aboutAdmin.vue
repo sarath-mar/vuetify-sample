@@ -116,6 +116,7 @@ flex: 1;
 }
 .about-image{
   width: 100vw;
+  /* padding-left: 30px !important; */
 }
 }
 </style>

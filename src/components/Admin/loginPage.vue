@@ -12,7 +12,7 @@
       max-height="400px"
       max-width="500px"
       class="mx-auto my-16 pa-10 pa-sm-14"
-      color="white"
+      color=""
       elevation="4"
     >
       <v-layout justify-center>

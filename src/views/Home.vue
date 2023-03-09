@@ -1,25 +1,6 @@
 <template>
   <div>
-    <!-- <v-card flat class="background"> -->
-      <Banner />
-    <!-- </v-card> -->
-    <!-- <singles/>
-    <Stories /> -->
-    <!-- <Parallex  class="mb-10" /> -->
-
-    <!-- <v-card class="ma-10 pa-10 topFooter">  -->
-    <!-- <v-layout>
-      <v-flex sm6>
-        <transition name="fade">
-          <v-card height="50vh" color="red"></v-card>
-        </transition>
-      </v-flex>
-      <v-flex sm6>
-        <v-card height="50vh" color="green"></v-card>
-      </v-flex>
-    </v-layout>
-    <v-card height="200vh" color="blue "></v-card> --> 
-    <!-- </v-card> --> 
+     <Banner />
   </div>
 </template>
 

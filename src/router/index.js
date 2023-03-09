@@ -31,21 +31,22 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/adminSide/adminVideo.vue')
   },
   {
-    path: '/admin-document',
-    name: 'Admin-Document',
+    path: '/admin-work',
+    name: 'Admin-Work',
+    // name: 'Admin-Document',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/adminSide/adminDocument.vue')
   },
-  {
-    path: '/published-works',
-    name: 'Published-Works',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/adminSide/adminDocument.vue')
-  },
+  // {
+  //   path: '/published-works',
+  //   name: 'Published-Works',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/adminSide/adminDocument.vue')
+  // },
   {
     path: '/video-gallery',
     name: 'Video-Gallery',
@@ -69,6 +70,22 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/Stories.vue')
+  },
+  {
+    path: '/project',
+    name: 'Project',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/Project.vue')
+  },
+  {
+    path: '/singles',
+    name: 'Singles',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/Singles.vue')
   },
   {
     path: '/all-gallery',

@@ -2,35 +2,28 @@
   <div class="mt-5 ml-5">
     <h4 class="text--red">{{ categoryName }}</h4>
 
-    <div class="mt-5">
+    <div class="mt-5" >
       <!-- <template> -->
-      <v-row>
-        <v-col
-          v-for="data in postData"
-          :key="data.id"
-          class="d-flex child-flex"
-          cols="6"
-          md="4"
-          lg="3"
-        >
-          <v-img
-            :src="data.postUrl"
-            :lazy-src="data.postUrl"
-            aspect-ratio="1"
-            cover
-            class="bg-grey-lighten-2"
-          >
-            <template v-slot:placeholder>
-              <v-row class="fill-height ma-0" align="center" justify="center">
-                <v-progress-circular
-                  indeterminate
-                  color="grey-lighten-5"
-                ></v-progress-circular>
-              </v-row>
-            </template>
-          </v-img>
-        </v-col>
-      </v-row>
+        <v-row >
+          <v-col v-for="data in postData" :key="data.id" class="d-flex child-flex" cols="6" md="4" lg="3">
+            <v-img
+              :src="data.postUrl"
+              :lazy-src="data.postUrl"
+              aspect-ratio="1"
+              cover
+              class="bg-grey-lighten-2"
+            >
+              <template v-slot:placeholder>
+                <v-row class="fill-height ma-0" align="center" justify="center">
+                  <v-progress-circular
+                    indeterminate
+                    color="grey-lighten-5"
+                  ></v-progress-circular>
+                </v-row>
+              </template>
+            </v-img>
+          </v-col>
+        </v-row>
       <!-- </template> -->
     </div>
   </div>
@@ -38,7 +31,7 @@
 
 <script>
 import { getDocs, query, where } from "firebase/firestore";
-import { storyCollection } from "../../../firebase";
+import { projectCollection } from "../../../firebase";
 export default {
   data() {
     return {
@@ -50,7 +43,7 @@ export default {
     "$route.query.id": {
       handler() {
         console.log("id change");
-        this.postData = [];
+        this.postData=[]
         this.getDataOfId();
       },
     },
@@ -61,7 +54,7 @@ export default {
       this.categoryName = this.$route.query.category;
       if (id) {
         let result = new Array();
-        const q = query(storyCollection, where("categoryId", "==", id));
+        const q = query(projectCollection, where("categoryId", "==", id));
         let data = await getDocs(q);
         data.forEach((doc) => {
           let documentData = doc.data();
