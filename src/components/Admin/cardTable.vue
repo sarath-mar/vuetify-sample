@@ -1,40 +1,49 @@
 <template>
-  <!-- <v-hover v-slot="{ hover }" open-delay="200"> -->
-    <!--  width="220" --> 
-    <v-card
-    width="220"
-      :loading="loading"
-      class="my-2 mx-2 ashColor cardClass red"
-    >
-      <v-img height="250" :src="post.postUrl" :lazy-src="post.postUrl">
-        <template v-slot:placeholder>
-          <v-row class="fill-height ma-0" align="center" justify="center">
-            <v-progress-circular
-              indeterminate
-              color="black lighten-3"
-            ></v-progress-circular>
-          </v-row>
-        </template>
-      </v-img>
-      <v-card-title>{{ post.postCaption }}</v-card-title>
-      <div v-if="post.workCategoryId">
-        <p>{{ getWorkCategoryData(post.workCategoryId) }}</p>
+  <!-- <div>
+    <div>
+      <v-img height="200" aspect-ratio="1" :src="post.postUrl" :lazy-src="post.postUrl">
+      <template v-slot:placeholder>
+        <v-row class="fill-height ma-0" align="center" justify="center">
+          <v-progress-circular
+            indeterminate
+            color="black lighten-3"
+          ></v-progress-circular>
+        </v-row>
+      </template>
+    </v-img>
+    </div>
+  </div> -->
+  <v-card
+  width="220" 
+    :loading="loading"
+    class="my-2 mx-2 ashColor cardClass red"
+  >
+    <v-img height="250" width="220" :src="post.postUrl" :lazy-src="post.postUrl">
+      <template v-slot:placeholder>
+        <v-row class="fill-height ma-0" align="center" justify="center">
+          <v-progress-circular
+            indeterminate
+            color="black lighten-3"
+          ></v-progress-circular>
+        </v-row>
+      </template>
+    </v-img>
+    <v-card-title>{{ post.postCaption }}</v-card-title>
+    <div v-if="post.workCategoryId">
+      <p>{{ getWorkCategoryData(post.workCategoryId) }}</p>
+    </div>
+    <v-card-text style="overflow-y: auto; height: 50px">
+      <div>
+        {{ post.postText }}
       </div>
-
-      <!-- {{ post }} -->
-      <v-card-text style="overflow-y: auto; height: 50px">
-        <div>
-          {{ post.postText }}
-        </div>
-      </v-card-text>
-      <v-card-actions>
-        <v-layout justify-space-between>
-          <EditImage :post="post" @updatePost="updatePost" />
-          <DeleteImage :post="post" @updatePost="updatePost" />
-        </v-layout>
-      </v-card-actions>
-    </v-card>
-  <!-- </v-hover> -->
+    </v-card-text>
+    <v-card-actions>
+      <v-layout justify-space-between>
+        <EditImage :post="post" @updatePost="updatePost" />
+        <DeleteImage :post="post" @updatePost="updatePost" />
+      </v-layout>
+    </v-card-actions>
+  </v-card>
 </template>
 <script>
 // import { getStorage, ref, getDownloadURL } from "firebase/storage";
@@ -66,13 +75,11 @@ export default {
   //     deep: true,
   //   },
   // },
-  computed:{
-
-  },
+  computed: {},
   methods: {
-    updatePost() {
+    updatePost(type) {
       console.log("root emit updated");
-      this.$emit("updatePost");
+      this.$emit("updatePost",type);
     },
     async getWorkCategoryData(id) {
       // let result = new Array();
@@ -86,9 +93,9 @@ export default {
         return docSnap.data().category;
       } else {
         // doc.data() will be undefined in this case
-        
+
         console.log("No such document!");
-        return {}
+        return {};
       }
     },
     // async getImages(id) {
@@ -103,7 +110,6 @@ export default {
     //   setTimeout(() => (this.loading = false), 2000);
     // },
   },
-
 };
 </script>
 <style>
@@ -112,6 +118,8 @@ export default {
   transform: scale(1.01);
 }
 .cardClass {
-  transition: transform 0.2s;
+  /* transition: transform 0.2s; */
+  /* max-width: 250px; */
+  /* display: flex; */
 }
 </style>

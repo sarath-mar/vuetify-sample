@@ -1,9 +1,19 @@
 <template>
   <div class="mt-5 ml-5">
     <h4 class="text--red">{{ categoryName }}</h4>
+    <h5 class="my-3 mr-sm-10 categroy-details">{{ categoryDetails }}</h5>
 
     <div class="mt-5">
       <!-- <template> -->
+      <div class="text-center pa-10" v-if="!postData.length">
+        <v-progress-circular
+          :size="100"
+          :width="8"
+          color="red"
+          class="m-auto"
+          indeterminate
+        ></v-progress-circular>
+      </div>
       <v-row>
         <v-col
           v-for="data in postData"
@@ -29,6 +39,9 @@
               </v-row>
             </template>
           </v-img>
+          <div>
+            <p class="mt-2">{{ data.postText }}</p>
+          </div>
         </v-col>
       </v-row>
       <!-- </template> -->
@@ -37,13 +50,14 @@
 </template>
 
 <script>
-import { getDocs, query, where } from "firebase/firestore";
+import { getDocs, orderBy, query, where } from "firebase/firestore";
 import { storyCollection } from "../../../firebase";
 export default {
   data() {
     return {
       postData: [],
       categoryName: "",
+      categoryDetails: "",
     };
   },
   watch: {
@@ -57,11 +71,17 @@ export default {
   },
   methods: {
     async getDataOfId() {
-      let id = this.$route.query.id;
-      this.categoryName = this.$route.query.category;
+      let routeData = this.$route.query;
+      let id = routeData.id;
+      this.categoryName = routeData.category;
+      this.categoryDetails = routeData.text;
       if (id) {
         let result = new Array();
-        const q = query(storyCollection, where("categoryId", "==", id));
+        const q = query(
+          storyCollection,
+          orderBy("postCaption", "asc"),
+          where("categoryId", "==", id)
+        );
         let data = await getDocs(q);
         data.forEach((doc) => {
           let documentData = doc.data();
@@ -88,4 +108,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.categroy-details {
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 1.1px;
+  /* inline-size: 1px; */
+}
+</style>

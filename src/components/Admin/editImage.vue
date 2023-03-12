@@ -50,13 +50,50 @@
                 ></v-text-field>
               </v-flex>
             </v-layout>
-              <v-layout justify-center>
+            <v-layout justify-center>
               <v-flex xs8>
                 <v-autocomplete
                   v-model="postType"
                   :rules="[() => !!postType || 'This field is required']"
                   :items="imageType"
                   label="Image Type"
+                  placeholder="Select..."
+                  required
+                  outlined
+                  dense
+                  disabled
+                ></v-autocomplete>
+              </v-flex>
+            </v-layout>
+            <v-layout v-if="postType === 'STORY'" justify-center>
+              <v-flex xs8>
+                <v-autocomplete
+                  v-model="postWorkCategory"
+                  :rules="[
+                    () => !!postWorkCategory || 'This field is required',
+                  ]"
+                  :items="storyCategoryList"
+                  item-text="category"
+                  item-value="id"
+                  label="Story Category Type"
+                  placeholder="Select..."
+                  required
+                  outlined
+                  dense
+                ></v-autocomplete>
+              </v-flex>
+            </v-layout>
+            <v-layout v-if="postType === 'PROJECT'" justify-center>
+              <v-flex xs8>
+                <v-autocomplete
+                  v-model="postWorkCategory"
+                  :rules="[
+                    () => !!postWorkCategory || 'This field is required',
+                  ]"
+                  :items="projectCategoryList"
+                  item-text="category"
+                  item-value="id"
+                  label="Project Category Type"
                   placeholder="Select..."
                   required
                   outlined
@@ -108,8 +145,16 @@
 //
 // import { getStorage, ref, } from "firebase/storage";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { postCollection } from "../../firebase";
-import { updateDoc, doc } from "@firebase/firestore";
+import {
+  bannerCollection,
+  postCollection,
+  projectCategory,
+  projectCollection,
+  singlesCollection,
+  storyCategory,
+  storyCollection,
+} from "../../firebase";
+import { updateDoc, doc, getDocs } from "@firebase/firestore";
 export default {
   props: {
     post: {
@@ -123,6 +168,8 @@ export default {
       text: "",
       snackbarColor: "",
       image: "",
+      storyCategoryList: [],
+      projectCategoryList: [],
       //   valid: false ,
       valid: true,
       dialog: false,
@@ -137,12 +184,34 @@ export default {
       ],
       postText: "",
       postImage: "",
-      postType:"", 
+      postType: "",
       postCaption: "",
       postTextRule: [(value) => !!value || "Text field is not be empty"],
+      postWorkCategory: "",
+      counter: 0,
     };
   },
   methods: {
+    async storyCategoryData() {
+      let result = new Array();
+      let data = await getDocs(storyCategory);
+      data.forEach((doc) => {
+        let documentData = doc.data();
+        documentData.id = doc.id;
+        result.push(documentData);
+      });
+      this.storyCategoryList = result;
+    },
+    async projectCategoryData() {
+      let result = new Array();
+      let data = await getDocs(projectCategory);
+      data.forEach((doc) => {
+        let documentData = doc.data();
+        documentData.id = doc.id;
+        result.push(documentData);
+      });
+      this.projectCategoryList = result;
+    },
     async getImages(id) {
       const storage = getStorage();
       let data = await getDownloadURL(ref(storage, `albums/${id}.jpg`));
@@ -152,48 +221,114 @@ export default {
       this.error = null;
       this.dialog = false;
     },
-    async updatePost() {
-
+    async updatePostOldFlow() {
       this.button_loading = true;
       let docRef = doc(postCollection, this.post.id);
       updateDoc(docRef, {
         postText: this.postText,
         postCaption: this.postCaption,
-        postType: this.postType,  
+        postType: this.postType,
       })
         .then((data) => {
           console.log(data);
           console.log("updated");
-          this.$emit("updatePost"); 
+          this.$emit("updatePost");
           this.button_loading = false;
-          this.dialog=false
+          this.dialog = false;
         })
         .catch((error) => {
           this.button_loading = false;
-          this.dialog=false 
+          this.dialog = false;
           console.log(error);
         });
+    },
+    async addPostTypes(postObject, collection, typeMsg, cb) {
+      let docRef = doc(collection, this.post.id);
+      updateDoc(docRef, postObject)
+        .then((data) => {
+          console.log(data);
+          cb(true, typeMsg);
+        })
+        .catch((error) => {
+          cb(false, typeMsg);
 
-      // console.log(data);
-      // if (data && this.postImage) {
-      //   this.dialog = false;
-      //   var storageRef = ref(getStorage(), `albums/${data.id}.jpg`);
-      //   console.log(storageRef);
-      //   uploadBytes(storageRef, this.postImage).then((snapshot) => {
-      //     console.log("Uploaded a blob or file!");
-      //     console.log(snapshot);
-      //   });
-
-      // }
-       
+          console.log(error);
+        });
+    },
+    async updatePost() {
+      this.button_loading = true;
+      let postObject = {
+        postCaption: JSON.parse(this.postCaption),
+        postText: this.postText,
+        postType: this.postType,
+      };
+      let collection;
+      let typeMsg;
+      if (this.postType === "STORY") {
+        postObject.categoryId = this.postWorkCategory;
+        collection = storyCollection;
+        // typeMsg = "story";
+      }
+      if (this.postType === "SINGLE") {
+        collection = singlesCollection;
+        // typeMsg = "single";
+      }
+      if (this.postType === "PROJECT") {
+        postObject.categoryId = this.postWorkCategory;
+        collection = projectCollection;
+        // typeMsg = "project";
+      }
+      if (this.postType === "BANNER") {
+        collection = bannerCollection;
+        // typeMsg = "banner";
+      }
+      typeMsg = this.postType;
+      if (this.postType) {
+        await this.addPostTypes(
+          postObject,
+          collection,
+          typeMsg,
+          (succes, typeMsg) => {
+            if (succes) {
+              this.button_loading = false;
+              this.dialog = false;
+              console.log(`added ${typeMsg} finally`);
+              this.$emit("updatePost", typeMsg);
+            } else {
+              this.button_loading = false;
+              this.dialog = false;
+              console.log(`error in ${typeMsg} `);
+            }
+          }
+        );
+      }
+    },
+    setValues() {
+      this.postType = this.post.postType;
+      if (this.post.categoryId) {
+        this.postWorkCategory = this.post.categoryId;
+      }
+      this.postText = this.post.postText;
+      this.postCaption = this.post.postCaption;
     },
   },
-
-  created() {
-    this.getImages(this.post.id);
-    this.postText = this.post.postText;
-    this.postCaption = this.post.postCaption;
-    this.postType = this.post.postType;  
+  watch: {
+    dialog(newval) {
+      if (newval) {
+        console.log("new dialog");
+        this.setValues();
+      }
+    },
+    postType(newVal) {
+      this.counter == 0 ? "" : (this.postWorkCategory = "");
+      this.counter++;
+      if (newVal === "STORY") {
+        this.storyCategoryData();
+      }
+      if (newVal === "PROJECT") {
+        this.projectCategoryData();
+      }
+    },
   },
 };
 </script>

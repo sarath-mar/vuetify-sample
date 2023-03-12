@@ -4,10 +4,6 @@
       <AddImage @updatePost="updatePost" />
     </v-layout>
     <v-card elevation="0" class="mt-3">
-      <!-- <v-card-title class="text-center justify-center py-6">
-        <h1 class="font-weight-bold text-h2 basil--text">Heading</h1>
-      </v-card-title> -->
-
       <v-tabs
         :color="tab == 0 ? 'yellow' : tab == 1 ? 'green' : 'red'"
         v-model="tab"
@@ -22,11 +18,41 @@
       <v-tabs-items v-model="tab">
         <v-tab-item class="" v-for="item in imageType" :key="item.value">
           <v-layout wrap justify-center justify-sm-start>
-            <div v-for="(post, index) in postTabData" class="admin-table-card" :key="index">
+            <div v-if="isCategoryList">
+                <div v-for="(category, index) in categoryDetails" :key="index">
+                  <div class="category-table-card">
+                    <p>{{ category.category }}</p>
+                    <v-btn
+                      @click="showCategoryData(category.id)"
+                      class="ml-auto"
+                      >Show Details</v-btn
+                    >
+                  </div>
+
+                  <div
+                    v-if="categoryListData.length && categoryId == category.id"
+                  >
+                    <div
+                      v-for="(post, index) in categoryListData"
+                      :key="index"
+                    >
+                      <v-flex>
+                        <cardTable :post="post" />
+                      </v-flex>
+                    </div>
+                  </div>
+                </div>
+          
+            </div>
+            <div
+              v-else
+              v-for="(post, index) in postTabData"
+              class="admin-table-card"
+              :key="index"
+            >
               <v-flex>
                 <cardTable :post="post" />
-                <!-- @updatePost="updatePost" -->
-              </v-flex> 
+              </v-flex>
             </div>
           </v-layout>
         </v-tab-item>
@@ -36,13 +62,16 @@
 </template>
 
 <script>
+import { orderBy, query, where } from "@firebase/firestore";
 import AddImage from "../components/Admin/addImage.vue";
 import CardTable from "../components/Admin/cardTable.vue";
 import {
   bannerCollection,
   getDocs,
+  projectCategory,
   projectCollection,
   singlesCollection,
+  storyCategory,
   storyCollection,
 } from "../firebase";
 export default {
@@ -57,18 +86,45 @@ export default {
       loop: 8,
       // postData: new Array(),
       postTabData: new Array(),
-      tab: 0,
+      tab: 3,
+      categoryDetails: [],
+      cTab: 1,
+      isCategoryList: false,
+      imagePostType: "",
+      categoryListData: [],
+      categoryId: "",
     };
   },
   watch: {
+    // cTab: {
+    //   handler(newValue) {
+    //     console.log("Ctab", newValue);
+    //   },
+    //   // immediate: true,
+    //   // deep: true,
+    // },
+    cTab(newVal) {
+      console.log("Ctab", newVal);
+    },
     tab: {
       handler(newValue) {
         let value = this.imageType[newValue].value;
+        this.categoryListData = [];
         console.log(value);
+        this.imagePostType = value;
         if (value) {
-          this.getCollectionData(value);
-          // this.postTabData = new Array();
-          // this.postTabData = this.postData.filter((x) => x.postType == value);
+          if (value === "PROJECT") {
+            this.isCategoryList = true;
+            this.postTabData = [];
+            this.getProjectCategoryData();
+          } else if (value === "STORY") {
+            this.isCategoryList = true;
+            this.postTabData = [];
+            this.getstoryCategoryData();
+          } else {
+            this.isCategoryList = false;
+            this.getCollectionData(value);
+          }
         }
       },
       immediate: true,
@@ -83,13 +139,76 @@ export default {
     // },
   },
   methods: {
-    updatePost() {
-      console.log("updated");
-      this.tab = 0;
-      let value = this.imageType[0].value;
+    showCategoryData(id) {
+      // let categoryId = this.categoryDetails[newVal].id;
+      this.categoryListData = [];
+      this.categoryId = id;
+      this.getPostDatafilterCategory(id, this.imagePostType);
+    },
+    updatePost(type) {
+      console.log("updated", type);
+      // this.tab = 0;
+      // let value = this.imageType[0].value;
+      let value = this.imageType.find((x) => x.value === type);
+      console.log(value);
       if (value) {
-        this.getCollectionData(value);
+        this.getCollectionData(value.value);
       }
+      // if (value) {
+
+      // }
+    },
+    async getPostDatafilterCategory(id, type) {
+      let collection;
+
+      if (type === "STORY") {
+        collection = storyCollection;
+        // typeMsg = "story";
+      }
+      if (type === "PROJECT") {
+        collection = projectCollection;
+        // typeMsg = "project";
+      }
+      let result = new Array();
+      const q = query(
+        collection,
+        orderBy("postCaption", "asc"),
+        where("categoryId", "==", id)
+      );
+      let data = await getDocs(q);
+      console.log("data", data);
+      data.forEach((doc) => {
+        let documentData = doc.data();
+        documentData.id = doc.id;
+        result.push(documentData);
+      });
+      this.categoryListData = result;
+      console.log(result);
+    },
+    async getstoryCategoryData() {
+      let result = new Array();
+      let data = await getDocs(storyCategory);
+      data.forEach((doc) => {
+        let documentData = doc.data();
+        documentData.id = doc.id;
+        result.push(documentData);
+      });
+      this.categoryDetails = result;
+      let categoryId = result[this.cTab].id;
+      this.getPostDatafilterCategory(categoryId, "STORY");
+    },
+    async getProjectCategoryData() {
+      let result = new Array();
+      let data = await getDocs(projectCategory);
+      data.forEach((doc) => {
+        let documentData = doc.data();
+        documentData.id = doc.id;
+        result.push(documentData);
+      });
+      this.categoryDetails = result;
+      let categoryId = result[this.cTab].id;
+      this.getPostDatafilterCategory(categoryId, "PROJECT");
+      console.log(this.categoryDetails);
     },
     async getPost() {},
     async getCollectionData(type) {
@@ -137,6 +256,31 @@ export default {
 };
 </script>
 <style>
-.admin-table-card{
+.admin-table-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+.category-table-card {
+  display: flex;
+  /* width: 100vw; */
+  /* flex-direction: column; */
+  /* background: red; */
+  /* gap: 20px; */
+  margin: 20px;
+  padding: 10px;
+  width: 96vw;
+  /* width: 100vw ; */
+  /* display:flex; */
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.test {
+  /* width: 120px; */
+  /* display: flex ; */
+  /* background: green; */
+}
+.category_tab {
+  display: flex;
 }
 </style>

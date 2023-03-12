@@ -10,10 +10,12 @@
           height="80px"
         >
           <v-layout wrap class="mt-4">
-            <v-toolbar-title>
-              <span class="font-weight-light text-h5">Madhuraj Snaps</span>
-              <span> </span>
-            </v-toolbar-title>
+            <router-link class="router" to="/">
+              <v-toolbar-title>
+                <span class="font-weight-light text-h5">Madhuraj Snaps</span>
+                <span> </span>
+              </v-toolbar-title>
+            </router-link>
             <v-spacer></v-spacer>
             <v-app-bar-nav-icon
               @click.stop="drawer = !drawer"
@@ -71,8 +73,8 @@
                         v-if="item.title === 'Stories'"
                         :to="{
                           path: '/story',
-                          params: { id: obj.id, category: obj.category },
-                          query: { id: obj.id, category: obj.category },
+                          params: { id: obj.id, category: obj.category,text:obj.categoryText },
+                          query: { id: obj.id, category: obj.category,text:obj.categoryText },
                         }"
                         style="text-decoration: none"
                       >
@@ -88,8 +90,8 @@
                         v-if="item.title === 'Projects'"
                         :to="{
                           path: '/project',
-                          params: { id: obj.id, category: obj.category },
-                          query: { id: obj.id, category: obj.category },
+                          params: { id: obj.id, category: obj.category,text:obj.categoryText },
+                          query: { id: obj.id, category: obj.category,text:obj.categoryText },
                         }"
                         style="text-decoration: none"
                       >
@@ -169,8 +171,8 @@
                     v-if="item.title === 'Stories'"
                     :to="{
                       path: '/story',
-                      params: { id: obj.id, category: obj.category },
-                      query: { id: obj.id, category: obj.category },
+                      params: { id: obj.id, category: obj.category,text:obj.categoryText },
+                      query: { id: obj.id, category: obj.category ,text:obj.categoryText},
                     }"
                     style="text-decoration: none"
                   >
@@ -186,8 +188,8 @@
                     v-if="item.title === 'Projects'"
                     :to="{
                       path: '/project',
-                      params: { id: obj.id, category: obj.category },
-                      query: { id: obj.id, category: obj.category },
+                      params: { id: obj.id, category: obj.category,text:obj.categoryText },
+                      query: { id: obj.id, category: obj.category ,text:obj.categoryText},
                     }"
                     style="text-decoration: none"
                   >

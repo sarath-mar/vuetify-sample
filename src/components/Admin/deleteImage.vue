@@ -23,7 +23,7 @@
               :loading="button_loading"
               @click="
                 button_loading = true;
-                deleteMethod(post.id);
+                deleteMethod(post);
               "
               >Yes</v-btn
             >
@@ -46,7 +46,12 @@
 <script>
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { deleteDoc, doc } from "@firebase/firestore";
-import { postCollection } from "../../firebase";
+import {
+  bannerCollection,
+  projectCollection,
+  singlesCollection,
+  storyCollection,
+} from "../../firebase";
 export default {
   props: {
     post: {
@@ -66,30 +71,55 @@ export default {
     };
   },
   methods: {
-    deleteMethod(id) {
-      const docRef = doc(postCollection, id);
-      deleteDoc(docRef)
-        .then(() => {
-          console.log("deleted post");
-          const storage = getStorage();
-          const desertRef = ref(storage, `albums/${id}.jpg`);
-          deleteObject(desertRef)
-            .then(() => {
-              (this.snackbar = true),
-                (this.snackbarColor = "green"),
-                (this.text = "Deleted Sucessfully"),
-                console.log("deleted image");
-              this.dialog = false;
+    deleteMethod(post) {
+      console.log(post);
+      let id = post.id ? post.id : "";
+      let postType = post.postType ? post.postType : "";
 
-              this.$emit("updatePost");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      let collection;
+      let typeMsg;
+      if (postType === "STORY") {
+        collection = storyCollection;
+        typeMsg = "story";
+      }
+      if (postType === "SINGLE") {
+        collection = singlesCollection;
+        typeMsg = "single";
+      }
+      if (postType === "PROJECT") {
+        collection = projectCollection;
+        typeMsg = "project";
+      }
+      if (postType === "BANNER") {
+        collection = bannerCollection;
+        typeMsg = "banner";
+      }
+      console.log(typeMsg);
+      if (collection && id) {
+        const docRef = doc(collection, id);
+        deleteDoc(docRef)
+          .then(() => {
+            console.log("deleted post");
+            const storage = getStorage();
+            const desertRef = ref(storage, `albums/${id}.jpg`);
+            deleteObject(desertRef)
+              .then(() => {
+                (this.snackbar = true),
+                  (this.snackbarColor = "green"),
+                  (this.text = "Deleted Sucessfully"),
+                  console.log("deleted image");
+                this.dialog = false;
+
+                this.$emit("updatePost");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
     },
     close() {
       this.error = null;

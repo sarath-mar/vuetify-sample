@@ -5,8 +5,8 @@
         <v-card-title><span class="heading">Singles</span></v-card-title>
         <div></div>
         <v-card-text>
-          <div v-for="(story, index) in limitedStory" :key="index">
-            <v-layout v-if="isOdd(index + 1)" class="mb-6" wrap justify-center>
+          <div v-for="(story, index) in singlesArray" :key="index">
+            <v-layout  class="mb-6" wrap justify-center>
               <v-flex x12 sm7 align-self-center>
                 <span>
                   <v-img
@@ -21,7 +21,7 @@
                     :src="story.postUrl"
                     :lazy-src="story.postUrl"
                     class="grey lighten-2 rounded-sm text-center"
-                    :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-10'"
+                    :class="$vuetify.breakpoint.xs ? '' : 'mx-10'"
                   >
                     <template v-slot:placeholder>
                       <v-row
@@ -39,22 +39,19 @@
                 </span>
               </v-flex>
               <v-flex xs12 sm5 align-self-center>
-                <span class="mx-5 mt-xs-0">
-                  <div class="sub-title font-weight-bold text-center mb-3">
+                <span class="mb-5  "> 
+                  <!-- <div class="sub-title font-weight-bold text-center mb-3">
                     {{ story.postCaption }}
-                  </div>
-                  <p class="stories text-justify">{{ story.postText }}</p>
+                  </div> -->
+                  <p class="stories text-justify mt-2 mr-5">{{ story.postText }} </p>
                 </span>
               </v-flex>
             </v-layout>
 
-            <v-layout v-else wrap justify-center class="mb-6">
+            <!-- <v-layout v-else wrap justify-center class="mb-6">
               <v-flex xs12 sm5 align-self-center v-if="!$vuetify.breakpoint.xs">
                 <span>
-                  <div class="sub-title font-weight-bold text-center mx-3 mb-3">
-                    {{ story.postCaption }}
-                  </div>
-                  <p class="stories mx-3 text-justify">{{ story.postText }}</p>
+                  <p class="stories mx-3 text-justify mt-2">{{ story.postText }}</p>
                 </span>
               </v-flex>
               <v-flex align-self-center x12 sm7>
@@ -72,7 +69,7 @@
                     :lazy-src="story.postUrl"
                     cover
                     class="grey lighten-2 rounded-sm"
-                    :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-10'"
+                    :class="$vuetify.breakpoint.xs ? '' : 'mx-10'"
                   >
                     <template v-slot:placeholder>
                       <v-row
@@ -91,18 +88,15 @@
               </v-flex>
               <v-flex xs12 sm5 align-self-center v-if="$vuetify.breakpoint.xs">
                 <span>
-                  <div class="sub-title font-weight-bold text-center my-3">
-                    {{ story.postCaption }}
-                  </div>
-                  <p class="stories text-justify">{{ story.postText }}</p>
+                  <p class="stories text-justify mt-2">{{ story.postText }}</p>
                 </span>
               </v-flex>
-            </v-layout>
+            </v-layout> -->
           </div>
         </v-card-text>
-        <div v-if="singlesArray.length > 1" class="text-center">
+        <!-- <div v-if="singlesArray.length > 1" class="text-center">
           <v-btn @click="seeMore" small>{{ btnTitle }}</v-btn>
-        </div>
+        </div> -->
       </v-card>
     </transition>
   </div>
@@ -122,19 +116,19 @@ export default {
     };
   },
   watch: {
-    singlesArray: {
-      handler(newValue) {
-        if (newValue) {
-          if (newValue.length > 1) {
-            this.limitedStory = newValue.filter((x, i) => {
-              if (i < 2) return x;
-            });
-          } else {
-            this.limitedStory = newValue;
-          }
-        }
-      },
-    },
+    // singlesArray: {
+    //   handler(newValue) {
+    //     if (newValue) {
+    //       if (newValue.length > 1) {
+    //         this.limitedStory = newValue.filter((x, i) => {
+    //           if (i < 2) return x;
+    //         });
+    //       } else {
+    //         this.limitedStory = newValue;
+    //       }
+    //     }
+    //   },
+    // },
   },
   methods: {
     async getSinglesData() {

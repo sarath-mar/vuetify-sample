@@ -39,6 +39,7 @@
                   placeholder="Write any caption"
                   outlined
                   dense
+                  type="number"
                   v-model="postCaption"
                 ></v-text-field>
               </v-flex>
@@ -211,9 +212,6 @@ export default {
       this.projectCategoryList = result;
     },
     async addPostTypes(postObject, collection, typeMsg, cb) {
-      // let collection;
-      // let typeMsg;
-
       let data = await addDoc(collection, postObject);
       if (data && this.postImage) {
         let postUrl = "";
@@ -244,7 +242,7 @@ export default {
     async addPost() {
       this.button_loading = true;
       let postObject = {
-        postCaption: this.postCaption,
+        postCaption: JSON.parse(this.postCaption),
         postText: this.postText,
         postType: this.postType,
       };
@@ -293,48 +291,6 @@ export default {
           }
         );
       }
-
-      // if (data) {
-      //   this.button_loading = false;
-      //   this.dialog = false;
-      //   console.log("added finally");
-      //   this.$emit("updatePost");
-      // } else {
-      //   this.button_loading = false;
-      //   this.dialog = false;
-      // }
-      // let data = await addDoc(
-      //   postCollection,
-      //   postObject
-      // );
-      // if (data && this.postImage) {
-      //   let postUrl = "";
-      //   var storageRef = ref(getStorage(), `albums/${data.id}.jpg`);
-      //   uploadBytes(storageRef, this.postImage)
-      //     .then(async (snapshot) => {
-      //       console.log("Uploaded a blob or file!");
-      //       console.log(snapshot);
-      //       postUrl = await getDownloadURL(storageRef);
-      //       if (postUrl) {
-      //         let docRef = doc(postCollection, data.id);
-      //         await updateDoc(docRef, {
-      //           postUrl,
-      //         })
-      //           .then(() => {
-      //             this.button_loading = false;
-      //             this.dialog = false;
-      //             console.log("added finally");
-      //             this.$emit("updatePost");
-      //           })
-      //           .catch(() => {
-      //             this.button_loading = false;
-      //           });
-      //       }
-      //     })
-      //     .catch(() => {
-      //       this.button_loading = false;
-      //     });
-      // }
     },
   },
 };

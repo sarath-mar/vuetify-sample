@@ -1,6 +1,5 @@
 <template>
   <div class="about-main">
-    <!-- <div class="name">Madhuraj</div> -->
     <div class="about-details mt-5">
       <div class="admin-img">
         <v-img
@@ -72,7 +71,6 @@ export default {
     // },
   },
   created() {
-    console.log("created ");
     this.getAboutData();
   },
 };
@@ -97,25 +95,31 @@ flex: 1;
 }
 
 .about-image {
-  height: 100%;
+  /* height: 100%; */
   background-size: cover;
   border-radius: 5px;
-  width: 30vw; 
-  min-height: 70vh;
+  min-width: 30vw; 
+  margin-top: 50px;
+  /* min-height: 70vh; */
 }
 .about-details {
   /* background-color: red; */
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
+  /* align-items: flex-end; */
    /* flex-wrap: wrap; */
   gap: 20px;
 }
 @media screen and (max-width: 960px) {
   .about-details {
   flex-direction: column;
+  align-items: normal;
 }
 .about-image{
-  width: 100vw;
+  width: 95%;
+  margin: auto ;
+  margin-top: 0px;
+  /* margin-left: -1px;   */
   /* padding-left: 30px !important; */
 }
 }
