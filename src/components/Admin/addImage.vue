@@ -58,7 +58,7 @@
                 ></v-autocomplete>
               </v-flex>
             </v-layout>
-            <v-layout v-if="postType === 'STORY'" justify-center>
+            <!-- <v-layout v-if="postType === 'STORY'" justify-center>
               <v-flex xs8>
                 <v-autocomplete
                   v-model="postWorkCategory"
@@ -75,8 +75,8 @@
                   dense
                 ></v-autocomplete>
               </v-flex>
-            </v-layout>
-            <v-layout v-if="postType === 'PROJECT'" justify-center>
+            </v-layout> -->
+            <v-layout v-if="subDataNeeded.includes(postType)" justify-center>
               <v-flex xs8>
                 <v-autocomplete
                   v-model="postWorkCategory"
@@ -86,7 +86,7 @@
                   :items="projectCategoryList"
                   item-text="category"
                   item-value="id"
-                  label="Project Category Type"
+                  label=" Category Type"
                   placeholder="Select..."
                   required
                   outlined
@@ -94,6 +94,24 @@
                 ></v-autocomplete>
               </v-flex>
             </v-layout>
+            <!-- <v-layout v-if="postType === 'PORTRAIT'" justify-center>
+              <v-flex xs8>
+                <v-autocomplete
+                  v-model="postWorkCategory"
+                  :rules="[
+                    () => !!postWorkCategory || 'This field is required',
+                  ]"
+                  :items="projectCategoryList"
+                  item-text="category"
+                  item-value="id"
+                  label="Portrait Category Type"
+                  placeholder="Select..."
+                  required
+                  outlined
+                  dense
+                ></v-autocomplete>
+              </v-flex>
+            </v-layout> -->
             <v-layout justify-center>
               <v-flex xs8>
                 <v-textarea
@@ -146,6 +164,7 @@ import {
   projectCategory,
   projectCollection,
   storyCollection,
+  portraitCollection
 } from "../../firebase";
 import { updateDoc, doc } from "@firebase/firestore";
 export default {
@@ -160,6 +179,7 @@ export default {
       button_loading: false,
       show_alert: false,
       error: null,
+      subDataNeeded: ["STORY", "PROJECT", "PORTRAIT"],
       rules: [
         (value) =>
           !value ||
@@ -184,6 +204,9 @@ export default {
       if (newVal === "PROJECT") {
         this.projectCategoryData();
       }
+      if (newVal === "PORTRAIT") {
+        this.potraitCategoryData();
+      }
     },
   },
   methods: {
@@ -199,7 +222,7 @@ export default {
         documentData.id = doc.id;
         result.push(documentData);
       });
-      this.storyCategoryList = result;
+      this.projectCategoryList = result;
     },
     async projectCategoryData() {
       let result = new Array();
@@ -210,6 +233,10 @@ export default {
         result.push(documentData);
       });
       this.projectCategoryList = result;
+    },
+    async potraitCategoryData() {
+      
+      this.projectCategoryList = [{category:"Singles",id:"Singles"},{category:"Stories",id:"Stories"}];
     },
     async addPostTypes(postObject, collection, typeMsg, cb) {
       let data = await addDoc(collection, postObject);
@@ -261,6 +288,11 @@ export default {
         postObject.categoryId = this.postWorkCategory;
         collection = projectCollection;
         typeMsg = "project";
+      }
+      if (this.postType === "PORTRAIT") {
+        postObject.categoryId = this.postWorkCategory;
+        collection = portraitCollection;
+        typeMsg = "portrait";
       }
       if (this.postType === "BANNER") {
         collection = bannerCollection;

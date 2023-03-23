@@ -29,9 +29,10 @@ const storyCategory = collection(db, "story-category")
 const storyCollection = collection(db, "story")
 const projectCollection = collection(db, "project")
 const singlesCollection = collection(db, "singles")
+const portraitCollection = collection(db, "portrait")
 const aboutCollection = collection(db, "about")
 const bannerCollection = collection(db, "banner")
-export { addDoc, getDocs,storyCategory,bannerCollection, postCollection,storyCollection, videoCollection,projectCollection,singlesCollection, documentCollection, aboutCollection ,workCategory, db,projectCategory}
+export { addDoc, getDocs,storyCategory,bannerCollection, postCollection,storyCollection, videoCollection,projectCollection,singlesCollection, documentCollection, aboutCollection ,workCategory, db,projectCategory,portraitCollection}
 // module.exports = {
 //     postCollection
 // }

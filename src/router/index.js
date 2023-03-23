@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/admin',
     name: 'Admin',
-    component: Admin_About 
+    component: Admin_About
   },
   {
     path: '/admin-post',
@@ -87,6 +87,15 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/Singles.vue')
   },
+  {
+    path: '/portrait',
+    name: 'Portrait',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/PortraitSingle.vue')
+  },
+  
   {
     path: '/all-gallery',
     name: 'All-Gallery',

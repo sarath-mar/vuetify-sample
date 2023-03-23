@@ -47,6 +47,7 @@
                   outlined
                   dense
                   v-model="postCaption"
+                  type="number"
                 ></v-text-field>
               </v-flex>
             </v-layout>
@@ -65,7 +66,7 @@
                 ></v-autocomplete>
               </v-flex>
             </v-layout>
-            <v-layout v-if="postType === 'STORY'" justify-center>
+            <!-- <v-layout v-if="postType === 'STORY'" justify-center>
               <v-flex xs8>
                 <v-autocomplete
                   v-model="postWorkCategory"
@@ -82,8 +83,8 @@
                   dense
                 ></v-autocomplete>
               </v-flex>
-            </v-layout>
-            <v-layout v-if="postType === 'PROJECT'" justify-center>
+            </v-layout> -->
+            <v-layout v-if="subDataNeeded.includes(postType)" justify-center>
               <v-flex xs8>
                 <v-autocomplete
                   v-model="postWorkCategory"
@@ -101,6 +102,24 @@
                 ></v-autocomplete>
               </v-flex>
             </v-layout>
+            <!-- <v-layout v-if="postType === 'PORTRAIT'" justify-center>
+              <v-flex xs8>
+                <v-autocomplete
+                  v-model="postWorkCategory"
+                  :rules="[
+                    () => !!postWorkCategory || 'This field is required',
+                  ]"
+                  :items="projectCategoryList"
+                  item-text="category"
+                  item-value="id"
+                  label="Portrait Category Type"
+                  placeholder="Select..."
+                  required
+                  outlined
+                  dense
+                ></v-autocomplete>
+              </v-flex>
+            </v-layout> -->
             <v-layout justify-center>
               <v-flex xs8>
                 <v-textarea
@@ -147,6 +166,7 @@
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import {
   bannerCollection,
+  portraitCollection,
   postCollection,
   projectCategory,
   projectCollection,
@@ -189,6 +209,7 @@ export default {
       postTextRule: [(value) => !!value || "Text field is not be empty"],
       postWorkCategory: "",
       counter: 0,
+      subDataNeeded: ["STORY", "PROJECT", "PORTRAIT"],
     };
   },
   methods: {
@@ -200,7 +221,7 @@ export default {
         documentData.id = doc.id;
         result.push(documentData);
       });
-      this.storyCategoryList = result;
+      this.projectCategoryList = result;
     },
     async projectCategoryData() {
       let result = new Array();
@@ -211,6 +232,10 @@ export default {
         result.push(documentData);
       });
       this.projectCategoryList = result;
+    },
+    async potraitCategoryData() {
+      
+      this.projectCategoryList = [{category:"Singles",id:"Singles"},{category:"Stories",id:"Stories"}];
     },
     async getImages(id) {
       const storage = getStorage();
@@ -278,10 +303,16 @@ export default {
         collection = projectCollection;
         // typeMsg = "project";
       }
+      if (this.postType === "PORTRAIT") {
+        postObject.categoryId = this.postWorkCategory;
+        collection = portraitCollection;
+        // typeMsg = "portrait";
+      }
       if (this.postType === "BANNER") {
         collection = bannerCollection;
         // typeMsg = "banner";
       }
+
       typeMsg = this.postType;
       if (this.postType) {
         await this.addPostTypes(
@@ -327,6 +358,9 @@ export default {
       }
       if (newVal === "PROJECT") {
         this.projectCategoryData();
+      }
+      if (newVal === "PORTRAIT") {
+        this.potraitCategoryData();
       }
     },
   },

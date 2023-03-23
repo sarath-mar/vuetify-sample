@@ -78,7 +78,8 @@ export default {
         "Published-Works",
         "Story",
         "Singles",
-        "Project"
+        "Project",
+        "Portrait"
       ];
       if (routeNames.includes(routeName)) {
         return true;

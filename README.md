@@ -22,3 +22,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+<!--
+ 1 npm run build 
+ 2 firebase serve
+ 3 firebase deploy-->

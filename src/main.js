@@ -16,7 +16,7 @@ Vue.mixin({
         // { text: "Travel", value: "TRAVEL" },
         { text: "Projects", value: "PROJECT" },
         // { text: "Work", value: "WORK" },
-        // { text: "Portrait", value: "PORTRAIT" },
+        { text: "Portrait", value: "PORTRAIT" },
 
       ],
       postData: [],

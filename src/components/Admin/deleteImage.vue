@@ -48,6 +48,7 @@ import { getStorage, ref, deleteObject } from "firebase/storage";
 import { deleteDoc, doc } from "@firebase/firestore";
 import {
   bannerCollection,
+  portraitCollection,
   projectCollection,
   singlesCollection,
   storyCollection,
@@ -89,6 +90,10 @@ export default {
       if (postType === "PROJECT") {
         collection = projectCollection;
         typeMsg = "project";
+      }
+      if (postType === "PORTRAIT") {
+        collection = portraitCollection;
+        typeMsg = "portrait";
       }
       if (postType === "BANNER") {
         collection = bannerCollection;

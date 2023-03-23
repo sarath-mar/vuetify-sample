@@ -23,7 +23,7 @@
             ></v-app-bar-nav-icon>
           </v-layout>
         </v-app-bar>
-        <v-navigation-drawer app v-model="drawer" absolute temporary>
+        <v-navigation-drawer app v-model="drawer" temporary>
           <v-layout justify-end>
             <v-icon @click="drawer = !drawer" class="black--text pr-5 pt-5"
               >mdi-close</v-icon
@@ -51,9 +51,7 @@
             <v-list dense class="mt-10">
               <div v-for="(item, index) in postItems" :key="{ index }">
                 <div class="mt-5">
-                  <v-list-group
-                    v-if="['Stories', 'Projects'].includes(item.title)"
-                  >
+                  <v-list-group v-if="subDataNeeded.includes(item.title)">
                     <template v-slot:activator>
                       <v-list-item-content>
                         <v-list-item-title class="red--text listStyle">{{
@@ -61,49 +59,96 @@
                         }}</v-list-item-title>
                       </v-list-item-content>
                     </template>
-                    <!--  :to="obj.route" -->
-                    <v-list-item
-                      v-for="(obj, i) in getSubData(item.title)"
-                      :key="i"
-                      dense
-                      color="red ml-6"
-                    >
-                      <!-- path: '/project', -->
-                      <router-link
-                        v-if="item.title === 'Stories'"
-                        :to="{
-                          path: '/story',
-                          params: { id: obj.id, category: obj.category,text:obj.categoryText },
-                          query: { id: obj.id, category: obj.category,text:obj.categoryText },
-                        }"
-                        style="text-decoration: none"
+                    <div v-if="['Portraits'].includes(item.title)">
+                      <v-list-item
+                        v-for="(obj, i) in item.subTitle"
+                        :key="i"
+                        dense
+                        color="red ml-6"
                       >
-                        <v-list-item-title
-                          class="red--text font-weight-bold ml-8"
-                          v-bind:class="{
-                            'black--text': $route.path === obj.route,
+                        <!-- path: '/project', -->
+                        <router-link
+                          :to="{
+                            path: '/portrait',
+                            params: {
+                              type: obj.query,
+                            },
+                            query: {
+                              type: obj.query,
+                            },
                           }"
-                          >{{ obj.category }}
-                        </v-list-item-title>
-                      </router-link>
-                      <router-link
-                        v-if="item.title === 'Projects'"
-                        :to="{
-                          path: '/project',
-                          params: { id: obj.id, category: obj.category,text:obj.categoryText },
-                          query: { id: obj.id, category: obj.category,text:obj.categoryText },
-                        }"
-                        style="text-decoration: none"
+                          style="text-decoration: none"
+                        >
+                          <v-list-item-title
+                            class="red--text font-weight-bold ml-8"
+                            v-bind:class="{
+                              'black--text': $route.path === obj.route,
+                            }"
+                            >{{ obj.title }}
+                          </v-list-item-title>
+                        </router-link>
+                      </v-list-item>
+                    </div>
+                    <div v-else>
+                      <v-list-item
+                        v-for="(obj, i) in getSubData(item.title)"
+                        :key="i"
+                        dense
+                        color="red ml-6"
                       >
-                        <v-list-item-title
-                          class="red--text font-weight-bold ml-8"
-                          v-bind:class="{
-                            'black--text': $route.path === obj.route,
+                        <!-- path: '/project', -->
+                        <router-link
+                          v-if="item.title === 'Stories'"
+                          :to="{
+                            path: '/story',
+                            params: {
+                              id: obj.id,
+                              category: obj.category,
+                              text: obj.categoryText,
+                            },
+                            query: {
+                              id: obj.id,
+                              category: obj.category,
+                              text: obj.categoryText,
+                            },
                           }"
-                          >{{ obj.category }}
-                        </v-list-item-title>
-                      </router-link>
-                    </v-list-item>
+                          style="text-decoration: none"
+                        >
+                          <v-list-item-title
+                            class="red--text font-weight-bold ml-8"
+                            v-bind:class="{
+                              'black--text': $route.path === obj.route,
+                            }"
+                            >{{ obj.category }}
+                          </v-list-item-title>
+                        </router-link>
+                        <router-link
+                          v-if="item.title === 'Projects'"
+                          :to="{
+                            path: '/project',
+                            params: {
+                              id: obj.id,
+                              category: obj.category,
+                              text: obj.categoryText,
+                            },
+                            query: {
+                              id: obj.id,
+                              category: obj.category,
+                              text: obj.categoryText,
+                            },
+                          }"
+                          style="text-decoration: none"
+                        >
+                          <v-list-item-title
+                            class="red--text font-weight-bold ml-8"
+                            v-bind:class="{
+                              'black--text': $route.path === obj.route,
+                            }"
+                            >{{ obj.category }}
+                          </v-list-item-title>
+                        </router-link>
+                      </v-list-item>
+                    </div>
                   </v-list-group>
                   <v-list-item
                     v-else
@@ -152,7 +197,7 @@
         <v-list dense class="mt-10">
           <div v-for="(item, index) in postItems" :key="{ index }">
             <div class="mt-5">
-              <v-list-group v-if="['Stories', 'Projects'].includes(item.title)">
+              <v-list-group v-if="subDataNeeded.includes(item.title)">
                 <template v-slot:activator>
                   <v-list-item-content>
                     <v-list-item-title class="red--text listStyle">{{
@@ -160,59 +205,94 @@
                     }}</v-list-item-title>
                   </v-list-item-content>
                 </template>
-                <!--  :to="obj.route" -->
-                <v-list-item
-                  v-for="(obj, i) in getSubData(item.title)"
-                  :key="i"
-                  dense
-                  color="red ml-6"
-                >
-                  <router-link
-                    v-if="item.title === 'Stories'"
-                    :to="{
-                      path: '/story',
-                      params: { id: obj.id, category: obj.category,text:obj.categoryText },
-                      query: { id: obj.id, category: obj.category ,text:obj.categoryText},
-                    }"
-                    style="text-decoration: none"
+                <div v-if="['Portraits'].includes(item.title)">
+                  <v-list-item
+                    v-for="(obj, i) in item.subTitle"
+                    :key="i"
+                    dense
+                    color="red ml-6"
                   >
-                    <v-list-item-title
-                      class="red--text font-weight-bold ml-8"
-                      v-bind:class="{
-                        'black--text': $route.path === obj.route,
+                    <router-link
+                      :to="{
+                        path: '/portrait',
+                        params: {
+                          type: obj.query,
+                        },
+                        query: {
+                          type: obj.query,
+                        },
                       }"
-                      >{{ obj.category }}
-                    </v-list-item-title>
-                  </router-link>
-                  <router-link
-                    v-if="item.title === 'Projects'"
-                    :to="{
-                      path: '/project',
-                      params: { id: obj.id, category: obj.category,text:obj.categoryText },
-                      query: { id: obj.id, category: obj.category ,text:obj.categoryText},
-                    }"
-                    style="text-decoration: none"
+                      style="text-decoration: none"
+                    >
+                      <v-list-item-title
+                        class="red--text font-weight-bold ml-8"
+                        v-bind:class="{
+                          'black--text': $route.path === obj.route,
+                        }"
+                        >{{ obj.title }}
+                      </v-list-item-title>
+                    </router-link>
+                  </v-list-item>
+                </div>
+                <div v-else>
+                  <v-list-item
+                    v-for="(obj, i) in getSubData(item.title)"
+                    :key="i"
+                    dense
+                    color="red ml-6"
                   >
-                    <v-list-item-title
-                      class="red--text font-weight-bold ml-8"
-                      v-bind:class="{
-                        'black--text': $route.path === obj.route,
+                    <router-link
+                      v-if="item.title === 'Stories'"
+                      :to="{
+                        path: '/story',
+                        params: {
+                          id: obj.id,
+                          category: obj.category,
+                          text: obj.categoryText,
+                        },
+                        query: {
+                          id: obj.id,
+                          category: obj.category,
+                          text: obj.categoryText,
+                        },
                       }"
-                      >{{ obj.category }}
-                    </v-list-item-title>
-                  </router-link>
-                </v-list-item>
-                <!-- <template v-slot:activator="{ props }">
-                <v-list-item v-bind="props" title="Actions"></v-list-item>
-              </template>
-
-              <v-list-item
-                v-for="([title, icon], i) in cruds"
-                :key="i"
-                :value="title"
-                :title="title"
-                :prepend-icon="icon"
-              ></v-list-item> -->
+                      style="text-decoration: none"
+                    >
+                      <v-list-item-title
+                        class="red--text font-weight-bold ml-8"
+                        v-bind:class="{
+                          'black--text': $route.path === obj.route,
+                        }"
+                        >{{ obj.category }}
+                      </v-list-item-title>
+                    </router-link>
+                    <router-link
+                      v-if="item.title === 'Projects'"
+                      :to="{
+                        path: '/project',
+                        params: {
+                          id: obj.id,
+                          category: obj.category,
+                          text: obj.categoryText,
+                        },
+                        query: {
+                          id: obj.id,
+                          category: obj.category,
+                          text: obj.categoryText,
+                        },
+                      }"
+                      style="text-decoration: none"
+                    >
+                      <v-list-item-title
+                        class="red--text font-weight-bold ml-8"
+                        v-bind:class="{
+                          'black--text': $route.path === obj.route,
+                        }"
+                        >{{ obj.category }}
+                      </v-list-item-title>
+                    </router-link>
+                  </v-list-item>
+                </div>
               </v-list-group>
               <v-list-item
                 v-else
@@ -251,6 +331,7 @@ export default {
       //   "/all-gallery",
       //   "/published-works",
       // ],
+      subDataNeeded: ["Stories", "Projects", "Portraits"],
       postItems: [
         { title: "Bio", icon: "mdi-home", route: "/about" },
         { title: "Singles", icon: "mdi-account", route: "/singles" },
@@ -261,6 +342,15 @@ export default {
           title: "Projects",
           icon: "mdi-image",
           route: "/gallery",
+        },
+        {
+          title: "Portraits",
+          icon: "mdi-image",
+          // route: "/gallery",
+          subTitle: [
+            { title: "Singles", query: "Singles" },
+            { title: "Stories", query: "Stories" },
+          ],
         },
       ],
       storyCategory: [],

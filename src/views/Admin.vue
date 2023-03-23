@@ -3,12 +3,12 @@
     <v-layout justify-end>
       <AddImage @updatePost="updatePost" />
     </v-layout>
-    <v-card elevation="0" class="mt-3">
+    <!-- <v-card elevation="0" class="mt-3"> -->
       <v-tabs
         :color="tab == 0 ? 'yellow' : tab == 1 ? 'green' : 'red'"
         v-model="tab"
         background-color="transparent"
-        grow
+        grow 
       >
         <v-tab v-for="item in imageType" :key="item.value">
           {{ item.text }}
@@ -19,45 +19,46 @@
         <v-tab-item class="" v-for="item in imageType" :key="item.value">
           <v-layout wrap justify-center justify-sm-start>
             <div v-if="isCategoryList">
-                <div v-for="(category, index) in categoryDetails" :key="index">
-                  <div class="category-table-card">
-                    <p>{{ category.category }}</p>
-                    <v-btn
-                      @click="showCategoryData(category.id)"
-                      class="ml-auto"
-                      >Show Details</v-btn
-                    >
-                  </div>
-
-                  <div
-                    v-if="categoryListData.length && categoryId == category.id"
+              <div v-for="(category, index) in categoryDetails" :key="index">
+                <div class="category-table-card">
+                  <p>{{ category.category }}</p>
+                  <button  @click="showCategoryData(category.id)" class="ml-auto"
+                    ><v-icon>mdi-arrow-down </v-icon></button
                   >
-                    <div
-                      v-for="(post, index) in categoryListData"
-                      :key="index"
-                    >
-                      <v-flex>
-                        <cardTable :post="post" />
-                      </v-flex>
-                    </div>
+                </div>
+
+                <div v-if="categoryId == category.id">
+                  <div class="text-center pa-10" v-if="isCategoryLoading">
+                    <v-progress-circular
+                      :size="100"
+                      :width="8"
+                      color="red"
+                      class="m-auto"
+                      indeterminate
+                    ></v-progress-circular>
+                  </div>
+                  <div v-else>
+                    <p v-if="!categoryListData.length" class="text-center">
+                      No content Found....
+                    </p>
+                    <cardTable
+                      v-else
+                      :postData="categoryListData"
+                      @updatePost="updatePost"
+                    />
                   </div>
                 </div>
-          
+              </div>
             </div>
-            <div
-              v-else
-              v-for="(post, index) in postTabData"
-              class="admin-table-card"
-              :key="index"
-            >
+            <div v-else>
               <v-flex>
-                <cardTable :post="post" />
+                <cardTable :postData="postTabData" @updatePost="updatePost" />
               </v-flex>
             </div>
           </v-layout>
         </v-tab-item>
       </v-tabs-items>
-    </v-card>
+    <!-- </v-card> -->
   </div>
 </template>
 
@@ -68,6 +69,7 @@ import CardTable from "../components/Admin/cardTable.vue";
 import {
   bannerCollection,
   getDocs,
+  portraitCollection,
   projectCategory,
   projectCollection,
   singlesCollection,
@@ -86,13 +88,14 @@ export default {
       loop: 8,
       // postData: new Array(),
       postTabData: new Array(),
-      tab: 3,
+      tab: 0,
       categoryDetails: [],
-      cTab: 1,
+      cTab: 0,
       isCategoryList: false,
       imagePostType: "",
       categoryListData: [],
       categoryId: "",
+      isCategoryLoading: false,
     };
   },
   watch: {
@@ -121,7 +124,12 @@ export default {
             this.isCategoryList = true;
             this.postTabData = [];
             this.getstoryCategoryData();
-          } else {
+          } else if (value === "PORTRAIT") {
+            this.isCategoryList = true;
+            this.postTabData = [];
+            this.getportraitCategoryData();
+          }
+           else {
             this.isCategoryList = false;
             this.getCollectionData(value);
           }
@@ -141,6 +149,7 @@ export default {
   methods: {
     showCategoryData(id) {
       // let categoryId = this.categoryDetails[newVal].id;
+      this.isCategoryLoading = true;
       this.categoryListData = [];
       this.categoryId = id;
       this.getPostDatafilterCategory(id, this.imagePostType);
@@ -169,6 +178,10 @@ export default {
         collection = projectCollection;
         // typeMsg = "project";
       }
+      if (type === "PORTRAIT") {
+        collection = portraitCollection;
+        // typeMsg = "project";
+      }
       let result = new Array();
       const q = query(
         collection,
@@ -184,6 +197,7 @@ export default {
       });
       this.categoryListData = result;
       console.log(result);
+      this.isCategoryLoading = false;
     },
     async getstoryCategoryData() {
       let result = new Array();
@@ -194,8 +208,8 @@ export default {
         result.push(documentData);
       });
       this.categoryDetails = result;
-      let categoryId = result[this.cTab].id;
-      this.getPostDatafilterCategory(categoryId, "STORY");
+      // let categoryId = result[this.cTab].id;
+      // this.getPostDatafilterCategory(categoryId, "STORY");
     },
     async getProjectCategoryData() {
       let result = new Array();
@@ -206,9 +220,22 @@ export default {
         result.push(documentData);
       });
       this.categoryDetails = result;
-      let categoryId = result[this.cTab].id;
-      this.getPostDatafilterCategory(categoryId, "PROJECT");
-      console.log(this.categoryDetails);
+      // let categoryId = result[this.cTab].id;
+      // this.getPostDatafilterCategory(categoryId, "PROJECT");
+      // console.log(this.categoryDetails);
+    },
+    async getportraitCategoryData() {
+      // let result = new Array();
+      // let data = await getDocs(projectCategory);
+      // data.forEach((doc) => {
+      //   let documentData = doc.data();
+      //   documentData.id = doc.id;
+      //   result.push(documentData);
+      // });
+      this.categoryDetails = [{category:"Stories",id:"Stories"},{category:"Singles",id:"Singles"}];
+      let categoryId = this.categoryDetails[this.cTab].id;
+      this.getPostDatafilterCategory(categoryId, "PORTRAIT");
+      // console.log(this.categoryDetails);
     },
     async getPost() {},
     async getCollectionData(type) {
@@ -230,6 +257,10 @@ export default {
       if (type === "BANNER") {
         collection = bannerCollection;
         typeMsg = "banner";
+      }
+      if(type==='PORTRAIT'){
+        collection = portraitCollection;
+        typeMsg = "portrait";
       }
 
       if (type) {
