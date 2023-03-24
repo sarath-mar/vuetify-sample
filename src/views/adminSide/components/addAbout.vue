@@ -7,6 +7,7 @@
           color="ashColor"
           class="black--text text-capitalize"
           v-on="on"
+          @click="getAboutData()"
           >Update About</v-btn
         >
       </template>
@@ -22,7 +23,6 @@
             <v-layout justify-center>
               <v-flex xs8 class="mr-2">
                 <v-file-input
-                  :rules="rules"
                   accept="image/png, image/jpeg, image/bmp"
                   placeholder="Pick an avatar"
                   prepend-icon="mdi-camera"
@@ -105,8 +105,8 @@ import {
   ref,
   uploadBytes,
 } from "firebase/storage";
-import { updateDoc, doc, deleteDoc } from "@firebase/firestore";
-import { aboutCollection, addDoc } from "../../../firebase";
+import { updateDoc, doc, deleteDoc, getDocs } from "@firebase/firestore";
+import { aboutCollection } from "../../../firebase";
 export default {
   props: {
     id: {
@@ -138,6 +138,20 @@ export default {
     };
   },
   methods: {
+    async getAboutData() {
+      let result = new Array();
+      let data = await getDocs(aboutCollection);
+      data.forEach((doc) => {
+        let aboutData = doc.data();
+        aboutData.id = doc.id;
+        result.push(aboutData);
+      });
+      console.log("result");
+      console.log(result);
+      if (result.length == 1) {
+        this.postText = result[0].postText;
+      }
+    },
     deleteMethod(id) {
       const docRef = doc(aboutCollection, id);
       deleteDoc(docRef)
@@ -167,29 +181,24 @@ export default {
     },
     async addPost() {
       this.button_loading = true;
-      if (this.id) {
+      let isImageUpdated = false;
+      if (this.id && this.postImage) {
         this.deleteMethod(this.id);
+        isImageUpdated = true;
       }
-    //   await aboutCollection.delete(); 
-      let data = await addDoc(aboutCollection, {
-        // postCaption: this.postCaption,
-        postText: this.postText,
-      });
-      if (data && this.postImage) {
-        let postUrl = "";
-        var storageRef = ref(getStorage(), `about/${data.id}.jpg`);
-        // const metadata = {
-        //   contentType: "application/pdf",
-        // };
+      let postUrl = null;
+      if (isImageUpdated && this.postText) {
+        var storageRef = ref(getStorage(), `about/${this.id}.jpg`);
         uploadBytes(storageRef, this.postImage)
           .then(async (snapshot) => {
             console.log("Uploaded a jpg document or file!");
             console.log(snapshot);
             postUrl = await getDownloadURL(storageRef);
             if (postUrl) {
-              let docRef = doc(aboutCollection, data.id);
+              let docRef = doc(aboutCollection, this.id);
               await updateDoc(docRef, {
                 postUrl,
+                postText: this.postText,
               })
                 .then(() => {
                   this.dialog = false;
@@ -201,6 +210,20 @@ export default {
                   this.button_loading = false;
                 });
             }
+          })
+          .catch(() => {
+            this.button_loading = false;
+          });
+      } else {
+        let docRef = doc(aboutCollection, this.id);
+        await updateDoc(docRef, {
+          postText: this.postText,
+        })
+          .then(() => {
+            this.dialog = false;
+            this.button_loading = false;
+            console.log("added finally");
+            this.$emit("updatePost");
           })
           .catch(() => {
             this.button_loading = false;

@@ -9,12 +9,11 @@
         ></v-img>
       </div>
       <div v-if="aboutData.postText" class="admin-content">
-        <h3 class="text-center ">Biography</h3>
-        <p class="content"> {{ aboutData.postText }} </p>
-        <h4  class="name text-right mt-10">Madhuraj</h4>
+        <h3 class="text-center">Biography</h3>
+        <p class="content">{{ aboutData.postText }}</p>
+        <h4 class="name text-right mt-10">Madhuraj</h4>
       </div>
     </div>
-
   </div>
 </template>
 <script>
@@ -79,26 +78,26 @@ export default {
 <style scoped>
 .name {
   font-size: 20px;
-  opacity: .7;
+  opacity: 0.7;
 }
-.content{
+.content {
   font-weight: 400;
-  opacity: .6;
+  opacity: 0.6;
   /* line-height: 20px; */
   margin-top: 20px;
   font-size: 14px;
-  letter-spacing: 1.5px; 
+  letter-spacing: 1.5px;
 }
 
-.admin-content{
-flex: 1;
+.admin-content {
+  flex: 1;
 }
 
 .about-image {
   /* height: 100%; */
   background-size: cover;
   border-radius: 5px;
-  min-width: 30vw; 
+  min-width: 30vw;
   margin-top: 50px;
   /* min-height: 70vh; */
 }
@@ -107,20 +106,20 @@ flex: 1;
   display: flex;
   align-items: flex-start;
   /* align-items: flex-end; */
-   /* flex-wrap: wrap; */
+  /* flex-wrap: wrap; */
   gap: 20px;
 }
 @media screen and (max-width: 960px) {
   .about-details {
-  flex-direction: column;
-  align-items: normal;
-}
-.about-image{
-  width: 95%;
-  margin: auto ;
-  margin-top: 0px;
-  /* margin-left: -1px;   */
-  /* padding-left: 30px !important; */
-}
+    flex-direction: column;
+    align-items: normal;
+  }
+  .about-image {
+    width: 95%;
+    margin: auto;
+    margin-top: 0px;
+    /* margin-left: -1px;   */
+    /* padding-left: 30px !important; */
+  }
 }
 </style>
