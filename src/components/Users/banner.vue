@@ -12,6 +12,7 @@
       "
       hide-delimiter-background
       show-arrows-on-hover
+      hide-delimiters
     >
       <v-carousel-item
         v-for="(item, i) in imageArray"
@@ -23,6 +24,7 @@
       >
       </v-carousel-item>
     </v-carousel>
+   
   </div>
 </template>
 
@@ -78,9 +80,11 @@ export default {
 
 <style scoped>
 .banner {
-  padding: 80px 300px 5px 5px;
+  padding: 30px 300px 5px 5px;
+  /* background-color: red; */
   /* padding: 60px 300px 5px 5px; */
 }
+
 @media screen and (max-width: 960px) {
   .banner {
     padding: 10px;
@@ -90,7 +94,10 @@ export default {
 @media screen and (max-width: 600px) {
   .banner {
     padding: 10px;
-    padding-top: 25vh;
+    padding-top: 20vh; 
+  }
+  .quote {
+    margin-right: 10px;
   }
 }
 </style>
