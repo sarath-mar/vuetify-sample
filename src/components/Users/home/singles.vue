@@ -5,10 +5,15 @@
         <v-card-title><span class="heading">Singles</span></v-card-title>
         <div></div>
         <v-card-text>
+          <light-house-gallery
+            :postData="singlesArray"
+            :imageIndex="imageIndex"
+            :hideGallery="true"
+          ></light-house-gallery>
           <div v-for="(story, index) in singlesArray" :key="index">
-            <v-layout  class="mb-6" wrap justify-center>
+            <v-layout class="mb-6" wrap justify-center>
               <v-flex x12 sm7 align-self-center>
-                <span>
+                <span class="single-img">
                   <v-img
                     :height="
                       $vuetify.breakpoint.mdAndUp
@@ -20,8 +25,9 @@
                     aspect-ratio="16/9"
                     :src="story.postUrl"
                     :lazy-src="story.postUrl"
-                    class="grey lighten-2 rounded-sm text-center"
+                    class="grey lighten-2 rounded-sm text-center single-image"
                     :class="$vuetify.breakpoint.xs ? '' : 'mx-10'"
+                    @click="imageIndex = index"
                   >
                     <template v-slot:placeholder>
                       <v-row
@@ -39,64 +45,15 @@
                 </span>
               </v-flex>
               <v-flex xs12 sm5 align-self-center>
-                <span class="mb-5  "> 
-                  <!-- <div class="sub-title font-weight-bold text-center mb-3">
-                    {{ story.postCaption }}
-                  </div> -->
-                  <p class="stories text-justify mt-2 mr-5">{{ story.postText }} </p>
+                <span class="mb-5">
+                  <p class="stories text-justify mt-2 mr-5">
+                    {{ story.postText }}
+                  </p>
                 </span>
               </v-flex>
             </v-layout>
-
-            <!-- <v-layout v-else wrap justify-center class="mb-6">
-              <v-flex xs12 sm5 align-self-center v-if="!$vuetify.breakpoint.xs">
-                <span>
-                  <p class="stories mx-3 text-justify mt-2">{{ story.postText }}</p>
-                </span>
-              </v-flex>
-              <v-flex align-self-center x12 sm7>
-                <span class="">
-                  <v-img
-                    :height="
-                      $vuetify.breakpoint.mdAndUp
-                        ? 400
-                        : $vuetify.breakpoint.xs
-                        ? 200
-                        : 300
-                    "
-                    aspect-ratio="16/9"
-                    :src="story.postUrl"
-                    :lazy-src="story.postUrl"
-                    cover
-                    class="grey lighten-2 rounded-sm"
-                    :class="$vuetify.breakpoint.xs ? '' : 'mx-10'"
-                  >
-                    <template v-slot:placeholder>
-                      <v-row
-                        class="fill-height ma-0"
-                        align="center"
-                        justify="center"
-                      >
-                        <v-progress-circular
-                          indeterminate
-                          color="black lighten-3"
-                        ></v-progress-circular>
-                      </v-row>
-                    </template>
-                  </v-img>
-                </span>
-              </v-flex>
-              <v-flex xs12 sm5 align-self-center v-if="$vuetify.breakpoint.xs">
-                <span>
-                  <p class="stories text-justify mt-2">{{ story.postText }}</p>
-                </span>
-              </v-flex>
-            </v-layout> -->
           </div>
         </v-card-text>
-        <!-- <div v-if="singlesArray.length > 1" class="text-center">
-          <v-btn @click="seeMore" small>{{ btnTitle }}</v-btn>
-        </div> -->
       </v-card>
     </transition>
   </div>
@@ -105,7 +62,9 @@
 <script>
 import { getDocs } from "firebase/firestore";
 import { singlesCollection } from "../../../firebase";
+import lightHouseGallery from "./lightHouseGallery.vue";
 export default {
+  components: { lightHouseGallery },
   data() {
     return {
       // stories: [{ text: "one" }, { text: "two" }],
@@ -113,6 +72,7 @@ export default {
       limitedStory: [],
       btnTitle: "See Moore..",
       btnMode: true,
+      imageIndex: "",
     };
   },
   watch: {
@@ -152,19 +112,19 @@ export default {
         return false;
       }
     },
-    seeMore() {
-      if (this.btnMode) {
-        this.limitedStory = this.singlesArray;
-        this.btnMode = false;
-        this.btnTitle = "See Less..";
-      } else {
-        this.limitedStory = this.singlesArray.filter((x, i) => {
-          if (i < 2) return x;
-        });
-        this.btnMode = true;
-        this.btnTitle = "See Moore..";
-      }
-    },
+    // seeMore() {
+    //   if (this.btnMode) {
+    //     this.limitedStory = this.singlesArray;
+    //     this.btnMode = false;
+    //     this.btnTitle = "See Less..";
+    //   } else {
+    //     this.limitedStory = this.singlesArray.filter((x, i) => {
+    //       if (i < 2) return x;
+    //     });
+    //     this.btnMode = true;
+    //     this.btnTitle = "See Moore..";
+    //   }
+    // },
   },
   created() {
     this.getSinglesData();
@@ -173,6 +133,13 @@ export default {
 </script>
 
 <style>
+.single-img .single-image {
+  cursor: pointer;
+  transition: 0.5s all;
+}
+.single-image:hover {
+  transform: scale(1.02);
+}
 .postBackground {
   padding: 10px;
   background: red;

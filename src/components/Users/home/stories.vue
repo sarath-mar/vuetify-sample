@@ -2,9 +2,14 @@
   <div class="mt-5 ml-5">
     <h4 class="text--red">{{ categoryName }}</h4>
     <h5 class="my-3 mr-sm-10 categroy-details">{{ categoryDetails }}</h5>
+    <light-house-gallery
+      :postData="postData"
+      :imageIndex="imageIndex"
+    ></light-house-gallery>
 
     <div class="mt-5">
       <!-- <template> -->
+      <!-- <v-row> -->
       <div class="text-center pa-10" v-if="!postData.length">
         <v-progress-circular
           :size="100"
@@ -14,12 +19,14 @@
           indeterminate
         ></v-progress-circular>
       </div>
+      <!-- </v-row> -->
       <v-row>
         <v-col
-          v-for="data in postData"
+          v-for="(data, index) in postData"
           :key="data.id"
-          class="d-flex child-flex"
-          cols="6"
+          class="child-flex"
+          cols="12"
+          sm="6"
           md="4"
           lg="3"
         >
@@ -27,8 +34,9 @@
             :src="data.postUrl"
             :lazy-src="data.postUrl"
             aspect-ratio="1"
-            cover
             class="bg-grey-lighten-2"
+            style="cursor: pointer"
+            @click="imageIndex = index"
           >
             <template v-slot:placeholder>
               <v-row class="fill-height ma-0" align="center" justify="center">
@@ -52,12 +60,15 @@
 <script>
 import { getDocs, orderBy, query, where } from "firebase/firestore";
 import { storyCollection } from "../../../firebase";
+import lightHouseGallery from "./lightHouseGallery.vue";
 export default {
+  components: { lightHouseGallery },
   data() {
     return {
       postData: [],
       categoryName: "",
       categoryDetails: "",
+      imageIndex: "",
     };
   },
   watch: {

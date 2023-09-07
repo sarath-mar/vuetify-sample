@@ -3,10 +3,10 @@
     <Banner />
     <div>
       <p class="quote">
-        <span class="red--text">"</span> Photography to me is a look into
+         Photography to me is a look into
         myself,<br />
         a self-realization. <br />
-        Here the camera becomes just a tool <span class="red--text">"</span>
+        Here the camera becomes just a tool 
       </p>
     </div>
   </div>
@@ -56,8 +56,11 @@ export default {
 }
 @media screen and (max-width: 600px) {
   .quote {
-    margin-top: 50px;
-    font-size: 10px;
+    position: absolute;
+    bottom: 70px; 
+    left: 10px;
+    /* margin-top: 90px; */
+    font-size: 12px;
   }
 }
 </style>

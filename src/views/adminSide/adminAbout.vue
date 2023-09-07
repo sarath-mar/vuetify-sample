@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-layout justify-end>
-      <add-about v-if="id" :id="id" @updatePost="updatePost" />
+      <add-about  :id="id" @updatePost="updatePost" />
     </v-layout>
     <!-- {{id}}  -->
     <v-layout>

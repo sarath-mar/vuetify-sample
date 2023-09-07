@@ -1,8 +1,6 @@
 <template>
   <div class="mt-5 ml-3">
-    <!-- <h2 style="text-align: center">Lightbox</h2> -->
-
-    <div class="row">
+    <div class="row" v-if="!hideGallery">
       <div class="column" v-for="(data, i) in postData" :key="data.id">
         <img
           :src="data.postUrl"
@@ -17,7 +15,9 @@
     </div>
 
     <div id="myModal" class="modal" :class="hideModel ? 'hide-model' : ''">
-      <span class="close cursor" style="z-index: 999;" @click="closeModal()">&times;</span>
+      <span class="close cursor" style="z-index: 999" @click="closeModal()"
+        >&times;</span
+      >
       <div class="modal-content">
         <div class="mySlides" v-for="(data, index) in postData" :key="data.id">
           <div class="numbertext">{{ index + 1 }} / {{ postData.length }}</div>
@@ -30,18 +30,8 @@
         <div class="caption-container">
           <p id="caption"></p>
         </div>
-
-        <!-- <div class="column" v-for="data in postData" :key="data.id">
-          <img
-            class="demo cursor"
-            :src="data.postUrl"
-            style="height: 70px; width: 100px;"
-            @click="currentSlide(1)"
-            alt="Nature and sunrise"
-          />
-        </div> -->
       </div>
-      <div class="pa-5">
+      <div class="pa-5 lower-group-img">
         <div class="column" v-for="(data, i) in postData" :key="data.id">
           <img
             class="demo cursor"
@@ -50,14 +40,9 @@
             @click="currentSlide(i + 1)"
             :alt="data.postText"
           />
-          <!-- :alt="data.postText" -->
         </div>
       </div>
     </div>
-
-    <!--  -->
-
-    <!--  -->
   </div>
 </template>
 
@@ -66,6 +51,7 @@ export default {
   props: {
     postData: {},
     imageIndex: {},
+    hideGallery: {},
   },
   data() {
     return {
@@ -126,7 +112,13 @@ export default {
 .row > .column {
   /* padding: 0 8px; */
 }
-
+.lower-group-img{
+  /* background-color: green; */
+  display: flex;
+  flex-wrap: wrap; 
+  align-items: center;
+  justify-content: center; 
+}
 .hide-model {
   display: none;
 }
@@ -138,6 +130,7 @@ export default {
 
 .column {
   float: left;
+  /* background-color: red; */
   /* width: 25%; */
 }
 
@@ -164,7 +157,7 @@ export default {
   justify-content: center;
   align-items: center; */
   padding: 0;
-  width: 90%; 
+  width: 90%;
   /* max-width: 1200px; */
   max-width: 80vw;
 }
@@ -174,7 +167,7 @@ export default {
   color: black;
   position: absolute;
   top: 10px;
-  right: 25px;
+  right: 15px;
   font-size: 35px;
   font-weight: bold;
 }
@@ -204,7 +197,7 @@ export default {
   width: auto;
   padding: 16px;
   margin-top: -50px;
-  color: red;
+  /* color: red; */
   font-weight: bold;
   font-size: 20px;
   transition: 0.6s ease;
@@ -222,7 +215,7 @@ export default {
 /* On hover, add a black background color with a little bit see-through */
 .prev:hover,
 .next:hover {
-  background-color: black;
+  /* background-color: black; */
 }
 
 /* Number text (1/3 etc) */
