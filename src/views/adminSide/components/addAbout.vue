@@ -187,98 +187,93 @@ export default {
       this.button_loading = true;
 
       if (this.id) {
-        this.deleteMethod(this.id);
-      }
-      let data = await addDoc(aboutCollection, {
-        postText: this.postText,
-      });
-      let postUrl = null;
-      if (data && this.postImage) {
-        var storageRef = ref(getStorage(), `about/${data.id}.jpg`);
-        uploadBytes(storageRef, this.postImage).then(async (snapshot) => {
-          console.log(snapshot);
-          postUrl = await getDownloadURL(storageRef);
-          if (postUrl) {
-            let docRef = doc(aboutCollection, data.id);
-            await updateDoc(docRef, {
-              postUrl,
-            }).then(() => {
-                  this.dialog = false;
-                  this.button_loading = false;
-                  console.log("added finally");
-                  this.$emit("updatePost");
+        if (this.postImage) {
+          this.deleteMethod(this.id);
+          let data = await addDoc(aboutCollection, {
+            postText: this.postText,
+          });
+          let postUrl = null;
+          if (data) {
+            let storageRef = ref(getStorage(), `about/${data.id}.jpg`);
+            uploadBytes(storageRef, this.postImage).then(async (snapshot) => {
+              console.log(snapshot);
+              postUrl = await getDownloadURL(storageRef);
+              if (postUrl) {
+                let docRef = doc(aboutCollection, data.id);
+                await updateDoc(docRef, {
+                  postUrl,
                 })
-                .catch(() => {
-                  this.button_loading = false;
-                });
+                  .then(() => {
+                    this.dialog = false;
+                    this.button_loading = false;
+                    console.log("added finally");
+                    this.$emit("updatePost");
+                  })
+                  .catch(() => {
+                    console.log("log if error");
+                    this.button_loading = false;
+                  });
+              }
+            });
+          } else {
+            this.dialog = false;
+            this.button_loading = false;
+            console.log("some error");
           }
+        } else {
+          let docRef = doc(aboutCollection, this.id);
+          await updateDoc(docRef, {
+            postText: this.postText,
+          })
+            .then(() => {
+              this.dialog = false;
+              this.button_loading = false;
+              console.log("added finally");
+              this.$emit("updatePost");
+            })
+            .catch(() => {
+              console.log("error");
+              this.button_loading = false;
+            });
+        }
+      } else {
+        let data = await addDoc(aboutCollection, {
+          postText: this.postText,
         });
+        if (this.postImage) {
+          let postUrl = null;
+          if (data) {
+            let storageRef = ref(getStorage(), `about/${data.id}.jpg`);
+            uploadBytes(storageRef, this.postImage).then(async (snapshot) => {
+              console.log(snapshot);
+              postUrl = await getDownloadURL(storageRef);
+              if (postUrl) {
+                let docRef = doc(aboutCollection, data.id);
+                await updateDoc(docRef, {
+                  postUrl,
+                })
+                  .then(() => {
+                    this.dialog = false;
+                    this.button_loading = false;
+                    console.log("added finally");
+                    this.$emit("updatePost");
+                  })
+                  .catch(() => {
+                    console.log("log if error");
+                    this.button_loading = false;
+                  });
+              }
+            });
+          } else {
+            console.log("some error");
+          }
+        } else {
+          this.dialog = false;
+              this.button_loading = false;
+          console.log("added finally");
+          this.$emit("updatePost");
+        }
       }
-      // let postUrl = "";
-      //
-      // uploadBytes(storageRef, this.postImage)
-      //   .then(async (snapshot) => {
-      //     console.log("Uploaded a blob or file!");
-      //     console.log(snapshot);
-      //     postUrl = await getDownloadURL(storageRef);
-      //     if (postUrl) {
-      //       let docRef = doc(collection, data.id);
-      //       await updateDoc(docRef, {
-      //         postUrl,
-      //       })
-
-      //     }
-      // this.button_loading = true;
-      // let isImageUpdated = false;
-
-      // if (this.id && this.postImage) {
-      //   this.deleteMethod(this.id);
-      //   isImageUpdated = true;
-      // }
-      // let postUrl = null;
-      // if (isImageUpdated && this.postText) {
-      //   var storageRef = ref(getStorage(), `about/${this.id}.jpg`);
-      //   uploadBytes(storageRef, this.postImage)
-      //     .then(async (snapshot) => {
-      //       console.log("Uploaded a jpg document or file!");
-      //       console.log(snapshot);
-      //       postUrl = await getDownloadURL(storageRef);
-      //       if (postUrl) {
-      //         let docRef = doc(aboutCollection, this.id);
-      //         await updateDoc(docRef, {
-      //           postUrl,
-      //           postText: this.postText,
-      //         })
-      //           .then(() => {
-      //             this.dialog = false;
-      //             this.button_loading = false;
-      //             console.log("added finally");
-      //             this.$emit("updatePost");
-      //           })
-      //           .catch(() => {
-      //             this.button_loading = false;
-      //           });
-      //       }
-      //     })
-      //     .catch(() => {
-      //       this.button_loading = false;
-      //     });
-      // } else {
-      //   let newId = this.id ? this.id : Math.random().toString(16).slice(2);
-      //   let docRef = doc(aboutCollection, newId);
-      //   await updateDoc(docRef, {
-      //     postText: this.postText,
-      //   })
-      //     .then(() => {
-      //       this.dialog = false;
-      //       this.button_loading = false;
-      //       console.log("added finally");
-      //       this.$emit("updatePost");
-      //     })
-      //     .catch(() => {
-      //       this.button_loading = false;
-      //     });
-      // }
     },
   },
 };

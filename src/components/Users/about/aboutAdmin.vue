@@ -10,7 +10,7 @@
       </div>
       <div v-if="aboutData.postText" class="admin-content">
         <h3 class="text-center">Biography</h3>
-        <p class="content">{{ aboutData.postText }}</p>
+        <pre  class="content">{{ aboutData.postText }}</pre> 
         <h4 class="name text-right mt-10">Madhuraj</h4>
       </div>
     </div>
@@ -83,10 +83,10 @@ export default {
 .content {
   font-weight: 400;
   opacity: 0.6;
-  /* line-height: 20px; */
   margin-top: 20px;
-  font-size: 14px;
-  letter-spacing: 1.5px;
+  font-size: 17px;
+  /* letter-spacing: 1.5px; */
+  white-space: pre-wrap
 }
 
 .admin-content {
