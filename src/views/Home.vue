@@ -3,10 +3,9 @@
     <Banner />
     <div>
       <p class="quote">
-         Photography to me is a look into
-        myself,<br />
-        a self-realization. <br />
-        Here the camera becomes just a tool 
+         Photography to me, <br> is a look into
+        myself.<br />
+        A self-realization.
       </p>
     </div>
   </div>

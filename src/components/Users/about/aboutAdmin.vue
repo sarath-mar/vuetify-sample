@@ -11,7 +11,7 @@
       <div v-if="aboutData.postText" class="admin-content">
         <h3 class="text-center">Biography</h3>
         <pre  class="content">{{ aboutData.postText }}</pre> 
-        <h4 class="name text-right mt-10">Madhuraj</h4>
+        <!-- <h4 class="name text-right mt-10">Madhuraj</h4> -->
       </div>
     </div>
   </div>
@@ -81,16 +81,19 @@ export default {
   opacity: 0.7;
 }
 .content {
-  font-weight: 400;
-  opacity: 0.6;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 1.1px;
   margin-top: 20px;
-  font-size: 17px;
-  /* letter-spacing: 1.5px; */
-  white-space: pre-wrap
+  text-align: justify;
+  white-space: pre-wrap;
+  /* font-family: 'Anton', sans-serif; */
+  /* font-family: "Courier Prime", monospace; */
+  font-family: 'Poppins', sans-serif;
 }
 
 .admin-content {
-  flex: 1;
+  /* flex: 1; */
 }
 
 .about-image {
@@ -99,27 +102,28 @@ export default {
   border-radius: 5px;
   min-width: 30vw;
   margin-top: 50px;
+  float: left;
+  margin-bottom: 20px;
   /* min-height: 70vh; */
 }
 .about-details {
   /* background-color: red; */
-  display: flex;
+  /* display: flex; */
   align-items: flex-start;
+ 
   /* align-items: flex-end; */
   /* flex-wrap: wrap; */
   gap: 20px;
 }
 @media screen and (max-width: 960px) {
-  .about-details {
+  /* .about-details {
     flex-direction: column;
     align-items: normal;
-  }
+  } */
   .about-image {
     width: 95%;
     margin: auto;
     margin-top: 0px;
-    /* margin-left: -1px;   */
-    /* padding-left: 30px !important; */
   }
 }
 </style>

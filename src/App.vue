@@ -103,6 +103,11 @@ export default {
 };
 </script>
 <style>
+*{
+  font-family: 'Poppins', sans-serif;
+  /* font-family: 'Anton', sans-serif; */
+  /* font-family: "Courier Prime", monospace; */
+}
 .login {
   position: absolute;
   top: 50%;
