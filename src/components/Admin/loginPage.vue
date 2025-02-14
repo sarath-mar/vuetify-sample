@@ -107,7 +107,7 @@ export default {
         .catch((error) => {
           // const errorCode = error.code;
           const errorMessage = error.message;
-          console.log(errorMessage);
+          console.log('err ',errorMessage);
           this.errorFromApi = errorMessage;
           this.btn_loading = false;
         });

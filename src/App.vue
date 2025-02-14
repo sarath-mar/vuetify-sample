@@ -108,6 +108,12 @@ export default {
   /* font-family: 'Anton', sans-serif; */
   /* font-family: "Courier Prime", monospace; */
 }
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .login {
   position: absolute;
   top: 50%;

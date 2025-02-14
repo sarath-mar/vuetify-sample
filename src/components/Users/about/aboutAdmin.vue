@@ -1,20 +1,28 @@
 <template>
-  <div class="about-main">
-    <div class="about-details mt-5">
-      <div class="admin-img">
-        <v-img
-          aspect-ratio="1"
-          class="about-image"
-          :src="aboutData.postUrl"
-        ></v-img>
-      </div>
-      <div v-if="aboutData.postText" class="admin-content">
-        <h3 class="text-center">Biography</h3>
-        <pre  class="content">{{ aboutData.postText }}</pre> 
-        <!-- <h4 class="name text-right mt-10">Madhuraj</h4> -->
-      </div>
-    </div>
-  </div>
+        <div class="about-details mt-5">
+          <div class="admin-img">
+            <v-img
+           
+              aspect-ratio="1"
+              class="about-image"
+              :src="aboutData.postUrl"
+              :lazy-src="aboutData.postUrl"
+            >
+              <template v-slot:placeholder>
+                <v-row class="fill-height ma-0" align="center" justify="center">
+                  <v-progress-circular
+                    indeterminate
+                    color="grey-lighten-5"
+                  ></v-progress-circular>
+                </v-row> </template
+            ></v-img>
+          </div>
+          <div v-if="aboutData.postText" class="admin-content">
+            <h3 class="text-center">Biography</h3>
+            <pre class="content">{{ aboutData.postText }}</pre>
+            <!-- <h4 class="name text-right mt-10">Madhuraj</h4> -->
+          </div>
+        </div>
 </template>
 <script>
 import { getDocs } from "@firebase/firestore";
@@ -39,6 +47,7 @@ export default {
       artist: "Madhuraj",
     },
     aboutData: {},
+    loader: false,
   }),
   methods: {
     // onBeforeEnter() {
@@ -51,6 +60,7 @@ export default {
     //   console.log("a ente");
     // },
     async getAboutData() {
+      this.loader = true;
       let result = new Array();
       let data = await getDocs(aboutCollection);
       data.forEach((doc) => {
@@ -63,6 +73,9 @@ export default {
       if (result.length) {
         this.aboutData = result[0];
         this.$emit("aboutId", this.aboutData.id);
+        this.loader = false;
+      } else {
+        this.loader = false;
       }
     },
     // methods: {
@@ -89,7 +102,7 @@ export default {
   white-space: pre-wrap;
   /* font-family: 'Anton', sans-serif; */
   /* font-family: "Courier Prime", monospace; */
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .admin-content {

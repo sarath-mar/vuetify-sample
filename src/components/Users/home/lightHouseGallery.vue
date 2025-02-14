@@ -48,8 +48,12 @@
 
 <script>
 export default {
+  name:"lightHouse",
   props: {
-    postData: {},
+    postData: {
+      required:true,
+      type:Array
+    },
     imageIndex: {},
     hideGallery: {},
   },

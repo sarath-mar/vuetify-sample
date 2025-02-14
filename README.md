@@ -26,4 +26,7 @@ git main
 <!--
  1 npm run build 
  2 firebase serve
- 3 firebase deploy-->
+ 3 firebase deploy
+ 
+ vuetify-sample - git repo name
+ -->

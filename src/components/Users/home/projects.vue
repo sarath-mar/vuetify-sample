@@ -126,6 +126,7 @@ export default {
   font-weight: 300;
   font-size: 14px;
   letter-spacing: 1.1px;
+  text-align: justify;
   /* inline-size: 1px; */
 }
 </style>
